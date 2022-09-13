@@ -5,6 +5,13 @@ import App from './App';
 
 import './styles/fonts.css';
 
+if (process.env.NODE_ENV === 'development') {
+  (async () => {
+    const { worker } = await import('./mocks/browser');
+    worker.start();
+  })();
+}
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
