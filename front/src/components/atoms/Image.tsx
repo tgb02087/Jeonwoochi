@@ -13,6 +13,10 @@ const StyledImage = styled.img<Info>`
     border-radius: ${radius}rem;
   `}
 `;
+
+// Image atom component
+// required props: src, alt
+// optional props: radius (rem)
 const Image = ({ src, alt, radius }: Info) => {
   return <StyledImage src={src} alt={alt} radius={radius} />;
 };
