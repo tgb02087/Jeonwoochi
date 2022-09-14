@@ -7,43 +7,51 @@ interface PropTypes {
   isText: boolean;
 }
 
-const Button = ({ clickHandler, isText, children }: PropTypes): JSX.Element => {
-  const StyledButtonText = styled.button`
-    font-family: DungGeunMo;
-    display: inline-block;
+const StyledButtonText = styled.button`
+  font-family: DungGeunMo;
+  display: inline-block;
+  box-shadow: 0 3px 0px #c7c7c7;
+
+  &:hover {
     box-shadow: 0 3px 0px #c7c7c7;
-  
-    &:hover{
-      box-shadow: 0 3px 0px #c7c7c7;
-      border-bottom: 2px solid #c7c7c7;
-      transition: all 0.1s ease-in;
-    }
-    
-    &:active{
-      transform:translateY(4px);
-      border-bottom-width: 2px;
-      box-shadow: none;
-    }
+    border-bottom: 2px solid #c7c7c7;
+    transition: all 0.1s ease-in;
   }
-  `;
 
-  const StyledButtonIcon = styled.button`
-    display: inline-block;
+  &:active {
+    transform: translateY(4px);
+    border-bottom-width: 2px;
+    box-shadow: none;
+  }
+`;
+
+const StyledButtonIcon = styled.button`
+  display: inline-block;
+  box-shadow: 0 3px 0px #c7c7c7;
+
+  &:hover {
     box-shadow: 0 3px 0px #c7c7c7;
+    border-bottom: 2px solid #c7c7c7;
+    transition: all 0.1s ease-in;
+  }
 
-    &:hover {
-      box-shadow: 0 3px 0px #c7c7c7;
-      border-bottom: 2px solid #c7c7c7;
-      transition: all 0.1s ease-in;
-    }
+  &:active {
+    transform: translateY(4px);
+    border-bottom-width: 2px;
+    box-shadow: none;
+  }
+`;
 
-    &:active {
-      transform: translateY(4px);
-      border-bottom-width: 2px;
-      box-shadow: none;
-    }
-  `;
-
+/**
+ * @author bell
+ * @param void - clickHandler
+ * @param boolean - isText
+ * @param JSX.Element - children
+ * @returns JSX.Element
+ * @description ex1) 텍스트 버튼인 경우 <Button isText={false} children={<Text message: blabla" />} />
+ * @description ex2) 텍스트 버튼인 경우 <Button isText={true} children={<Icon />} />
+ */
+const Button = ({ clickHandler, isText, children }: PropTypes): JSX.Element => {
   return isText ? (
     <StyledButtonText
       className="bg-gray-200 hover:bg-gray-300 hover:text-white font-DungGeunMo py-2 px-4 rounded-lg"
