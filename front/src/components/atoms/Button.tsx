@@ -43,13 +43,20 @@ const StyledButtonIcon = styled.button`
 `;
 
 /**
+ *
+ * @example
+ * // 아이콘 버튼인 경우
+ * <Button isText={false}>
+ *   <Text message: {"blabla"} >
+ * </Button>
+ *
+ * @example
+ * // 텍스트 버튼인 경우
+ * <Button isText={true}>
+ *   <Icon />
+ * </Button>
+ *
  * @author bell
- * @param void - clickHandler
- * @param boolean - isText
- * @param JSX.Element - children
- * @returns JSX.Element
- * @description ex1) 텍스트 버튼인 경우 <Button isText={false} children={<Text message: blabla" />} />
- * @description ex2) 텍스트 버튼인 경우 <Button isText={true} children={<Icon />} />
  */
 const Button = ({ clickHandler, isText, children }: PropTypes): JSX.Element => {
   return isText ? (

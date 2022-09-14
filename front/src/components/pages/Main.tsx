@@ -22,7 +22,6 @@ const Main = () => {
   return (
     <>
       <div>main</div>
-      <Button isText={false} children={<StarIcon />} />
     </>
   );
 };
