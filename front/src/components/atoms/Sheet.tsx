@@ -1,9 +1,8 @@
 import tw from 'twin.macro';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 
 interface SheetInfo {
-  children: JSX.Element | string;
+  children: JSX.Element;
   transparent: boolean;
 }
 
@@ -21,10 +20,6 @@ const Sheet = ({ children, transparent }: SheetInfo) => {
   return <SheetContainer transparent={transparent}>{children}</SheetContainer>;
 };
 
-Sheet.propTypes = {
-  children: PropTypes.node.isRequired,
-  transparent: PropTypes.bool,
-};
 Sheet.defaultProps = {
   transparent: false,
 };
