@@ -1,0 +1,42 @@
+server:
+  port: 8000
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+            - Method=GET,POST
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+
+        - id: festival-service
+          uri: lb://FESTIVAL-SERVICE
+          predicates:
+            - Path=/festival-service/**
+            - Method=GET,POST
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+
+        - id: recomm-service
+          uri: lb://RECOMM-SERVICE
+          predicates:
+            - Path=/recomm-service/**
+            - Method=GET,POST
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
