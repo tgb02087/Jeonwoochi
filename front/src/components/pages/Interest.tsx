@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from '../atoms/Image';
 import styled from 'styled-components';
+import Input from '../atoms/Input';
 
 const StyledInterest = styled.div`
   width: 10rem;
@@ -10,14 +11,30 @@ const StyledInterest = styled.div`
 `;
 
 const Interest = () => {
+  // const [inputs, setInputs] = useState({
+  //   name: '',
+  //   start: '',
+  //   end: '',
+  //   host: '',
+  //   image: '',
+  // });
   return (
-    <StyledInterest>
-      <Image
-        src="https://pbs.twimg.com/media/FVbDNd0VEAAKmOC.jpg"
-        alt="bb"
-        radius={1}
+    <>
+      <StyledInterest>
+        <Image
+          src="https://pbs.twimg.com/media/FVbDNd0VEAAKmOC.jpg"
+          alt="bb"
+          radius={1}
+        />
+      </StyledInterest>
+      <Input
+        type="text"
+        placeholder="fush fush"
+        accept="image/*"
+        name="ya"
+        // setValue={setInputs}
       />
-    </StyledInterest>
+    </>
   );
 };
 
