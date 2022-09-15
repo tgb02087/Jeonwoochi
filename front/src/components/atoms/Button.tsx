@@ -58,6 +58,7 @@ const StyledButtonIcon = styled.button`
  *    {<Text message="아이폰 13" />}
  * </Button>
  *
+ * @author bell
  */
 const Button = ({
   clickHandler,

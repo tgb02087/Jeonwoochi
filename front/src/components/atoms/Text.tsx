@@ -21,6 +21,7 @@ const StyledText = styled.div`
  * @example
  * <Test message={"나 아이폰 샀음"}/>
  *
+ * @author bell
  */
 
 const Text = ({ message, clickHandler, color }: PropTypes) => {
