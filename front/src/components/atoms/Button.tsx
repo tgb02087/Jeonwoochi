@@ -63,13 +63,9 @@ const StyledButtonIcon = styled.button`
  */
 const Button = ({ clickHandler, isText, children }: PropTypes): JSX.Element => {
   return isText ? (
-    <StyledButtonText className="" onClick={clickHandler}>
-      {children}
-    </StyledButtonText>
+    <StyledButtonText onClick={clickHandler}>{children}</StyledButtonText>
   ) : (
-    <StyledButtonIcon className="" onClick={clickHandler}>
-      {children}
-    </StyledButtonIcon>
+    <StyledButtonIcon onClick={clickHandler}>{children}</StyledButtonIcon>
   );
 };
 

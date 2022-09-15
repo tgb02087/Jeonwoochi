@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import tw from 'twin.macro';
 
 interface PropTypes {
-  clickHandler?: React.MouseEventHandler<HTMLButtonElement>;
+  clickHandler?: React.MouseEventHandler<HTMLDivElement>;
   message: string;
 }
 
@@ -21,8 +21,8 @@ const StyledText = styled.div`
  *
  */
 
-const Text = ({ message }: PropTypes) => {
-  return <StyledText>{message}</StyledText>;
+const Text = ({ message, clickHandler }: PropTypes) => {
+  return <StyledText onClick={clickHandler}>{message}</StyledText>;
 };
 
 export default Text;
