@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
-import Image from '../atoms/Image';
+import React from 'react';
+import Image from '../../atoms/Image';
 import styled from 'styled-components';
-import Input from '../atoms/Input';
-import Selected from './Interest/Selected';
-import tw from 'twin.macro';
+import Input from '../../atoms/Input';
+import Selected from './Selected';
 
-const StyledInterest = styled.div``;
-const InterestCard = styled.div`
+const StyledInterest = styled.div`
   width: 10rem;
   height: 10rem;
   border: 1px solid black;
   border-radius: 1rem;
-  ${tw`relative`}
 `;
 
 const Interest = () => {
@@ -22,18 +19,16 @@ const Interest = () => {
   //   host: '',
   //   image: '',
   // });
-
-  // const [isClicked, setIsClicked] = useState(new Array(5).fill(false));
   return (
-    <StyledInterest>
-      <InterestCard>
-        <Selected radius={1} />
+    <>
+      <StyledInterest>
+        <Selected></Selected>
         <Image
           src="https://pbs.twimg.com/media/FVbDNd0VEAAKmOC.jpg"
           alt="bb"
           radius={1}
         />
-      </InterestCard>
+      </StyledInterest>
       <Input
         type="text"
         placeholder="fush fush"
@@ -41,7 +36,7 @@ const Interest = () => {
         name="ya"
         // setValue={setInputs}
       />
-    </StyledInterest>
+    </>
   );
 };
 
