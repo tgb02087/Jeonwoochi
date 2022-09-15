@@ -9,40 +9,34 @@ interface PropTypes {
 }
 
 const StyledButtonText = styled.button`
-  ${tw`bg-gray-200 hover:bg-gray-300 hover:text-white py-2 px-4 rounded-lg`}
+  ${tw`inline bg-gray-200 hover:bg-gray-300 hover:text-white py-2 px-4 rounded-lg`}
 
-  display: inline-block;
-  box-shadow: 0 3px 0px #c7c7c7;
+  border-bottom: 4px solid #00000044;
 
   &:hover {
-    box-shadow: 0 3px 0px #c7c7c7;
-    border-bottom: 2px solid #c7c7c7;
-    transition: all 0.1s ease-in;
+    border-bottom: 5px solid #00000044;
+    transition: all 0.1s;
   }
 
   &:active {
-    transform: translateY(4px);
     border-bottom-width: 2px;
-    box-shadow: none;
+    transition: all 0.1s;
   }
 `;
 
 const StyledButtonIcon = styled.button`
-  ${tw`bg-gray-200 hover:bg-gray-300 hover:text-white py-2 px-2 rounded-full`}
+  ${tw`inline bg-gray-200 hover:bg-gray-300 hover:text-white py-2 px-2 rounded-full`}
 
-  display: inline-block;
-  box-shadow: 0 3px 0px #c7c7c7;
+  border-bottom: 4px solid #00000044;
 
   &:hover {
-    box-shadow: 0 3px 0px #c7c7c7;
-    border-bottom: 2px solid #c7c7c7;
-    transition: all 0.1s ease-in;
+    border-bottom: 5px solid #00000044;
+    transition: all 0.1s;
   }
 
   &:active {
-    transform: translateY(4px);
     border-bottom-width: 2px;
-    box-shadow: none;
+    transition: all 0.1s;
   }
 `;
 
