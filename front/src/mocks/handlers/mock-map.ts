@@ -16,6 +16,12 @@ export interface MapData {
   lng: number;
 }
 
+/**
+ * @description
+ * mock-server : map
+ *
+ * @author bell
+ */
 const mapData: MapData[] = [
   {
     festivalId: 1,
