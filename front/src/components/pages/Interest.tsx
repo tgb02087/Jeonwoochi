@@ -3,6 +3,7 @@ import Image from '../atoms/Image';
 import styled from 'styled-components';
 import Input from '../atoms/Input';
 import Selected from './Interest/Selected';
+import tw from 'twin.macro';
 
 const StyledInterest = styled.div``;
 const InterestCard = styled.div`
@@ -10,7 +11,7 @@ const InterestCard = styled.div`
   height: 10rem;
   border: 1px solid black;
   border-radius: 1rem;
-  position: relative;
+  ${tw`relative`}
 `;
 
 const Interest = () => {

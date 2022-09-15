@@ -1,18 +1,18 @@
 import styled, { css } from 'styled-components';
-import Check from '../../../Icons/Check';
+import Check from '../../../icons/Check';
+import tw from 'twin.macro';
 
 interface PropTypes {
   radius?: number;
 }
 const StyledSelected = styled.div<PropTypes>`
-  ${({ theme }) => theme.flex.rowCenter}
   ${({ radius }) => css`
     border-radius: ${radius}rem;
   `}
+  ${tw`flex justify-center items-center absolute`}
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 88, 0.7);
-  position: absolute;
 `;
 /**
  * this component cover Interest component when user check it
