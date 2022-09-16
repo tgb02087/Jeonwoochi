@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class FestivalTypeEntity {
+public class FestivalType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "festival_type_id")
@@ -23,13 +23,13 @@ public class FestivalTypeEntity {
     private String name;
 
     @OneToMany(mappedBy = "festivalType", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FestivalEntity> festivals = new ArrayList<>();
+    private List<Festival> festivals = new ArrayList<>();
 
     @OneToMany(mappedBy = "festivalType", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FestivalFormEntity> festivalForms = new ArrayList<>();
+    private List<FestivalForm> festivalForms = new ArrayList<>();
 
-    public static FestivalTypeEntity create(FestivalTypeCreateRequest request){
-        FestivalTypeEntity festivalType = new FestivalTypeEntity();
+    public static FestivalType create(FestivalTypeCreateRequest request){
+        FestivalType festivalType = new FestivalType();
         festivalType.name = request.getName();
         return festivalType;
     }

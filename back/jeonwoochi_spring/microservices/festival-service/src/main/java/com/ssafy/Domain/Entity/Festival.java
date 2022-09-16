@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class FestivalEntity {
+public class Festival {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "festival_id")
@@ -45,11 +45,11 @@ public class FestivalEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "festival_type_id")
-    private FestivalTypeEntity festivalType;
+    private FestivalType festivalType;
 
 
-    public static FestivalEntity create(FestivalCreateRequest request){
-        FestivalEntity festival = new FestivalEntity();
+    public static Festival create(FestivalCreateRequest request){
+        Festival festival = new Festival();
         festival.name = request.getName();
         festival.startDate = request.getStartDate();
         festival.finishDate = request.getFinishDate();

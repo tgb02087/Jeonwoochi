@@ -1,7 +1,7 @@
 package com.ssafy.Dto;
 
 import com.ssafy.Domain.Entity.Type.FestivalWayType;
-import com.ssafy.Domain.Entity.FestivalEntity;
+import com.ssafy.Domain.Entity.Festival;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,7 +37,7 @@ public class FestivalResponse {
 
     private Float lng;
 
-    public static FestivalResponse response(FestivalEntity festival){
+    public static FestivalResponse response(Festival festival){
         return new FestivalResponse(
                 festival.getId(),
                 festival.getName(),

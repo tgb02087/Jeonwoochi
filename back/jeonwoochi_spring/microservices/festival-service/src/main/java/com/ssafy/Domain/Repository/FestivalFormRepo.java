@@ -1,7 +1,10 @@
 package com.ssafy.Domain.Repository;
 
-import com.ssafy.Domain.Entity.FestivalFormEntity;
+import com.ssafy.Domain.Entity.FestivalForm;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface FestivalFormRepo extends JpaRepository<FestivalFormEntity, Long> {
+import java.util.List;
+
+public interface FestivalFormRepo extends JpaRepository<FestivalForm, Long> {
+    //List<FestivalForm> findByUser(User user)
 }

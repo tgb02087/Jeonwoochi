@@ -1,6 +1,6 @@
 package com.ssafy.Service;
 
-import com.ssafy.Domain.Entity.FestivalEntity;
+import com.ssafy.Domain.Entity.Festival;
 import com.ssafy.Domain.Repository.FestivalRepo;
 import com.ssafy.Dto.FestivalCreateRequest;
 import com.ssafy.Dto.FestivalResponse;
@@ -22,23 +22,25 @@ public class FestivalServiceImpl implements FestivalService {
 
     private final FestivalRepo festivalRepo;
 
+    //축제 추가 (승인) [어드민]
     @Override
     @Transactional
     public void createFestival(List<FestivalCreateRequest> requests) {
         requests.forEach(request -> {
-            FestivalEntity festival = FestivalEntity.create(request);
+            Festival festival = Festival.create(request);
             festivalRepo.save(festival);
         });
     }
 
+    //축제 상세 정보
     @Override
     @Transactional
     public FestivalResponse findFestivalDetail(Long festivalId) {
-        FestivalEntity festival = festivalRepo.findById(festivalId)
+        Festival festival = festivalRepo.findById(festivalId)
                 .orElseThrow(()->new NotFoundException(FESTIVAL_NOT_FOUND));
         return FestivalResponse.response(festival);
     }
-
+    //축제 전체 리스트
     @Override
     @Transactional
     public List<FestivalResponse> findFestivalListAll() {
@@ -48,20 +50,22 @@ public class FestivalServiceImpl implements FestivalService {
         return festivals;
     }
 
+    //축제 수정
     @Override
     @Transactional
     public FestivalResponse updateFestival(FestivalUpdateRequest request) {
-        FestivalEntity festival = festivalRepo.findById(request.getId())
+        Festival festival = festivalRepo.findById(request.getId())
                 .orElseThrow(()->new NotFoundException(FESTIVAL_NOT_FOUND));
 
         festival.update(request);
         return FestivalResponse.response(festival);
     }
 
+    // 축제 삭제
     @Override
     @Transactional
-    public void festivalDelete(Long festivalId) {
-        FestivalEntity festival = festivalRepo.findById(festivalId)
+    public void deleteFestival(Long festivalId) {
+        Festival festival = festivalRepo.findById(festivalId)
                 .orElseThrow(()->new NotFoundException(FESTIVAL_NOT_FOUND));
         festivalRepo.delete(festival);
     }

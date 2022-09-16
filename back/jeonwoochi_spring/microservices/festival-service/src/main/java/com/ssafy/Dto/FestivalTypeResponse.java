@@ -1,6 +1,6 @@
 package com.ssafy.Dto;
 
-import com.ssafy.Domain.Entity.FestivalTypeEntity;
+import com.ssafy.Domain.Entity.FestivalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ public class FestivalTypeResponse {
 
     private String name;
 
-    public static FestivalTypeResponse response(FestivalTypeEntity festivalType){
+    public static FestivalTypeResponse response(FestivalType festivalType){
         return new FestivalTypeResponse(
                 festivalType.getId(),
                 festivalType.getName()

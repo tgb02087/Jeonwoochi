@@ -16,6 +16,7 @@ public interface FestivalService {
     //축제 수정
     FestivalResponse updateFestival(FestivalUpdateRequest request);
     //축제 삭제
-    void festivalDelete(Long festivalId);
+    void deleteFestival(Long festivalId);
+
 
 }
