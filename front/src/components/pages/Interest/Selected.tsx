@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-// import Check from '../../../icons/Check';
+import Check from '../../../icons/Check';
 import tw from 'twin.macro';
 
 interface PropTypes {
@@ -14,6 +14,10 @@ const StyledSelected = styled.div<PropTypes>`
   height: 100%;
   background-color: rgba(0, 0, 88, 0.7);
 `;
+const StyledCheck = styled.div`
+  top: 30%;
+  ${tw`absolute`}
+`;
 /**
  * this component cover Interest component when user check it
  * this is a component which is blue colored box with checked Icon.
@@ -21,7 +25,13 @@ const StyledSelected = styled.div<PropTypes>`
  * @author jojo
  */
 const Selected = ({ radius }: PropTypes) => {
-  return <StyledSelected radius={radius}>{/* <Check /> */}</StyledSelected>;
+  return (
+    <StyledSelected radius={radius}>
+      <StyledCheck>
+        <Check />
+      </StyledCheck>
+    </StyledSelected>
+  );
 };
 
 export default Selected;

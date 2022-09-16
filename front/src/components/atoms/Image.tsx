@@ -1,10 +1,10 @@
-import React from 'react';
 import styled, { css } from 'styled-components';
 
 interface Info {
   src: string;
   alt: string;
   radius?: number;
+  no?: number;
 }
 const StyledImage = styled.img<Info>`
   width: 100%;
@@ -17,8 +17,8 @@ const StyledImage = styled.img<Info>`
 // Image atom component
 // required props: src, alt
 // optional props: radius (rem)
-const Image = ({ src, alt, radius }: Info) => {
-  return <StyledImage src={src} alt={alt} radius={radius} />;
+const Image = ({ src, alt, radius, no }: Info) => {
+  return <StyledImage src={src} alt={alt} radius={radius} no={no} />;
 };
 
 export default Image;
