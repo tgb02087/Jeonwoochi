@@ -15,10 +15,6 @@ declare global {
   }
 }
 
-const StyledKakaoMap = styled.div`
-  ${tw`h-full`}
-`;
-
 /**
  * @description
  * lat, lng 기준으로 맵 API 렌더링
@@ -30,7 +26,6 @@ const KakaoMap = ({ coord }: PropTypes) => {
 
   useEffect(() => {
     const container = document.getElementById('map');
-    console.log(window.kakao);
     const options = {
       center: new window.kakao.maps.LatLng(lat, lng),
       // 서버 추천 데이터 범위 설정에 맞게 재설정할 예정
@@ -38,10 +33,10 @@ const KakaoMap = ({ coord }: PropTypes) => {
       level: 3,
     };
 
-    const map = new window.kakao.maps.Map(container, options);
+    new window.kakao.maps.Map(container, options);
   }, []);
 
-  return <StyledKakaoMap id="map" />;
+  return <div id="map" style={{ height: '100vh' }}></div>;
 };
 
 export default KakaoMap;
