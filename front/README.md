@@ -57,3 +57,10 @@
 + `Button` 스타일 리팩토링
 + `Button`, `Text` 컴포넌트의 색상을 정할 수 있는 `color` prop 추가
 + 각 소셜 로그인 버튼의 디자인 변경
+
+
+## 220916
+### 종현
++ kakao map API
+  + 초기 기본 셋팅
+  + lat,lng 기반 map 렌더링
