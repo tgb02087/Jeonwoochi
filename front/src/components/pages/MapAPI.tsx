@@ -1,10 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { MapData } from '../../mocks/handlers/mock-map';
+import { MapData } from '../../mocks/handlers/festival_list';
 import axios, { AxiosError } from 'axios';
 import KakaoMap from '../atoms/KakaoMap';
 
 import { useParams } from 'react-router-dom';
+
+import styled from 'styled-components';
+import tw from 'twin.macro';
+
+const StyledMapAPI = styled.div`
+  ${tw`h-screen`}
+`;
 
 /**
  * @description
@@ -16,11 +23,12 @@ import { useParams } from 'react-router-dom';
  */
 const MapAPI = () => {
   const { id } = useParams<{ id?: string | undefined }>();
+
   const MAPIDX = id && parseInt(id);
   const { isLoading, error, data } = useQuery<MapData[], AxiosError>(
     ['Maps'],
     async () => {
-      const response = await axios.get('/festivalData');
+      const response = await axios.get('/festival-service/list');
       return response.data;
     },
   );
@@ -34,7 +42,7 @@ const MapAPI = () => {
   };
 
   return (
-    <>
+    <StyledMapAPI>
       {isLoading || !MAPIDX ? (
         'Loading...'
       ) : error ? (
@@ -44,7 +52,7 @@ const MapAPI = () => {
       ) : (
         <div>somthing went wrong!</div>
       )}
-    </>
+    </StyledMapAPI>
   );
 };
 

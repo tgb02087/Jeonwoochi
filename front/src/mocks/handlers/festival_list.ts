@@ -56,6 +56,6 @@ const mapData: MapData[] = [
   },
 ];
 
-export default rest.get('/festivalData', (req, res, ctx) => {
+export default rest.get('/festival-service/list', (req, res, ctx) => {
   return res(ctx.status(200), ctx.json(mapData));
 });
