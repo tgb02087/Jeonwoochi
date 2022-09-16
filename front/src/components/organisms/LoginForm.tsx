@@ -62,7 +62,10 @@ const LoginForm = () => {
           <Button isText color="#fee500" clickHandler={kakaoLoginHandler}>
             <>
               <IconImageContainer>
-                <Image src="/images/kakao-login-logo.png" alt="Kakao logo" />
+                <Image
+                  src="/images/login/kakao-login-logo.png"
+                  alt="Kakao logo"
+                />
               </IconImageContainer>
               <Text message="카카오로 로그인하기" color="#000000d9" />
             </>
@@ -72,7 +75,10 @@ const LoginForm = () => {
           <Button isText color="#ffffff" clickHandler={googleLoginHandler}>
             <>
               <IconImageContainer>
-                <Image src="/images/google-login-logo.png" alt="Google logo" />
+                <Image
+                  src="/images/login/google-login-logo.png"
+                  alt="Google logo"
+                />
               </IconImageContainer>
               <Text message="구글로 로그인하기" />
             </>
