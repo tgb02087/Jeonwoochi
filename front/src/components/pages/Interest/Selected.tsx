@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import Check from '../../../icons/Check';
+// import Check from '../../../icons/Check';
 import tw from 'twin.macro';
 
 interface PropTypes {
@@ -21,11 +21,7 @@ const StyledSelected = styled.div<PropTypes>`
  * @author jojo
  */
 const Selected = ({ radius }: PropTypes) => {
-  return (
-    <StyledSelected radius={radius}>
-      <Check />
-    </StyledSelected>
-  );
+  return <StyledSelected radius={radius}>{/* <Check /> */}</StyledSelected>;
 };
 
 export default Selected;
