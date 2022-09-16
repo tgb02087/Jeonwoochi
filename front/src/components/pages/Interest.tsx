@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Input from '../atoms/Input';
 import Selected from './Interest/Selected';
 import tw from 'twin.macro';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 const StyledInterest = styled.div``;
 const InterestCard = styled.div`
@@ -23,7 +25,23 @@ const Interest = () => {
   //   image: '',
   // });
 
-  // const [isClicked, setIsClicked] = useState(new Array(5).fill(false));
+  // const [isClicked, setIsClicked] = useState(new Array(20).fill(false));
+  const { data, isLoading, isError } = useQuery(
+    ['answers'],
+    async () => {
+      const {
+        data: { answer },
+      } = await axios({
+        method: 'GET',
+        url: '/interest-service/answer',
+      });
+      return answer;
+    },
+    {},
+  );
+  if (isLoading) return <div>Loading...</div>;
+  console.log(data);
+
   return (
     <StyledInterest>
       <InterestCard>
