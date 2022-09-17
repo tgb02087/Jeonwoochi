@@ -1,41 +1,55 @@
-import React from 'react';
-import Image from '../../atoms/Image';
+import { useState } from 'react';
 import styled from 'styled-components';
-import Input from '../../atoms/Input';
-import Selected from './Selected';
+import tw from 'twin.macro';
+import { useQuery } from '@tanstack/react-query';
+import getInterestAnswers from './getInterestAnswers';
+import InterestCards from '../../organisms/InterestCards';
 
-const StyledInterest = styled.div`
-  width: 10rem;
-  height: 10rem;
-  border: 1px solid black;
-  border-radius: 1rem;
-`;
+const StyledInterest = styled.div``;
+// const InterestCard = styled.div`
+//   width: 10rem;
+//   height: 10rem;
+//   border: 1px solid black;
+//   border-radius: 1rem;
+//   ${tw`relative`}
+// `;
 
+/**
+ * 관심사 페이지 컴포넌트입니다.
+ * 관심사 답안 데이터를 fetch하고 클릭상태배열과 현재 페이지 상태를 선언합니다.
+ * 상태들을 InterestCards 컴포넌트에 내려 렌더링하게 합니다.
+ *
+ * @author: jojo
+ */
 const Interest = () => {
-  // const [inputs, setInputs] = useState({
-  //   name: '',
-  //   start: '',
-  //   end: '',
-  //   host: '',
-  //   image: '',
-  // });
+  const { data, isLoading, isError } = useQuery(
+    ['answers'],
+    getInterestAnswers,
+    {},
+  );
+  // 이렇게 하면 data가 undefined일 때 len이 0이라 clickStates가 빈 배열이 됨.
+  // loading이 끝나서 data 값이 바뀌어도 clickStates는 바뀌지 않음... 어떻게 바꾸지
+  // const len: number = data ? data.length * data[0].length : 0;
+  const len = 20;
+  const [clickStates, setClickStates] = useState(new Array(len).fill(false));
+  const [page, setPage] = useState(0);
+
   return (
     <>
-      <StyledInterest>
-        <Selected></Selected>
-        <Image
-          src="https://pbs.twimg.com/media/FVbDNd0VEAAKmOC.jpg"
-          alt="bb"
-          radius={1}
-        />
-      </StyledInterest>
-      <Input
-        type="text"
-        placeholder="fush fush"
-        accept="image/*"
-        name="ya"
-        // setValue={setInputs}
-      />
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : isError ? (
+        <div>Error...</div>
+      ) : (
+        <StyledInterest>
+          <InterestCards
+            idx={page}
+            answers={data}
+            clickStates={clickStates}
+            setClickStates={setClickStates}
+          />
+        </StyledInterest>
+      )}
     </>
   );
 };

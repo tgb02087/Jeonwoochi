@@ -1,31 +1,52 @@
+import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
-import Image from '../atoms/Image';
-import Selected from '../pages/Interest/Selected';
+import InterestCard from './InterestCard';
 
 interface AnswerPropTypes {
-  id: number;
+  no: number;
   content: string;
   src: string;
 }
 interface PropTypes {
   idx: number;
   answers: Array<Array<AnswerPropTypes>>;
+  clickStates: Array<boolean>;
+  setClickStates: Dispatch<SetStateAction<Array<boolean>>>;
 }
-const StyledInterestCards = styled.div``;
+const StyledInterestCards = styled.div`
+  ${tw`flex justify-evenly`}
+  width: 100%;
+`;
 
-const InterestCards = ({ idx, answers }: PropTypes) => {
+/**
+ * answers 배열과 현재 페이지 idx를 받아 map으로 해당하는 answer의 값들을
+ * 각 InterestCard에 내려보내 주는 컴포넌트입니다.
+ *
+ * @author: jojo
+ */
+const InterestCards = ({
+  idx,
+  answers,
+  clickStates,
+  setClickStates,
+}: PropTypes) => {
   return (
     <StyledInterestCards>
-      {/* answers[idx].map(({id, content, src}: AnswerPropTypes, aIdx: number) => {
-        <Selected radius={1} />
-        <Image
-          src={src}
-          alt="content"
-          radius={1}
-          id={id}
-        />
-    }); */}
+      {answers[idx].map(
+        ({ no, content, src }: AnswerPropTypes, sIdx: number) => (
+          <InterestCard
+            no={no}
+            content={content}
+            src={src}
+            idx={idx}
+            sIdx={sIdx}
+            clickStates={clickStates}
+            setClickStates={setClickStates}
+            key={no + content + src}
+          />
+        ),
+      )}
     </StyledInterestCards>
   );
 };
