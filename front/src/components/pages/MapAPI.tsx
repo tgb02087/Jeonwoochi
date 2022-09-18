@@ -1,15 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
+import { useGetFoodDataAfterClick } from './useGetFoodDataAfterClick';
 
 import { MapData } from '../../mocks/handlers/festival_list';
 import axios, { AxiosError } from 'axios';
-import KakaoMap from '../atoms/KakaoMap';
 
 import { useParams } from 'react-router-dom';
 
 import styled from 'styled-components';
 import tw from 'twin.macro';
-import Button from '../atoms/Button';
-import Text from '../atoms/Text';
+import FestivalMap from '../organisms/FestivalMap';
 
 const MapAPIContainer = styled.div`
   ${tw`flex flex-row`}
@@ -27,11 +26,6 @@ const StyledMapAPI = styled.div`
   ${tw`w-full h-screen`}
 `;
 
-// 맛집 추천 position 설정용 STMP
-const PositionButton = styled.button`
-  ${tw`absolute bottom-2 right-2 z-10`}
-`;
-
 /**
  * @description
  * 동적 라우팅 id 값을 읽어, atoms의 kakaoMap 컴포넌트에
@@ -44,16 +38,19 @@ const MapAPI = () => {
   const { id } = useParams<{ id?: string | undefined }>();
 
   const MAPIDX = id && parseInt(id);
-  const { isLoading, error, data } = useQuery<MapData[], AxiosError>(
-    ['Maps'],
-    async () => {
-      const response = await axios.get('/festival-service/list');
-      return response.data;
-    },
-  );
+  // 축제 좌표 불러오기
+  const mapData = useQuery<MapData[], AxiosError>(['Maps'], async () => {
+    const response = await axios.get('/festival-service/list');
+    return response.data;
+  });
+
+  // 맛집 데이터 불러오기
+  const restaurantData = useGetFoodDataAfterClick();
+
+  const clickFoodButtonHandler = () => restaurantData.refetch();
 
   const getCoordHandler = (idx: number) => {
-    const result = data!.filter(d => d.festivalId === idx);
+    const result = mapData.data!.filter(d => d.festivalId === idx);
     return {
       lat: result[0].lat,
       lng: result[0].lng,
@@ -66,18 +63,16 @@ const MapAPI = () => {
         <div>축제 상세 설명 들어오는 곳</div>
       </StyledFestivalDetail>
       <StyledMapAPI>
-        {isLoading || !MAPIDX ? (
+        {mapData.isLoading || !MAPIDX ? (
           'Loading...'
-        ) : error ? (
-          <div>error: {error.message}</div>
-        ) : data ? (
+        ) : mapData.error ? (
+          <div>error: {mapData.error.message}</div>
+        ) : mapData.data ? (
           <>
-            <PositionButton>
-              <Button isText={true}>
-                <Text message={'맛집 추천'} />
-              </Button>
-            </PositionButton>
-            <KakaoMap coord={getCoordHandler(MAPIDX)} />
+            <FestivalMap
+              clickHandler={clickFoodButtonHandler}
+              coord={getCoordHandler(MAPIDX)}
+            />
           </>
         ) : (
           <div>somthing went wrong!</div>
