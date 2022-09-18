@@ -4,8 +4,12 @@ import tw from 'twin.macro';
 import { useQuery } from '@tanstack/react-query';
 import getInterestAnswers from './getInterestAnswers';
 import InterestCards from '../../organisms/InterestCards';
+import PageButtons from '../../organisms/PageButtons';
 
-const StyledInterest = styled.div``;
+const StyledInterest = styled.div`
+  ${tw`flex flex-col justify-evenly`}
+  height: 30rem;
+`;
 // const InterestCard = styled.div`
 //   width: 10rem;
 //   height: 10rem;
@@ -48,6 +52,7 @@ const Interest = () => {
             clickStates={clickStates}
             setClickStates={setClickStates}
           />
+          <PageButtons totalPage={5} page={page} setPage={setPage} />
         </StyledInterest>
       )}
     </>
