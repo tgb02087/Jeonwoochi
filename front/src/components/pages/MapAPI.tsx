@@ -8,6 +8,8 @@ import { useParams } from 'react-router-dom';
 
 import styled from 'styled-components';
 import tw from 'twin.macro';
+import Button from '../atoms/Button';
+import Text from '../atoms/Text';
 
 const MapAPIContainer = styled.div`
   ${tw`flex flex-row`}
@@ -20,8 +22,14 @@ const StyledFestivalDetail = styled.div`
   ${tw`w-96`}
 `;
 
+// MapAPI 사이즈용 STMP
 const StyledMapAPI = styled.div`
   ${tw`w-full h-screen`}
+`;
+
+// 맛집 추천 position 설정용 STMP
+const PositionButton = styled.button`
+  ${tw`absolute bottom-2 right-2 z-10`}
 `;
 
 /**
@@ -63,7 +71,14 @@ const MapAPI = () => {
         ) : error ? (
           <div>error: {error.message}</div>
         ) : data ? (
-          <KakaoMap coord={getCoordHandler(MAPIDX)} />
+          <>
+            <PositionButton>
+              <Button isText={true}>
+                <Text message={'맛집 추천'} />
+              </Button>
+            </PositionButton>
+            <KakaoMap coord={getCoordHandler(MAPIDX)} />
+          </>
         ) : (
           <div>somthing went wrong!</div>
         )}
