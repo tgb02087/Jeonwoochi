@@ -1,8 +1,5 @@
 server:
   port: 8000
-  servlet:
-    # TODO : CONTEXT-PATH가 해당 서비스명과 같은지 확인
-    context-path: /api
 eureka:
   client:
     fetch-registry: true
