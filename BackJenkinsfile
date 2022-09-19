@@ -34,6 +34,9 @@ pipeline{
 
     }
     stages {
+        stage('CD back'){
+                sh 'cd back'
+        }
 		stage('Build Gradle') {
             steps {
                 //sh 'cp ./back/jeonwoochi_spring/settings.gradle ./settings.gradle'
@@ -44,7 +47,6 @@ pipeline{
                 //sh 'cp -r ./back/jeonwoochi_spring/spring-cloud ./spring-cloud'
                 //sh 'cp ./back/jeonwoochi_spring/gradlew ./gradlew'
 
-                sh 'cd /'
                 sh 'pwd'
                 sh 'ls -l'
 
