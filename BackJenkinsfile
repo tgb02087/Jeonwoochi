@@ -34,18 +34,11 @@ pipeline{
 
     }
     stages {
-				stage('Build Gradle') {
+		stage('Build Gradle') {
             steps {
             	// gralew이 있어야됨. git clone해서 project를 가져옴.
-                sh 'COPY gradlew .'
-                sh 'COPY gradle gradle'
-                sh 'COPY build.gradle .'
-                sh 'COPY settings.gradle .'
-                sh 'COPY microservices microservices'
-                sh 'COPY spring-cloud spring-cloud'
-
-                sh 'chmod +x gradlew'
-                sh  './gradlew bootJar'
+                sh 'chmod +x ./back/jeonwoochi_spring/gradlew'
+                sh  './back/jeonwoochi_spring/gradlew bootJar'
             }
         }
         stage('Docker Image Build') {
