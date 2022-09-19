@@ -41,6 +41,7 @@ pipeline{
                 sh 'cp ./back/jeonwoochi_spring/build.gradle ./build.gradle'
                 
                 sh 'chmod +x ./back/jeonwoochi_spring/gradlew'
+                sh './back/jeonwoochi_spring/gradlew clean build'
                 sh './back/jeonwoochi_spring/gradlew bootJar'
             }
         }
