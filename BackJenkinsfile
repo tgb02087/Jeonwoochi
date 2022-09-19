@@ -37,6 +37,7 @@ pipeline{
 		stage('Build Gradle') {
             steps {
             	// gralew이 있어야됨. git clone해서 project를 가져옴.
+                sh 'ls -l'
                 sh 'chmod +x ./back/jeonwoochi_spring/gradlew'
                 sh  './back/jeonwoochi_spring/gradlew bootJar'
             }
