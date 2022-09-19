@@ -37,11 +37,12 @@ pipeline{
 				stage('Build Gradle') {
             steps {
             	// gralew이 있어야됨. git clone해서 project를 가져옴.
-                COPY gradlew .
-                COPY gradle gradle
-                COPY build.gradle .
-                COPY settings.gradle .
-                COPY src src
+                sh 'COPY gradlew .'
+                sh 'COPY gradle gradle'
+                sh 'COPY build.gradle .'
+                sh 'COPY settings.gradle .'
+                sh 'COPY microservices microservices'
+                sh 'COPY spring-cloud spring-cloud'
 
                 sh 'chmod +x gradlew'
                 sh  './gradlew bootJar'
