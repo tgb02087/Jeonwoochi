@@ -36,13 +36,15 @@ pipeline{
     stages {
 		stage('Build Gradle') {
             steps {
-            	// gralew이 있어야됨. git clone해서 project를 가져옴.
                 sh 'cp ./back/jeonwoochi_spring/settings.gradle ./settings.gradle'
                 sh 'cp ./back/jeonwoochi_spring/build.gradle ./build.gradle'
-                
-                sh 'chmod +x ./back/jeonwoochi_spring/gradlew'
-                sh './back/jeonwoochi_spring/gradlew clean build'
-                sh './back/jeonwoochi_spring/gradlew bootJar'
+                sh 'cp ./back/jeonwoochi_spring/common ./common'
+                sh 'cp ./back/jeonwoochi_spring/microservices ./microservices'
+                sh 'cp ./back/jeonwoochi_spring/spring-cloud ./spring-cloud'
+                sh 'cp ./back/jeonwoochi_spring/gradlew ./gradlew'
+
+                sh 'chmod +x gradlew'
+                sh './gradlew bootJar'
             }
         }
         stage('Docker Image Build') {
