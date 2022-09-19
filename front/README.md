@@ -6,6 +6,9 @@
 ### 성찬
 + ESLint + Prettier 적용
 
+### 성훈
++ ESLint + Prettier + git cz 적용
+
 ## 220913
 ### 종현
 + 깃랩 머지 설정
@@ -19,6 +22,12 @@
 + styled-components, Tailwind CSS 설치
   + styled-components 타입 정의 라이브러리 설치
 + styled-components 전역 스타일을 관리할 수 있는 `ThemeProvider` 세팅
+
+### 성훈
++ 프로젝트 라우팅 설정
+  + 페이지 폴더 구조 생성
++ 프로젝트 MSW 설정
+  + test mock file 생성
 
 ## 220914
 ### 종현
@@ -37,6 +46,12 @@
 + `Sheet` 컴포넌트 구현
   + 반투명 여부를 결정하는 `transparent` prop 추가
   + 추후에 패딩 너비를 정할 수 있는 `size` prop 추가 예정
+
+### 성훈
++ 공통 컴포넌트 - Image
+  + border-radius 줄 수 있는 `radius` prop 추가
++ 공통 컴포넌트 - Input
++ styled-component -> `tw.macro`로 변경
 
 ## 220915
 ### 종현
@@ -58,9 +73,17 @@
 + `Button`, `Text` 컴포넌트의 색상을 정할 수 있는 `color` prop 추가
 + 각 소셜 로그인 버튼의 디자인 변경
 
+### 성훈
++ `Selected` 컴포넌트 추가
+  + 관심사 Image 클릭 시 체크 + 색 바꿈
+  + icons 폴더 추가
+  + `Check` 아이콘 컴포넌트 추가
++ `Interest` 페이지 컴포넌트 추가
++ react-query 세팅
 
 ## 220916
 ### 종현
 + kakao map API
   + 초기 기본 셋팅
   + lat,lng 기반 map 렌더링
+
