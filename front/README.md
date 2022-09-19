@@ -87,6 +87,25 @@
   + 초기 기본 셋팅
   + lat,lng 기반 map 렌더링
 
+### 성훈
++ `InterestCards` 컴포넌트 추가
++ 모킹 데이터 파일 추가
+  + `interest_question.ts` 추가
+  + `interest_answer.ts` 추가
+
+## 220917
+### 성훈
++ `Interest` 컴포넌트 수정
+  + clickStates 상태 배열 추가
+  + page 번호 상태 추가
+  + click 이벤트 추가
++ `InterestCards` 컴포넌트 수정
++ `InterestCard` 컴포넌트 추가
++ `getInterestAnswers.ts` 데이터 fetch 파일 추가
++ `Image` 컴포넌트 수정
+  + html에 원래 있는 태그 속성(src, id 등)은 string type임.
+  + 속성을 number로 주기 위해 속성 `id`를 `no`로 수정
+
 ## 220918
 ### 종현
 + 맛집 추천 버튼
@@ -96,3 +115,8 @@
 + 발표준비
 + 고민점
   + 요청이 추가될 수록 반복되는 요청이 많아진다, 이거 줄이는 방법 없을까?
+
+### 성훈
++ mock 이미지 src 변경
++ `PageButtons` 컴포넌트 추가
+  + 현재 페이지를 나타내고 이전, 다음 페이지로 갈 수 있는 버튼 존재
