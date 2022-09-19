@@ -44,7 +44,8 @@ pipeline{
                 //sh 'cp -r ./back/jeonwoochi_spring/spring-cloud ./spring-cloud'
                 //sh 'cp ./back/jeonwoochi_spring/gradlew ./gradlew'
 
-                sh 'sudo cd back'
+                sh 'cd back'
+                sh 'pwd'
                 sh 'ls -l'
 
                 sh 'chmod +x gradlew'
