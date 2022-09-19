@@ -1,13 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
+import { useGetFoodDataAfterClick } from './useGetFoodDataAfterClick';
 
 import { MapData } from '../../mocks/handlers/festival_list';
 import axios, { AxiosError } from 'axios';
-import KakaoMap from '../atoms/KakaoMap';
 
 import { useParams } from 'react-router-dom';
 
 import styled from 'styled-components';
 import tw from 'twin.macro';
+import FestivalMap from '../organisms/FestivalMap';
 
 const MapAPIContainer = styled.div`
   ${tw`flex flex-row`}
@@ -20,6 +21,7 @@ const StyledFestivalDetail = styled.div`
   ${tw`w-96`}
 `;
 
+// MapAPI 사이즈용 STMP
 const StyledMapAPI = styled.div`
   ${tw`w-full h-screen`}
 `;
@@ -36,16 +38,19 @@ const MapAPI = () => {
   const { id } = useParams<{ id?: string | undefined }>();
 
   const MAPIDX = id && parseInt(id);
-  const { isLoading, error, data } = useQuery<MapData[], AxiosError>(
-    ['Maps'],
-    async () => {
-      const response = await axios.get('/festival-service/list');
-      return response.data;
-    },
-  );
+  // 축제 좌표 불러오기
+  const mapData = useQuery<MapData[], AxiosError>(['Maps'], async () => {
+    const response = await axios.get('/festival-service/list');
+    return response.data;
+  });
+
+  // 맛집 데이터 불러오기
+  const restaurantData = useGetFoodDataAfterClick();
+
+  const clickFoodButtonHandler = () => restaurantData.refetch();
 
   const getCoordHandler = (idx: number) => {
-    const result = data!.filter(d => d.festivalId === idx);
+    const result = mapData.data!.filter(d => d.festivalId === idx);
     return {
       lat: result[0].lat,
       lng: result[0].lng,
@@ -58,12 +63,17 @@ const MapAPI = () => {
         <div>축제 상세 설명 들어오는 곳</div>
       </StyledFestivalDetail>
       <StyledMapAPI>
-        {isLoading || !MAPIDX ? (
+        {mapData.isLoading || !MAPIDX ? (
           'Loading...'
-        ) : error ? (
-          <div>error: {error.message}</div>
-        ) : data ? (
-          <KakaoMap coord={getCoordHandler(MAPIDX)} />
+        ) : mapData.error ? (
+          <div>error: {mapData.error.message}</div>
+        ) : mapData.data ? (
+          <>
+            <FestivalMap
+              clickHandler={clickFoodButtonHandler}
+              coord={getCoordHandler(MAPIDX)}
+            />
+          </>
         ) : (
           <div>somthing went wrong!</div>
         )}
