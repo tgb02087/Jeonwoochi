@@ -81,3 +81,12 @@ project(':spring-cloud') {
         enabled = false
     }
 }
+
+project(':common'){
+    bootJar {
+        enabled = false
+    }
+    jar {
+        enabled = true
+    }
+}
