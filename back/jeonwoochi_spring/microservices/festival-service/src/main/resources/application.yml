@@ -38,7 +38,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://j7b307.p.ssafy.io:8761/eureka
+      defaultZone: http://j7b305.p.ssafy.io:8761/eureka
 
 management:
   endpoints:
