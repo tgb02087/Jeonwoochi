@@ -109,6 +109,7 @@ pipeline{
 				stage('Eureka Depoly'){
             steps {
                 sh "docker run -d --name=${DISCOVERY_CONTAINER_NAME} -p 8761:8761 ${DISCOVERY_NAME}"
+                sh 'sleep 10'
             }
 
 				}
@@ -116,6 +117,7 @@ pipeline{
             steps {
                 sh "docker run -d --name=${CONFIG_CONTAINER_NAME} -p 8888:8888 ${CONFIG_NAME}"
                 sh "docker run -d --name=${GATEWAY_CONTAINER_NAME} -p 8000:8000 ${GATEWAY_NAME}"
+                sh 'sleep 10'
             }
 
 				}
