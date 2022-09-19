@@ -37,11 +37,11 @@ pipeline{
 		stage('Build Gradle') {
             steps {
             	// gralew이 있어야됨. git clone해서 project를 가져옴.
-                //sh 'ls -l ./back/jeonwoochi_spring/'
-                sh 'cd ./back/jeonwoochi_spring/'
-                sh 'ls -l'
-                sh 'chmod +x gradlew'
-                sh  './gradlew bootJar'
+                sh 'cp ./back/jeonwoochi_spring/settings.gradle ./settings.gradle'
+                sh 'cp ./back/jeonwoochi_spring/build.gradle ./build.gradle'
+                
+                sh 'chmod +x ./back/jeonwoochi_spring/gradlew'
+                sh './back/jeonwoochi_spring/gradlew bootJar'
             }
         }
         stage('Docker Image Build') {
