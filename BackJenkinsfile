@@ -44,12 +44,13 @@ pipeline{
                 //sh 'cp -r ./back/jeonwoochi_spring/spring-cloud ./spring-cloud'
                 //sh 'cp ./back/jeonwoochi_spring/gradlew ./gradlew'
 
-                sh 'cd back'
+                sh 'cd /'
                 sh 'pwd'
                 sh 'ls -l'
 
-                sh 'chmod +x gradlew'
-                sh './gradlew bootJar'
+                //sh 'chmod +x gradlew'
+                //sh './gradlew bootJar'
+                sh 'exit 0'
             }
         }
         stage('Docker Image Build') {
