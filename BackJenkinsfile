@@ -36,13 +36,16 @@ pipeline{
     stages {
 		stage('Build Gradle') {
             steps {
-                sh 'cp ./back/jeonwoochi_spring/settings.gradle ./settings.gradle'
-                sh 'cp ./back/jeonwoochi_spring/build.gradle ./build.gradle'
-                sh 'cp -r ./back/jeonwoochi_spring/gradle ./gradle'
-                sh 'cp -r ./back/jeonwoochi_spring/common ./common'
-                sh 'cp -r ./back/jeonwoochi_spring/microservices ./microservices'
-                sh 'cp -r ./back/jeonwoochi_spring/spring-cloud ./spring-cloud'
-                sh 'cp ./back/jeonwoochi_spring/gradlew ./gradlew'
+                //sh 'cp ./back/jeonwoochi_spring/settings.gradle ./settings.gradle'
+                //sh 'cp ./back/jeonwoochi_spring/build.gradle ./build.gradle'
+                //sh 'cp -r ./back/jeonwoochi_spring/gradle ./gradle'
+                //sh 'cp -r ./back/jeonwoochi_spring/common ./common'
+                //sh 'cp -r ./back/jeonwoochi_spring/microservices ./microservices'
+                //sh 'cp -r ./back/jeonwoochi_spring/spring-cloud ./spring-cloud'
+                //sh 'cp ./back/jeonwoochi_spring/gradlew ./gradlew'
+
+                sh 'cd back'
+                sh 'ls -l'
 
                 sh 'chmod +x gradlew'
                 sh './gradlew bootJar'
