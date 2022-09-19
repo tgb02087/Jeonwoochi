@@ -37,8 +37,14 @@ pipeline{
 				stage('Build Gradle') {
             steps {
             	// gralew이 있어야됨. git clone해서 project를 가져옴.
+                COPY gradlew .
+                COPY gradle gradle
+                COPY build.gradle .
+                COPY settings.gradle .
+                COPY src src
+
                 sh 'chmod +x gradlew'
-                sh  './gradlew clean build'
+                sh  './gradlew bootJar'
             }
         }
         stage('Docker Image Build') {
