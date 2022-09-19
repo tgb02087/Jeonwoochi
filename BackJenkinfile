@@ -1,0 +1,128 @@
+#BackJenkinsFile
+pipeline{
+    agent any
+    environment {
+       DISCOVERY_CONTAINER_NAME="discovery-service-container"
+       DISCOVERY_NAME = "discovery-service-image"
+
+       CONFIG_CONTAINER_NAME="config-service-container"
+       CONFIG_NAME = "config-service-image"
+
+       GATEWAY_CONTAINER_NAME="gateway-service-container"
+       GATEWAY_NAME = "gateway-service-image"
+
+       USER_CONTAINER_NAME="user-service-container"
+       USER_NAME = "user-service-image"
+
+       AUTH_CONTAINER_NAME="auth-service-container"
+       AUTH_NAME = "auth-service-image"
+
+       INTEREST_CONTAINER_NAME="interest-service-container"
+       INTEREST_NAME = "interest-service-image"
+
+       FESTIVAL_CONTAINER_NAME="festival-service-container"
+       FESTIVAL_NAME = "festival-service-image"
+
+       GAME_CONTAINER_NAME="game-service-container"
+       GAME_NAME = "game-service-image"
+
+       RECOMM_CONTAINER_NAME="recomm-service-container"
+       RECOMM_NAME = "recomm-service-image"
+
+       LOG_CONTAINER_NAME="log-service-container"
+       LOG_NAME = "log-service-image"
+
+    }
+    stages {
+				stage('Build Gradle') {
+            steps {
+            	// gralew이 있어야됨. git clone해서 project를 가져옴.
+                sh 'chmod +x gradlew'
+                sh  './gradlew clean build'
+            }
+        }
+        stage('Docker Image Build') {
+            steps {
+                script{
+										// spring-cloud 빌드
+                    sh "docker build -t ${DISCOVERY_NAME} ./back/jeonwoochi_spring/spring-cloud/discovery-service/."
+                    sh "docker build -t ${CONFIG_NAME} ./back/jeonwoochi_spring/spring-cloud/config-service/."
+                    sh "docker build -t ${GATEWAY_NAME} ./back/jeonwoochi_spring/spring-cloud/gateway-service/."
+
+										// Spring micro-service 빌드
+                    sh "docker build -t ${USER_NAME} ./back/jeonwoochi_spring/microservices/user-service/."
+                    sh "docker build -t ${AUTH_NAME} ./back/jeonwoochi_spring/microservices/auth-service/."
+                    sh "docker build -t ${INTEREST_NAME} ./back/jeonwoochi_spring/microservices/interest-service/."
+                    sh "docker build -t ${FESTIVAL_NAME} ./back/jeonwoochi_spring/microservices/festival-service/."
+                    sh "docker build -t ${GAME_NAME} ./back/jeonwoochi_spring/microservices/game-service/."
+
+										// Django service 빌드
+                    #sh "docker build -t ${FRONT_NAME} ./back/microservices/-service/."
+                    #sh "docker build -t ${FRONT_NAME} ./back/microservices/discovery-service/."
+                }
+            }
+        }
+        stage('Container Clean'){
+            steps{
+                script {
+                    try{
+                        sh "docker stop ${DISCOVERY_CONTAINER_NAME}"
+                        sh "docker stop ${CONFIG_CONTAINER_NAME}"
+                        sh "docker stop ${GATEWAY_CONTAINER_NAME}"
+
+                        sh "docker stop ${USER_CONTAINER_NAME}"
+                        sh "docker stop ${AUTH_CONTAINER_NAME}"
+                        sh "docker stop ${INTEREST_CONTAINER_NAME}"
+                        sh "docker stop ${FESTIVAL_CONTAINER_NAME}"
+                        sh "docker stop ${GAME_CONTAINER_NAME}"
+                        #sh "docker stop ${RECOMM_CONTAINER_NAME}"
+                        #sh "docker stop ${LOG_CONTAINER_NAME}"
+                        sleep 1
+                        sh "docker rm ${DISCOVERY_CONTAINER_NAME}"
+                        sh "docker rm ${CONFIG_CONTAINER_NAME}"
+                        sh "docker rm ${GATEWAY_CONTAINER_NAME}"
+
+                        sh "docker rm ${USER_CONTAINER_NAME}"
+                        sh "docker rm ${AUTH_CONTAINER_NAME}"
+                        sh "docker rm ${INTEREST_CONTAINER_NAME}"
+                        sh "docker rm ${FESTIVAL_CONTAINER_NAME}"
+                        sh "docker rm ${GAME_CONTAINER_NAME}"
+                        #sh "docker rm ${RECOMM_CONTAINER_NAME}"
+                        #sh "docker rm ${LOG_CONTAINER_NAME}"
+                    }catch(e){
+                        echo 'Not Found Container'
+                    }
+                }
+            }
+        }
+				stage('Eureka Depoly'){
+            steps {
+                sh "docker run -d --name=${DISCOVERY_CONTAINER_NAME} -p 8761:8761 ${DISCOVERY_NAME}"
+            }
+
+				}
+				stage('Config and Gateway Depoly'){
+            steps {
+                sh "docker run -d --name=${CONFIG_CONTAINER_NAME} -p 8888:8888 ${CONFIG_NAME}"
+                sh "docker run -d --name=${GATEWAY_CONTAINER_NAME} -p 8000:8000 ${GATEWAY_NAME}"
+            }
+
+				}
+        stage('Micro Service Deploy'){
+            steps {
+                sh "docker run -d --name=${USER_CONTAINER_NAME} ${USER_NAME}"
+                sh "docker run -d --name=${AUTH_CONTAINER_NAME} ${AUTH_NAME}"
+                sh "docker run -d --name=${INTEREST_CONTAINER_NAME} ${INTEREST_NAME}"
+                sh "docker run -d --name=${FESTIVAL_CONTAINER_NAME} ${FESTIVAL_NAME}"
+                sh "docker run -d --name=${GAME_CONTAINER_NAME} ${GAME_NAME}"
+                #sh "docker run -d --name=${RECOMM_CONTAINER_NAME} ${RECOMM_NAME}"
+                #sh "docker run -d --name=${LOG_CONTAINER_NAME} ${LOG_NAME}"
+            }
+        }
+        stage('Image Clean'){
+            steps {
+                sh "docker image prune -a --force"            
+            }
+        }
+    }
+}

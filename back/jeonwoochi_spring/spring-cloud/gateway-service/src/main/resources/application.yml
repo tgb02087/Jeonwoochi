@@ -1,6 +1,8 @@
 server:
   port: 8000
-
+  servlet:
+    # TODO : CONTEXT-PATH가 해당 서비스명과 같은지 확인
+    context-path: /api
 eureka:
   client:
     fetch-registry: true
@@ -17,26 +19,62 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/user-service/**
-            - Method=GET,POST
+            - Path=/api/user-service/**
+            - Method=GET,POST,PUT,DELETE
 #          filters:
 #            - RemoveRequestHeader=Cookie
 #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/api/auth-service/**
+            - Method=GET,POST,PUT,DELETE
+        #          filters:
+        #            - RemoveRequestHeader=Cookie
+        #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+
+        - id: interest-service
+          uri: lb://INTEREST-SERVICE
+          predicates:
+              - Path=/api/interest-service/**
+              - Method=GET,POST,PUT,DELETE
+        #          filters:
+        #            - RemoveRequestHeader=Cookie
+        #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
 
         - id: festival-service
           uri: lb://FESTIVAL-SERVICE
           predicates:
-            - Path=/festival-service/**
-            - Method=GET,POST
+            - Path=/api/festival-service/**
+            - Method=GET,POST,PUT,DELETE
 #          filters:
 #            - RemoveRequestHeader=Cookie
 #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
 
+        - id: game-service
+          uri: lb://GAME-SERVICE
+          predicates:
+            - Path=/api/game-service/**
+            - Method=GET,POST,PUT,DELETE
+        #          filters:
+        #            - RemoveRequestHeader=Cookie
+        #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+
         - id: recomm-service
           uri: lb://RECOMM-SERVICE
           predicates:
-            - Path=/recomm-service/**
-            - Method=GET,POST
+            - Path=/api/recomm-service/**
+            - Method=GET,POST,PUT,DELETE
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+
+        - id: log-service
+          uri: lb://LOG-SERVICE
+          predicates:
+            - Path=/api/log-service/**
+            - Method=GET,POST,PUT,DELETE
 #          filters:
 #            - RemoveRequestHeader=Cookie
 #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
