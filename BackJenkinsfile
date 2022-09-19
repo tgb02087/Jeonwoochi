@@ -1,4 +1,4 @@
-#BackJenkinsFile
+//BackJenkinsFile
 pipeline{
     agent any
     environment {
@@ -57,8 +57,8 @@ pipeline{
                     sh "docker build -t ${GAME_NAME} ./back/jeonwoochi_spring/microservices/game-service/."
 
 										// Django service 빌드
-                    #sh "docker build -t ${FRONT_NAME} ./back/microservices/-service/."
-                    #sh "docker build -t ${FRONT_NAME} ./back/microservices/discovery-service/."
+                    //sh "docker build -t ${FRONT_NAME} ./back/microservices/-service/."
+                    //sh "docker build -t ${FRONT_NAME} ./back/microservices/discovery-service/."
                 }
             }
         }
@@ -75,8 +75,8 @@ pipeline{
                         sh "docker stop ${INTEREST_CONTAINER_NAME}"
                         sh "docker stop ${FESTIVAL_CONTAINER_NAME}"
                         sh "docker stop ${GAME_CONTAINER_NAME}"
-                        #sh "docker stop ${RECOMM_CONTAINER_NAME}"
-                        #sh "docker stop ${LOG_CONTAINER_NAME}"
+                        //sh "docker stop ${RECOMM_CONTAINER_NAME}"
+                        //sh "docker stop ${LOG_CONTAINER_NAME}"
                         sleep 1
                         sh "docker rm ${DISCOVERY_CONTAINER_NAME}"
                         sh "docker rm ${CONFIG_CONTAINER_NAME}"
@@ -87,8 +87,8 @@ pipeline{
                         sh "docker rm ${INTEREST_CONTAINER_NAME}"
                         sh "docker rm ${FESTIVAL_CONTAINER_NAME}"
                         sh "docker rm ${GAME_CONTAINER_NAME}"
-                        #sh "docker rm ${RECOMM_CONTAINER_NAME}"
-                        #sh "docker rm ${LOG_CONTAINER_NAME}"
+                        //sh "docker rm ${RECOMM_CONTAINER_NAME}"
+                        //sh "docker rm ${LOG_CONTAINER_NAME}"
                     }catch(e){
                         echo 'Not Found Container'
                     }
@@ -115,8 +115,8 @@ pipeline{
                 sh "docker run -d --name=${INTEREST_CONTAINER_NAME} ${INTEREST_NAME}"
                 sh "docker run -d --name=${FESTIVAL_CONTAINER_NAME} ${FESTIVAL_NAME}"
                 sh "docker run -d --name=${GAME_CONTAINER_NAME} ${GAME_NAME}"
-                #sh "docker run -d --name=${RECOMM_CONTAINER_NAME} ${RECOMM_NAME}"
-                #sh "docker run -d --name=${LOG_CONTAINER_NAME} ${LOG_NAME}"
+                //sh "docker run -d --name=${RECOMM_CONTAINER_NAME} ${RECOMM_NAME}"
+                //sh "docker run -d --name=${LOG_CONTAINER_NAME} ${LOG_NAME}"
             }
         }
         stage('Image Clean'){
