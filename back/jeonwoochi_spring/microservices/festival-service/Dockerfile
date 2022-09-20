@@ -3,5 +3,4 @@ VOLUME /tmp
 
 FROM openjdk:8
 COPY build/libs/festival-service-0.0.1-SNAPSHOT.jar FestivalServer.jar
-EXPOSE 3000
 ENTRYPOINT ["java","-jar","FestivalServer.jar"]
