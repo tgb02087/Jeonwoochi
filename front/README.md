@@ -132,3 +132,44 @@
 
 ### 성찬
 + 피드백을 기반으로 중간발표 PPT 마무리
+
+## 220919
+### 종현
+  + 발표
+
+### 성훈
++ `Main UI` 아이콘들 추가
+  + `Alert`, `LeftV`, `RightV`, `Profile`, `Question`
++ `FestivalSideBar` 컴포넌트 추가
+  + 오른쪽에 떠 있는 추천 축제 3개
+  + 클릭 시 사라지고 나타나는 이벤트 boolean state와 css로 구현
++ 추천 축제 모킹 파일 추가
+  + `festival_recomm.ts`
+
+### 성찬
++ 리액트 TS 프로젝트 내에 Phaser 임포트 방법 탐구
+
+## 220920
+### 종현
++ `MapAPI.tsx` 맛집추천 버튼 이벤트 생성
+  + `Button.tsx`에 도달하여, `useGetFoodDataAfterClick` 호출 
+  + 이벤트 호출 후, 데이터 확보 시, `prop`을 통해 `KakaoMap.tsx` 까지 전달
+  + `restaurantData` 가 참인 경우, 새로운 마킹이미지가 추가
+  + `useEffect()` 를 활용하여 `Kakaomap.tsx`가 재렌더링 하도록 설정
+
+### 성훈
++ 관심사 페이지의 `CharacterQuestion` 컴포넌트 추가
+  + 캐릭터 아바타 이미지 public/images/interest에 추가
+  + `getInterestQuestions.ts` 데이터 fetch 파일 추가
++ Interest 폴더 밑의 파일들 다른 폴더로 빼는 작업
+  + api 폴더 만들고 `getInterestAnswers.ts` 파일 api 폴더로 이관
+  + Selected 컴포넌트도 organisms 폴더로 이관
+
+### 성찬
++ 리액트 TS 프로젝트 내에 Phaser 임포트
+  + `game` 폴더 아래에, 게임 설정 파일(`config.ts`)과 게임 씬 관리 파일(`BootScene.ts`), 게임 실행 훅(`useGame.ts`) 파일 생성
+    + 게임 씬 관리 파일 안에 타일맵, 플레이어 이동과 같은 로직이 존재하므로, 추후에 리팩토링 예정
+  + 국토 타일맵(`jeonwoochi-tilemap.png`) 이미지 추가
+  + 타일맵의 속성을 관리하는 `country-map.json` 파일 추가
++ 게임 화면을 보여주는 `GameView` 컴포넌트 생성
+  + `Main` 페이지 컴포넌트에 추가
