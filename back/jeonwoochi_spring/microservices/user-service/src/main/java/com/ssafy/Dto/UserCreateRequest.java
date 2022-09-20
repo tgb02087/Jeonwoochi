@@ -15,7 +15,7 @@ public class UserCreateRequest {
 
     private String name;
 
-    private Enum gender;
+    private String gender;
 
     private int age;
 

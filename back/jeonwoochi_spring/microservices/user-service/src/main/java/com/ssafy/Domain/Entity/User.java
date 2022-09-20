@@ -23,15 +23,15 @@ public class User {
 
     private String name;
 
-    private Enum gender;
+    private String gender;
 
     private int age;
 
     private String role;
 
-//    @OneToOne
-//    @JoinColumn(name= "state_type_id")
-//    private StatusType statusType;
+    @ManyToOne
+    @JoinColumn(name= "state_type_id")
+    private StatusType statusType;
 
     public static User create(UserCreateRequest request){
        User user = new User();
