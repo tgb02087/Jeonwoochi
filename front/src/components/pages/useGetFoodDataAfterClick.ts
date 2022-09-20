@@ -7,7 +7,6 @@ export const useGetFoodDataAfterClick = () =>
     ['festival_service/recomn/dist'],
     async () => {
       const response = await axios.get('/festival_service/recomm/dist');
-      console.log(response.data);
       return response.data;
     },
     {

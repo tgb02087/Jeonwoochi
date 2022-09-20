@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import Check from '../../../icons/Check';
+import Check from '../../../Icons/Check';
 import tw from 'twin.macro';
 
 interface PropTypes {

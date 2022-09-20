@@ -4,6 +4,7 @@ import tw from 'twin.macro';
 import styled from 'styled-components';
 import Button from '../atoms/Button';
 import Text from '../atoms/Text';
+import { Restaurant } from '../../mocks/handlers/festival_recomm_dist';
 
 interface PropTypes {
   coord: {
@@ -11,6 +12,7 @@ interface PropTypes {
     lng: number;
   };
   clickHandler?: React.MouseEventHandler<HTMLButtonElement>;
+  restaurantData: Restaurant[] | undefined;
 }
 
 // 맛집 추천 position 설정용 STMP
@@ -26,7 +28,8 @@ const PositionButton = styled.button`
  * @author bell
  */
 
-const FestivalMap = ({ coord, clickHandler }: PropTypes) => {
+const FestivalMap = ({ coord, clickHandler, restaurantData }: PropTypes) => {
+  console.log('오가니즘', restaurantData);
   return (
     <>
       <PositionButton>
@@ -34,7 +37,10 @@ const FestivalMap = ({ coord, clickHandler }: PropTypes) => {
           <Text message={'맛집 추천'} />
         </Button>
       </PositionButton>
-      <KakaoMap coord={coord} />
+      <KakaoMap
+        restaurantData={restaurantData ? restaurantData : undefined}
+        coord={coord}
+      />
     </>
   );
 };
