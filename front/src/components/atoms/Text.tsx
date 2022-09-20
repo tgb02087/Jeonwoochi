@@ -6,11 +6,22 @@ interface PropTypes {
   clickHandler?: React.MouseEventHandler<HTMLDivElement>;
   message: string;
   color?: string;
+  size?: number;
+}
+interface TextPropTypes {
+  clickHandler?: React.MouseEventHandler<HTMLDivElement>;
+  color?: string;
+  size?: number;
 }
 
-const StyledText = styled.div`
+const StyledText = styled.div<TextPropTypes>`
   ${tw`font-DungGeunMo`}
   ${({ color }) => (color ? `color: ${color};` : tw`text-black`)}
+  ${({ size }) =>
+    size &&
+    css`
+      font-size: ${size}rem;
+    `}
   ${({ onClick }) =>
     onClick &&
     css`
@@ -29,9 +40,9 @@ const StyledText = styled.div`
  * @author bell
  */
 
-const Text = ({ message, clickHandler, color }: PropTypes) => {
+const Text = ({ message, clickHandler, color, size }: PropTypes) => {
   return (
-    <StyledText onClick={clickHandler} color={color}>
+    <StyledText onClick={clickHandler} color={color} size={size}>
       {message}
     </StyledText>
   );
