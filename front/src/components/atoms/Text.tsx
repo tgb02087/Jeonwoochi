@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import tw from 'twin.macro';
 
 interface PropTypes {
@@ -11,6 +11,11 @@ interface PropTypes {
 const StyledText = styled.div`
   ${tw`font-DungGeunMo`}
   ${({ color }) => (color ? `color: ${color};` : tw`text-black`)}
+  ${({ onClick }) =>
+    onClick &&
+    css`
+      cursor: pointer;
+    `}
 `;
 
 /**
