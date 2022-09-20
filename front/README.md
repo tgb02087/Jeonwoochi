@@ -134,6 +134,9 @@
 + 피드백을 기반으로 중간발표 PPT 마무리
 
 ## 220919
+### 종현
+  + 발표
+
 ### 성훈
 + `Main UI` 아이콘들 추가
   + `Alert`, `LeftV`, `RightV`, `Profile`, `Question`
@@ -144,6 +147,13 @@
   + `festival_recomm.ts`
 
 ## 220920
+### 종현
++ `MapAPI.tsx` 맛집추천 버튼 이벤트 생성
+  + `Button.tsx`에 도달하여, `useGetFoodDataAfterClick` 호출 
+  + 이벤트 호출 후, 데이터 확보 시, `prop`을 통해 `KakaoMap.tsx` 까지 전달
+  + `restaurantData` 가 참인 경우, 새로운 마킹이미지가 추가
+  + `useEffect()` 를 활용하여 `Kakaomap.tsx`가 재렌더링 하도록 설정
+
 ### 성훈
 + 관심사 페이지의 `CharacterQuestion` 컴포넌트 추가
   + 캐릭터 아바타 이미지 public/images/interest에 추가
