@@ -5,11 +5,14 @@ import styled from 'styled-components';
 import Button from '../atoms/Button';
 import Text from '../atoms/Text';
 
+import { Restaurant } from '../../mocks/handlers/festival_recomm_dist';
+
 interface PropTypes {
   coord: {
     lat: number;
     lng: number;
   };
+  restaurantData?: Restaurant[] | undefined;
   clickHandler?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -26,7 +29,7 @@ const PositionButton = styled.button`
  * @author bell
  */
 
-const FestivalMap = ({ coord, clickHandler }: PropTypes) => {
+const FestivalMap = ({ coord, clickHandler, restaurantData }: PropTypes) => {
   return (
     <>
       <PositionButton>
@@ -34,7 +37,7 @@ const FestivalMap = ({ coord, clickHandler }: PropTypes) => {
           <Text message={'맛집 추천'} />
         </Button>
       </PositionButton>
-      <KakaoMap coord={coord} />
+      <KakaoMap restaurantData={restaurantData} coord={coord} />
     </>
   );
 };
