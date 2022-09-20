@@ -1,5 +1,9 @@
 server:
   port: 8000
+  servlet:
+    # TODO : CONTEXT-PATH가 해당 서비스명과 같은지 확인
+    context-path: /api
+
 eureka:
   client:
     fetch-registry: true
@@ -10,13 +14,18 @@ eureka:
 spring:
   application:
     name: gateway-service
+  rabbitmq:
+    host: j7b305.p.ssafy.io
+    port: 5672
+    username: guest
+    password: guest
   cloud:
     gateway:
       routes:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/api/user-service/**
+            - Path=/user-service/**
             - Method=GET,POST,PUT,DELETE
 #          filters:
 #            - RemoveRequestHeader=Cookie
@@ -25,7 +34,7 @@ spring:
         - id: auth-service
           uri: lb://AUTH-SERVICE
           predicates:
-            - Path=/api/auth-service/**
+            - Path=/auth-service/**
             - Method=GET,POST,PUT,DELETE
         #          filters:
         #            - RemoveRequestHeader=Cookie
@@ -34,7 +43,7 @@ spring:
         - id: interest-service
           uri: lb://INTEREST-SERVICE
           predicates:
-              - Path=/api/interest-service/**
+              - Path=/interest-service/**
               - Method=GET,POST,PUT,DELETE
         #          filters:
         #            - RemoveRequestHeader=Cookie
@@ -43,7 +52,7 @@ spring:
         - id: festival-service
           uri: lb://FESTIVAL-SERVICE
           predicates:
-            - Path=/api/festival-service/**
+            - Path=/festival-service/**
             - Method=GET,POST,PUT,DELETE
 #          filters:
 #            - RemoveRequestHeader=Cookie
@@ -52,7 +61,7 @@ spring:
         - id: game-service
           uri: lb://GAME-SERVICE
           predicates:
-            - Path=/api/game-service/**
+            - Path=/game-service/**
             - Method=GET,POST,PUT,DELETE
         #          filters:
         #            - RemoveRequestHeader=Cookie
@@ -61,7 +70,7 @@ spring:
         - id: recomm-service
           uri: lb://RECOMM-SERVICE
           predicates:
-            - Path=/api/recomm-service/**
+            - Path=/recomm-service/**
             - Method=GET,POST,PUT,DELETE
 #          filters:
 #            - RemoveRequestHeader=Cookie
@@ -70,7 +79,7 @@ spring:
         - id: log-service
           uri: lb://LOG-SERVICE
           predicates:
-            - Path=/api/log-service/**
+            - Path=/log-service/**
             - Method=GET,POST,PUT,DELETE
 #          filters:
 #            - RemoveRequestHeader=Cookie
