@@ -70,6 +70,7 @@ const MapAPI = () => {
         ) : mapData.data ? (
           <>
             <FestivalMap
+              restaurantData={restaurantData.data}
               clickHandler={clickFoodButtonHandler}
               coord={getCoordHandler(MAPIDX)}
             />
