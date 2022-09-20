@@ -19,10 +19,15 @@ const config: Types.Core.GameConfig = {
       gravity: { y: 0 }, // 중력 없음
     },
   },
-  // scene: {
-  //   preload,
-  //   create,
-  //   update,
+  // 임시 추가
+  // scale: {
+  //   mode: Phaser.Scale.FIT,
+  //   autoCenter: Phaser.Scale.CENTER_BOTH
+  // },
+  // render: {
+  //   antialias: false,
+  //   pixelArt: true,
+  //   roundPixels: true
   // },
   scene: BootScene,
 };
