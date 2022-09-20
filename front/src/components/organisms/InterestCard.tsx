@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import tw from 'twin.macro';
 import Image from '../atoms/Image';
 import Text from '../atoms/Text';
-import Selected from '../pages/Interest/Selected';
+import Selected from './Selected';
 
 interface PropTypes {
   no: number;
@@ -15,8 +15,7 @@ interface PropTypes {
   setClickStates: Dispatch<SetStateAction<Array<boolean>>>;
 }
 const StyledInterestCard = styled.div`
-  width: 15rem;
-  height: 20rem;
+  width: 15vw;
   border-radius: 1rem;
   ${tw`relative  flex justify-center items-center`}
 `;

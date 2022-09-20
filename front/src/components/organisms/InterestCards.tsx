@@ -15,7 +15,7 @@ interface PropTypes {
   setClickStates: Dispatch<SetStateAction<Array<boolean>>>;
 }
 const StyledInterestCards = styled.div`
-  ${tw`flex justify-evenly`}
+  ${tw`flex justify-between`}
   width: 100%;
 `;
 
