@@ -29,7 +29,6 @@ const PositionButton = styled.button`
  */
 
 const FestivalMap = ({ coord, clickHandler, restaurantData }: PropTypes) => {
-  console.log('오가니즘', restaurantData);
   return (
     <>
       <PositionButton>

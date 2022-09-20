@@ -45,7 +45,7 @@ const MapAPI = () => {
   });
 
   // 맛집 데이터 불러오기
-  const restaurantData = useGetFoodDataAfterClick() || undefined;
+  const restaurantData = useGetFoodDataAfterClick();
 
   const clickFoodButtonHandler = () => restaurantData.refetch();
 
@@ -56,8 +56,6 @@ const MapAPI = () => {
       lng: result[0].lng,
     };
   };
-
-  console.log('페이지', restaurantData);
 
   return (
     <MapAPIContainer>
