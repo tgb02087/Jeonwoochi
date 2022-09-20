@@ -12,11 +12,6 @@ eureka:
 spring:
   application:
     name: gateway-service
-  rabbitmq:
-    host: j7b305.p.ssafy.io
-    port: 5672
-    username: guest
-    password: guest
   cloud:
     gateway:
       routes:
