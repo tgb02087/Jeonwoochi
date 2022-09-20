@@ -3,7 +3,7 @@ import Alert from '../../icons/Alert';
 import Profile from '../../icons/Profile';
 import Question from '../../icons/Question';
 import Button from '../atoms/Button';
-import GameView from '../atoms/GameView';
+import GameView from '../organisms/GameView';
 import Text from '../atoms/Text';
 import FestivalSideBar from '../organisms/FestivalSideBar';
 
