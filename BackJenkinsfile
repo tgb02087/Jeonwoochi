@@ -108,28 +108,28 @@ pipeline{
         }
 				stage('Eureka Depoly'){
             steps {
-                sh "docker run -d --name=${DISCOVERY_CONTAINER_NAME} -p 8761:8761 ${DISCOVERY_NAME}"
+                sh "docker run -d --name=${DISCOVERY_CONTAINER_NAME} -p 8761:8761 --net msa ${DISCOVERY_NAME}"
                 sh 'sleep 10'
             }
 
 				}
 				stage('Config and Gateway Depoly'){
             steps {
-                sh "docker run -d --name=${CONFIG_CONTAINER_NAME} -p 8888:8888 ${CONFIG_NAME}"
-                sh "docker run -d --name=${GATEWAY_CONTAINER_NAME} -p 8000:8000 ${GATEWAY_NAME}"
+                sh "docker run -d --name=${CONFIG_CONTAINER_NAME} -p 8888:8888 --net msa ${CONFIG_NAME}"
+                sh "docker run -d --name=${GATEWAY_CONTAINER_NAME} -p 8000:8000 --net msa ${GATEWAY_NAME}"
                 sh 'sleep 10'
             }
 
 				}
         stage('Micro Service Deploy'){
             steps {
-                sh "docker run -d --name=${USER_CONTAINER_NAME} ${USER_NAME}"
-                sh "docker run -d --name=${AUTH_CONTAINER_NAME} ${AUTH_NAME}"
-                sh "docker run -d --name=${INTEREST_CONTAINER_NAME} ${INTEREST_NAME}"
-                sh "docker run -d --name=${FESTIVAL_CONTAINER_NAME} ${FESTIVAL_NAME}"
-                sh "docker run -d --name=${GAME_CONTAINER_NAME} ${GAME_NAME}"
-                //sh "docker run -d --name=${RECOMM_CONTAINER_NAME} ${RECOMM_NAME}"
-                //sh "docker run -d --name=${LOG_CONTAINER_NAME} ${LOG_NAME}"
+                sh "docker run -d --name=${USER_CONTAINER_NAME} --net msa ${USER_NAME}"
+                sh "docker run -d --name=${AUTH_CONTAINER_NAME} --net msa ${AUTH_NAME}"
+                sh "docker run -d --name=${INTEREST_CONTAINER_NAME} --net msa ${INTEREST_NAME}"
+                sh "docker run -d --name=${FESTIVAL_CONTAINER_NAME} --net msa ${FESTIVAL_NAME}"
+                sh "docker run -d --name=${GAME_CONTAINER_NAME} --net msa ${GAME_NAME}"
+                //sh "docker run -d --name=${RECOMM_CONTAINER_NAME} --net msa ${RECOMM_NAME}"
+                //sh "docker run -d --name=${LOG_CONTAINER_NAME} --net msa ${LOG_NAME}"
             }
         }
         stage('Image Clean'){
