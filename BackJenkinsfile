@@ -75,6 +75,7 @@ pipeline{
         stage('Container Clean'){
             steps{
                 script {
+                    try{
                         sh "docker stop ${DISCOVERY_CONTAINER_NAME}"
                         sh "docker stop ${CONFIG_CONTAINER_NAME}"
                         sh "docker stop ${GATEWAY_CONTAINER_NAME}"
@@ -98,6 +99,9 @@ pipeline{
                         sh "docker rm ${GAME_CONTAINER_NAME}"
                         //sh "docker rm ${RECOMM_CONTAINER_NAME}"
                         //sh "docker rm ${LOG_CONTAINER_NAME}"
+                    }catch(e){
+                        sh 'exit 0'
+                    }
                 }
             }
         }
