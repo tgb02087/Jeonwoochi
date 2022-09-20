@@ -132,3 +132,22 @@
 
 ### 성찬
 + 피드백을 기반으로 중간발표 PPT 마무리
+
+## 220919
+### 성훈
++ `Main UI` 아이콘들 추가
+  + `Alert`, `LeftV`, `RightV`, `Profile`, `Question`
++ `FestivalSideBar` 컴포넌트 추가
+  + 오른쪽에 떠 있는 추천 축제 3개
+  + 클릭 시 사라지고 나타나는 이벤트 boolean state와 css로 구현
++ 추천 축제 모킹 파일 추가
+  + `festival_recomm.ts`
+
+## 220920
+### 성훈
++ 관심사 페이지의 `CharacterQuestion` 컴포넌트 추가
+  + 캐릭터 아바타 이미지 public/images/interest에 추가
+  + `getInterestQuestions.ts` 데이터 fetch 파일 추가
++ Interest 폴더 밑의 파일들 다른 폴더로 빼는 작업
+  + api 폴더 만들고 `getInterestAnswers.ts` 파일 api 폴더로 이관
+  + Selected 컴포넌트도 organisms 폴더로 이관
