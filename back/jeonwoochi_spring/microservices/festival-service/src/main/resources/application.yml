@@ -5,7 +5,7 @@ server:
       enabled: false
   servlet:
     # TODO : CONTEXT-PATH가 해당 서비스명과 같은지 확인
-    context-path: /festival-service
+    context-path: /api/festival-service
 #    encoding:
 #      charset: UTF-8
 #      enabled: true
@@ -38,8 +38,8 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://j7b305.p.ssafy.io:8761/eureka
-      #defaultZone: http://localhost:8761/eureka
+      #defaultZone: http://j7b305.p.ssafy.io:8761/eureka
+      defaultZone: http://localhost:8761/eureka
 
 management:
   endpoints:
