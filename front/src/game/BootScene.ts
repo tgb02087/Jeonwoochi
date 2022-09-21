@@ -27,7 +27,8 @@ class BootScene extends Scene {
     // 앱, 타일, 레이어 설정
     const map = this.make.tilemap({ key: 'map' });
     const tileset = map.addTilesetImage('jeonwoochi-tileset', 'tiles');
-    const worldLayer = map.createLayer('tiles', tileset, 0, 0);
+    // 타일맵 레이어를 추가할 수도 있기 때문에 tiles -> tiles1로 이름 변경
+    const worldLayer = map.createLayer('tiles1', tileset, 0, 0);
 
     // 타일에 충돌(Collision) 적용
     worldLayer.setCollisionByProperty({ collides: true });
