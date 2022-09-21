@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import tw from 'twin.macro';
+import Link from '../atoms/Link';
 import Text from '../atoms/Text';
 
 interface PropTypes {
@@ -29,7 +30,9 @@ const FestivalInfos = ({ info, size }: PropTypes) => {
   return (
     <StyledFestivalInfos>
       <Text message={info.period} color={'white'} size={size} />
-      <Text message={info.festivalUrl} color={'white'} size={size} />
+      <Link href={info.festivalUrl} color="white" size={size}>
+        {info.festivalUrl}
+      </Link>
       <Text message={info.description} color={'white'} size={size} />
     </StyledFestivalInfos>
   );
