@@ -164,6 +164,12 @@
 + Interest 폴더 밑의 파일들 다른 폴더로 빼는 작업
   + api 폴더 만들고 `getInterestAnswers.ts` 파일 api 폴더로 이관
   + Selected 컴포넌트도 organisms 폴더로 이관
++ 축제 모달 관련 컴포넌트 추가
+  + `FestivalModal` 컴포넌트 추가
+  + `TitleCancelHeader` 컴포넌트 추가
+  + `FestivalInfos` 컴포넌트 추가
+  + `getFestivalItem.ts` 데이터 fetch 파일 추가
+  + 모킹 데이터 파일 추가
 
 ### 성찬
 + 리액트 TS 프로젝트 내에 Phaser 임포트
