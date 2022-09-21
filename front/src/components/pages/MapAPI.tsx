@@ -4,21 +4,20 @@ import { useGetFoodDataAfterClick } from './useGetFoodDataAfterClick';
 import { MapData } from '../../mocks/handlers/festival_list';
 import axios, { AxiosError } from 'axios';
 
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import FestivalMap from '../organisms/FestivalMap';
+import FestivalDetail from '../organisms/FestivalDetail';
+import getFestivalItem from '../../api/getFestivalItem';
 
 const MapAPIContainer = styled.div`
   ${tw`flex flex-row`}
 `;
 
-// 일단은 그냥 고정값으로 만들었습니다!
-// 축제 상세 페이지 제작자 분께서 원하시는데로,
-// STCP 변경하시기 바랍니다.
 const StyledFestivalDetail = styled.div`
-  ${tw`w-96`}
+  width: 20vw;
 `;
 
 // MapAPI 사이즈용 STMP
@@ -35,6 +34,7 @@ const StyledMapAPI = styled.div`
  * @author bell
  */
 const MapAPI = () => {
+  const navigate = useNavigate();
   const { id } = useParams<{ id?: string | undefined }>();
 
   const MAPIDX = id && parseInt(id);
@@ -57,10 +57,14 @@ const MapAPI = () => {
     };
   };
 
+  const { data, isLoading, isError } = useQuery(['info'], getFestivalItem, {
+    staleTime: 1000 * 20,
+  });
+
   return (
     <MapAPIContainer>
       <StyledFestivalDetail>
-        <div>축제 상세 설명 들어오는 곳</div>
+        <FestivalDetail info={data} navigate={navigate} />
       </StyledFestivalDetail>
       <StyledMapAPI>
         {mapData.isLoading || !MAPIDX ? (

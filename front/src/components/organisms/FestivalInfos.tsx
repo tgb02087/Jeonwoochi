@@ -10,6 +10,7 @@ interface PropTypes {
     posterUrl: string;
     description: string;
   };
+  size: number;
 }
 const StyledFestivalInfos = styled.div`
   width: 100%;
@@ -24,12 +25,12 @@ const StyledFestivalInfos = styled.div`
  *
  * @author jojo
  */
-const FestivalInfos = ({ info }: PropTypes) => {
+const FestivalInfos = ({ info, size }: PropTypes) => {
   return (
     <StyledFestivalInfos>
-      <Text message={info.period} color={'white'} size={1.3} />
-      <Text message={info.festivalUrl} color={'white'} size={1.3} />
-      <Text message={info.description} color={'white'} size={1.3} />
+      <Text message={info.period} color={'white'} size={size} />
+      <Text message={info.festivalUrl} color={'white'} size={size} />
+      <Text message={info.description} color={'white'} size={size} />
     </StyledFestivalInfos>
   );
 };

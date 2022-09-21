@@ -69,7 +69,7 @@ const FestivalModal = ({ info, setState }: PropTypes) => {
                 <Image src={info.posterUrl} alt="poster" />
               </LeftBody>
               <RightBody>
-                <FestivalInfos info={info} />
+                <FestivalInfos info={info} size={1.3} />
                 <Button isText>
                   <Text message={'상세보기'} />
                 </Button>
