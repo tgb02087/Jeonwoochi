@@ -1,0 +1,37 @@
+// FrontJenkinsFile
+pipeline{
+    agent any
+    environment {
+        FRONT_CONTAINER_NAME="jeonwoochi_react_container"
+        FRONT_NAME = "jeonwoochi_react_image"
+    }
+    stages {
+        stage('Build') {
+            steps {
+                script{
+                    sh "docker build -t ${FRONT_NAME} ./front/."
+                }
+            }
+        }
+        stage('Clean'){
+            steps{
+                script {
+                    try{
+                        sh "docker stop ${FRONT_CONTAINER_NAME}"
+                        sleep 1
+                        sh "docker rm ${FRONT_CONTAINER_NAME}"
+                    }catch(e){
+                        sh 'exit 0'
+                    }
+                }
+            }
+        }
+        stage('Deploy'){
+            steps {
+                sh "docker run -d --name=${FRONT_CONTAINER_NAME} -p 8080:80 ${FRONT_NAME}"
+
+                sh "docker image prune -a --force"
+            }
+        }
+    }
+}
