@@ -21,8 +21,11 @@ interface PropTypes {
   setState: Dispatch<SetStateAction<boolean>>;
 }
 const StyledFestivalModal = styled.div`
+  ${tw`absolute `}
   width: 40vw;
   height: 30vw;
+  top: 20%;
+  right: 1rem;
 `;
 const InnerSheet = styled.div`
   ${tw`flex flex-col`}
