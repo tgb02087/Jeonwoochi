@@ -179,3 +179,20 @@
   + 타일맵의 속성을 관리하는 `country-map.json` 파일 추가
 + 게임 화면을 보여주는 `GameView` 컴포넌트 생성
   + `Main` 페이지 컴포넌트에 추가
+
+## 220921
++ 종현
+  + `phaser` 사전학습
+
+
+## 220922
++ 종현
+  + `BootScene.ts` 리팩토링
+    + `Player.ts` 생성 및 `Sprite` 관련 코드 모두 이관
+    + `variable`, `contructor`, `preload()`, `update()` 설정
+    + `Sprite()`,`cursor()` 이벤트 모두 이관
+    + 기존 코드와 맞도록 `type` 설정
+    + `animation` 설정
+    + 정상 작동
+  + 진행상황 발표
+  + 포트폴리오 쓰는 법 수강
