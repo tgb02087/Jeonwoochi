@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://j7b305.p.ssafy.io:3309/festival?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://j7b305.p.ssafy.io:3309/game?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: b305
     password: B305user!
   jpa:
