@@ -48,6 +48,9 @@
       <module name="gateway-service" target="1.8" />
       <module name="gateway-service.main" target="1.8" />
       <module name="gateway-service.test" target="1.8" />
+      <module name="jeonwoochi_spring.auth-service" target="1.8" />
+      <module name="jeonwoochi_spring.auth-service.main" target="1.8" />
+      <module name="jeonwoochi_spring.auth-service.test" target="1.8" />
       <module name="jeonwoochi_spring.core" target="1.8" />
       <module name="jeonwoochi_spring.core.main" target="1.8" />
       <module name="jeonwoochi_spring.core.test" target="1.8" />

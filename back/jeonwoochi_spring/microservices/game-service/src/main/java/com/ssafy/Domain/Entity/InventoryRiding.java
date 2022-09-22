@@ -1,8 +1,5 @@
 package com.ssafy.Domain.Entity;
 
-import com.ssafy.Dto.InventoryRidingCreateRequest;
-import com.ssafy.Dto.InventoryRidingUpdateRequest;
-import com.ssafy.config.LoginUser.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,15 +22,15 @@ public class InventoryRiding {
     @JoinColumn(name = "riding_id")
     private Riding riding;
 
-    public static InventoryRiding create(User user, Riding riding){
+    public static InventoryRiding create(Long userId, Riding riding){
         InventoryRiding inventoryRiding = new InventoryRiding();
-        inventoryRiding.userId = user.getId();
+        inventoryRiding.userId = userId;
         inventoryRiding.riding = riding;
         return inventoryRiding;
     }
 
-    public void update(User user, Riding riding){
-        this.userId = user.getId();
+    public void update(Long userId, Riding riding){
+        this.userId = userId;
         this.riding = riding;
     }
 }

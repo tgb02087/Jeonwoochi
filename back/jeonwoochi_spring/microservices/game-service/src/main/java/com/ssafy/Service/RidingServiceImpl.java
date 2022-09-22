@@ -23,6 +23,7 @@ public class RidingServiceImpl implements RidingService{
     private final RidingRepo ridingRepo;
 
     @Override
+    @Transactional
     public void createRiding(List<RidingCreateRequest> requests) {
         requests.forEach(request -> {
             Riding riding = Riding.create(request);
@@ -31,6 +32,7 @@ public class RidingServiceImpl implements RidingService{
     }
 
     @Override
+    @Transactional
     public List<RidingResponse> findRidingListAll() {
         List<RidingResponse> ridings = ridingRepo.findAll().stream()
                 .map(RidingResponse::response)
@@ -39,6 +41,7 @@ public class RidingServiceImpl implements RidingService{
     }
 
     @Override
+    @Transactional
     public RidingResponse updateRiding(RidingUpdateRequest request) {
         Riding riding = ridingRepo.findById(request.getId())
                 .orElseThrow(()->new NotFoundException(RIDING_NOT_FOUND));
@@ -47,6 +50,7 @@ public class RidingServiceImpl implements RidingService{
     }
 
     @Override
+    @Transactional
     public void deleteRiding(Long ridingId) {
         Riding riding = ridingRepo.findById(ridingId)
                 .orElseThrow(()-> new NotFoundException(RIDING_NOT_FOUND));

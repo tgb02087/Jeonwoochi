@@ -7,7 +7,6 @@ import com.ssafy.Domain.Repository.RidingRepo;
 import com.ssafy.Dto.InventoryRidingCreateRequest;
 import com.ssafy.Dto.InventoryRidingResponse;
 import com.ssafy.Dto.InventoryRidingUpdateRequest;
-import com.ssafy.config.LoginUser.User;
 import com.ssafy.exception.DuplicateException;
 import com.ssafy.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -30,37 +29,41 @@ public class InventoryRidingServiceImpl implements InventoryRidingService{
 
 
     @Override
-    public void createInventoryRiding(User user, InventoryRidingCreateRequest request) {
+    @Transactional
+    public void createInventoryRiding(Long userId, InventoryRidingCreateRequest request) {
         Riding riding = ridingRepo.findById(request.getRidingId())
                 .orElseThrow(()-> new NotFoundException(RIDING_NOT_FOUND));
-        if(inventoryRidingRepo.findByUserIdAndRiding(user.getId(), riding).isPresent())
+        if(inventoryRidingRepo.findByUserIdAndRiding(userId, riding).isPresent())
             throw new DuplicateException(INVENTORY_RIDING_DUPLICATED);
 
-        InventoryRiding inventoryRiding = InventoryRiding.create(user, riding);
+        InventoryRiding inventoryRiding = InventoryRiding.create(userId, riding);
         inventoryRidingRepo.save(inventoryRiding);
     }
 
     @Override
-    public List<InventoryRidingResponse> findInventoryRiding(User user) {
-        List<InventoryRidingResponse> inventoryRidings = inventoryRidingRepo.findByUserId(user.getId()).stream()
+    @Transactional
+    public List<InventoryRidingResponse> findInventoryRiding(Long userId) {
+        List<InventoryRidingResponse> inventoryRidings = inventoryRidingRepo.findByUserId(userId).stream()
                 .map(InventoryRidingResponse::response)
                 .collect(Collectors.toList());
         return inventoryRidings;
     }
 
     @Override
-    public InventoryRidingResponse updateInventoryRiding(User user, InventoryRidingUpdateRequest request) {
+    @Transactional
+    public InventoryRidingResponse updateInventoryRiding(Long userId, InventoryRidingUpdateRequest request) {
         Riding riding = ridingRepo.findById(request.getRidingId())
                 .orElseThrow(()-> new NotFoundException(RIDING_NOT_FOUND));
 
         InventoryRiding inventoryRiding = inventoryRidingRepo.findById(request.getId())
                 .orElseThrow(()-> new NotFoundException(INVENTORY_RIDING_NOT_FOUND));
 
-        inventoryRiding.update(user, riding);
+        inventoryRiding.update(userId, riding);
         return InventoryRidingResponse.response(inventoryRiding);
     }
 
     @Override
+    @Transactional
     public void deleteInventoryRiding(Long inventoryRidingId) {
         InventoryRiding inventoryRiding = inventoryRidingRepo.findById(inventoryRidingId)
                 .orElseThrow(()-> new NotFoundException(INVENTORY_RIDING_NOT_FOUND));

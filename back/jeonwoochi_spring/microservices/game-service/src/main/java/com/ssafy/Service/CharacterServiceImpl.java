@@ -23,6 +23,7 @@ public class CharacterServiceImpl implements CharacterService{
     private final CharacterRepo characterRepo;
 
     @Override
+    @Transactional
     public void createCharacter(List<CharacterCreateRequest> requests) {
         requests.forEach(request -> {
             Character character = Character.create(request);
@@ -31,6 +32,7 @@ public class CharacterServiceImpl implements CharacterService{
     }
 
     @Override
+    @Transactional
     public List<CharacterResponse> findCharacterListAll() {
         List<CharacterResponse> characters = characterRepo.findAll().stream()
                 .map(CharacterResponse::response)
@@ -39,6 +41,7 @@ public class CharacterServiceImpl implements CharacterService{
     }
 
     @Override
+    @Transactional
     public CharacterResponse updateCharacter(CharacterUpdateRequest request) {
         Character character = characterRepo.findById(request.getId())
                 .orElseThrow(()->new NotFoundException(CHARACTER_NOT_FOUND));
@@ -47,6 +50,7 @@ public class CharacterServiceImpl implements CharacterService{
     }
 
     @Override
+    @Transactional
     public void deleteCharacter(Long characterId) {
         Character character = characterRepo.findById(characterId)
                 .orElseThrow(()->new NotFoundException(CHARACTER_NOT_FOUND));
