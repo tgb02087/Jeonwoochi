@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import map from './country-map.json';
+import Player from './Player';
 
 /**
  * 게임 씬(Scene) 관리 클래스
@@ -16,11 +17,13 @@ class BootScene extends Scene {
     this.load.tilemapTiledJSON('map', map);
 
     // (임시) 캐릭터 불러오기
-    this.load.atlas(
-      'atlas',
-      'https://mikewesthad.github.io/phaser-3-tilemap-blog-posts/post-1/assets/atlas/atlas.png',
-      'https://mikewesthad.github.io/phaser-3-tilemap-blog-posts/post-1/assets/atlas/atlas.json',
-    );
+    // this.load.atlas(
+    //   'atlas',
+    //   'https://mikewesthad.github.io/phaser-3-tilemap-blog-posts/post-1/assets/atlas/atlas.png',
+    //   'https://mikewesthad.github.io/phaser-3-tilemap-blog-posts/post-1/assets/atlas/atlas.json',
+    // );
+
+    Player.preload(this);
   }
 
   create() {
