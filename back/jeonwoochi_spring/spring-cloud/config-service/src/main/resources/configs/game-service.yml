@@ -14,6 +14,7 @@ spring:
   redis:
     host: j7b305.p.ssafy.io
     port: 6379
+
 token:
   access_token:
     expiration_time: 86400000
