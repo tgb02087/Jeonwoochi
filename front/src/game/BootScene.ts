@@ -15,11 +15,7 @@ class BootScene extends Scene {
     // 타일맵 불러오기
     this.load.image('tiles', '/images/map/jeonwoochi-tileset.png');
     this.load.tilemapTiledJSON('map', map);
-    this.load.audio('bgm', [
-      '/audios/bgm/07-The Sixth Floor Party.mp3',
-      '/audios/bgm/02-The Purple Bonbon.mp3',
-      '/audios/bgm/04-The Slug Monarch.mp3',
-    ]);
+    this.load.audio('bgm', ['/audios/bgm/2 - Big Giant Trees - Gotanda.mp3']);
     //
     Player.preload(this);
   }
