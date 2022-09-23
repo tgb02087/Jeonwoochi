@@ -14,14 +14,18 @@ class BootScene extends Scene {
   preload() {
     // 타일맵 불러오기
     this.load.image('tiles', '/images/map/jeonwoochi-tileset.png');
+    this.load.tilemapTiledJSON('map', map);
+    this.load.audio('bgm', ['/audios/bgm/2 - Big Giant Trees - Gotanda.mp3']);
+    
+    // Player assets preload
+    Player.preload(this);
+
     // 더미 festival atlas
     this.load.atlas(
       'festival',
       '/images/map/festivals.png',
       '/images/map/festivals_atlas.json',
     );
-    this.load.tilemapTiledJSON('map', map);
-    Player.preload(this);
   }
 
   create() {
@@ -31,6 +35,18 @@ class BootScene extends Scene {
     // const festival = map
     // 타일맵 레이어를 추가할 수도 있기 때문에 tiles -> tiles1로 이름 변경
     const worldLayer = map.createLayer('tiles1', tileset, 0, 0);
+
+    // bgm 설정
+    const music = this.sound.add('bgm', {
+      mute: false,
+      volume: 0.05,
+      rate: 1,
+      detune: 0,
+      seek: 0,
+      loop: true,
+      delay: 1,
+    });
+    music.play();
 
     // 타일에 충돌(Collision) 적용
     worldLayer.setCollisionByProperty({ collides: true });

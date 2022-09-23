@@ -1,13 +1,11 @@
-import { Dispatch, SetStateAction } from 'react';
 import { NavigateFunction } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import tw from 'twin.macro';
-import Button from '../atoms/Button';
 import Image from '../atoms/Image';
+import Link from '../atoms/Link';
 import Sheet from '../atoms/Sheet';
 import Text from '../atoms/Text';
 import FestivalInfos from './FestivalInfos';
-import TitleCancelHeader from './TitleCancelHeader';
 
 interface PropTypes {
   info: {
@@ -17,6 +15,8 @@ interface PropTypes {
     posterUrl: string;
     description: string;
   };
+  weatherInfo: any;
+  newsInfo: any;
   navigate: NavigateFunction;
 }
 const StyledFestivalDetail = styled.div`
@@ -37,7 +37,10 @@ const StyledPoster = styled.div`
   width: 50%;
 `;
 const WeatherInfo = styled.div`
-  height: 30vh;
+  height: 10vh;
+`;
+const NewsInfo = styled.div`
+  height: 15vh;
 `;
 /**
  * 축제 상세 정보 컴포넌트
@@ -46,7 +49,15 @@ const WeatherInfo = styled.div`
  *
  * @author jojo
  */
-const FestivalDetail = ({ info, navigate }: PropTypes) => {
+const FestivalDetail = ({
+  info,
+  weatherInfo,
+  newsInfo,
+  navigate,
+}: PropTypes) => {
+  console.log(weatherInfo);
+  console.log(newsInfo);
+
   const clickHandler = () => {
     navigate(-1);
   };
@@ -74,7 +85,28 @@ const FestivalDetail = ({ info, navigate }: PropTypes) => {
           )}
           <WeatherInfo>
             <Text color="white" message="날씨 예보" size={1.3} />
+            {weatherInfo ? (
+              <Text color="white" message="날씨 어쩌꾸" />
+            ) : (
+              <Text color="white" message="로딩 중입니다..." />
+            )}
           </WeatherInfo>
+          <NewsInfo>
+            <Text color="white" message="관련 기사" size={1.3} />
+            {newsInfo ? (
+              <>
+                <Link href={newsInfo[0].link} color="white">
+                  {'- ' + newsInfo[0].title.substring(0, 25)}
+                </Link>
+                <br />
+                <Link href={newsInfo[1].link} color="white">
+                  {'- ' + newsInfo[1].title.substring(0, 25)}
+                </Link>
+              </>
+            ) : (
+              <Text color="white" message="로딩 중입니다..." />
+            )}
+          </NewsInfo>
         </InnerSheet>
       </Sheet>
     </StyledFestivalDetail>
