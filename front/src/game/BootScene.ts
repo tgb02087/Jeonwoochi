@@ -9,14 +9,17 @@ import Player from './Player';
  */
 class BootScene extends Scene {
   private player!: Player;
-  private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+  private spawns!: Phaser.Physics.Arcade.Group; // 스폰되는 축제 오브젝트들을 관리하는 멤버
 
   preload() {
     // 타일맵 불러오기
     this.load.image('tiles', '/images/map/jeonwoochi-tileset.png');
     this.load.tilemapTiledJSON('map', map);
 
-    //
+    // 축제 오브젝트 이미지 파일 불러오기
+    this.load.image('sample-object', '/images/festival/sample-object.png');
+
+    // 플레이어 클래스 불러오기
     Player.preload(this);
   }
 
@@ -55,6 +58,26 @@ class BootScene extends Scene {
 
     // 경계 밖으로 카메라가 나가지 않도록 설정
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+    // 축제 오브젝트 생성
+    this.createFestivalObjects();
+  }
+
+  /**
+   * 축제 오브젝트를 생성하는 메소드
+   */
+  createFestivalObjects() {
+    this.spawns = this.physics.add.group({
+      classType: Phaser.GameObjects.Sprite,
+    });
+
+    // 오브젝트 생성 테스트
+    const festival = this.spawns.create(
+      32 * 295 + 16,
+      32 * 178 + 16,
+      'sample-object',
+    );
+    festival.body.setImmovable();
   }
 
   update() {
