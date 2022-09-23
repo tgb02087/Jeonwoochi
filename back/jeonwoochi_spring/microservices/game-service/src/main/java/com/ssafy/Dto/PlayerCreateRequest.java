@@ -7,11 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CharacterUpdateRequest {
-
-    private Long id;
+public class PlayerCreateRequest {
 
     private String name;
 
     private String path;
+
 }

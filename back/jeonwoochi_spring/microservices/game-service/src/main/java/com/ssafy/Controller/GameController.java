@@ -1,7 +1,7 @@
 package com.ssafy.Controller;
 
 import com.ssafy.Dto.*;
-import com.ssafy.Service.CharacterService;
+import com.ssafy.Service.PlayerService;
 import com.ssafy.Service.GameService;
 import com.ssafy.Service.InventoryRidingService;
 import com.ssafy.Service.RidingService;
@@ -9,7 +9,6 @@ import com.ssafy.config.LoginUser.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.EntityResponse;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -17,35 +16,35 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class GameController {
-    private final CharacterService characterService;
+    private final PlayerService playerService;
     private final RidingService ridingService;
     private final InventoryRidingService inventoryRidingService;
     private final GameService gameService;
 
     @PostMapping("/character")
     public ResponseEntity<?> createCharacter(
-            @Valid @RequestBody List<CharacterCreateRequest> requests
+            @Valid @RequestBody List<PlayerCreateRequest> requests
             ){
-        characterService.createCharacter(requests);
+        playerService.createPlayer(requests);
         return ResponseEntity.ok().build();
     }
     @GetMapping("/character")
     public ResponseEntity<?> findCharacterListAll(
 
     ){
-        return ResponseEntity.ok(characterService.findCharacterListAll());
+        return ResponseEntity.ok(playerService.findPlayerListAll());
     }
     @PutMapping("/character")
     public ResponseEntity<?> updateCharacter(
-            @Valid @RequestBody CharacterUpdateRequest request)
+            @Valid @RequestBody PlayerUpdateRequest request)
     {
-        return ResponseEntity.ok(characterService.updateCharacter(request));
+        return ResponseEntity.ok(playerService.updatePlayer(request));
     }
     @DeleteMapping("/character/{characterId}")
     public ResponseEntity<?> deleteCharacter(
             @PathVariable Long characterId
     ){
-        characterService.deleteCharacter(characterId);
+        playerService.deletePlayer(characterId);
         return ResponseEntity.ok().build();
     }
 
