@@ -56,7 +56,7 @@ const RightBody = styled.div`
 const FestivalModal = ({ info, setState }: PropTypes) => {
   return (
     <StyledFestivalModal>
-      <Sheet>
+      <Sheet transparent>
         {info ? (
           <InnerSheet>
             <TitleCancelHeader

@@ -11,6 +11,8 @@ import tw from 'twin.macro';
 import FestivalMap from '../organisms/FestivalMap';
 import FestivalDetail from '../organisms/FestivalDetail';
 import getFestivalItem from '../../api/getFestivalItem';
+import getWeather from '../../api/getWeather';
+import getFestivalNews from '../../api/getFestivalNews';
 
 const MapAPIContainer = styled.div`
   ${tw`flex flex-row`}
@@ -57,14 +59,28 @@ const MapAPI = () => {
     };
   };
 
+  // 축제 상세 정보 불러오기
   const { data, isLoading, isError } = useQuery(['info'], getFestivalItem, {
     staleTime: 1000 * 20,
   });
 
+  // 날씨 정보 가져오기
+  const weatherInfo = useQuery(['weatherInfo'], getWeather, { cacheTime: 0 });
+  // console.log(weatherInfo);
+
+  // 뉴스 정보 가져오기
+  const newsInfo = useQuery(['news'], getFestivalNews, { cacheTime: 0 });
+  console.log(newsInfo.data);
+
   return (
     <MapAPIContainer>
       <StyledFestivalDetail>
-        <FestivalDetail info={data} navigate={navigate} />
+        <FestivalDetail
+          info={data}
+          weatherInfo={weatherInfo?.data?.item}
+          newsInfo={newsInfo?.data}
+          navigate={navigate}
+        />
       </StyledFestivalDetail>
       <StyledMapAPI>
         {mapData.isLoading || !MAPIDX ? (
