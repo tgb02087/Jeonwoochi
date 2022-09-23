@@ -18,7 +18,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   public body: Phaser.Physics.Arcade.Body;
 
   /** @description 주요 객체 값 저장, constructor에서 생성된 후, update에서도 사용되기 때문 */
-  private me!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+  public me: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 
   /** @description 커서 이벤트 설정 - 캐릭터 이동 */
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;

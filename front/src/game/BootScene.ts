@@ -8,7 +8,7 @@ import Player from './Player';
  * @author Sckroll
  */
 class BootScene extends Scene {
-  private player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+  private player!: Player;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 
   preload() {
@@ -50,7 +50,8 @@ class BootScene extends Scene {
 
     // 카메라 설정
     const camera = this.cameras.main;
-    camera.startFollow(this.player);
+
+    camera.startFollow(this.player.me);
 
     // 경계 밖으로 카메라가 나가지 않도록 설정
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
