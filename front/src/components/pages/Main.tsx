@@ -28,7 +28,7 @@ const Main = () => {
   // opened 여부에 따라 화살표 방향, display none 바꿔주기
   const [openedSideBar, setOpenedSideBar] = useState(true);
   // 아래 시작 state 나중에 false로 바꾸기
-  const [openedFestivalModal, setOpenedFestivalModal] = useState(true);
+  const [openedFestivalModal, setOpenedFestivalModal] = useState(false);
   const clickHandler = () => {
     setOpenedSideBar(prev => !prev);
   };

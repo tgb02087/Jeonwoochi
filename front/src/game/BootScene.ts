@@ -9,21 +9,30 @@ import Player from './Player';
  */
 class BootScene extends Scene {
   private player!: Player;
-  private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+  private checkCollide = false;
 
   preload() {
     // 타일맵 불러오기
     this.load.image('tiles', '/images/map/jeonwoochi-tileset.png');
     this.load.tilemapTiledJSON('map', map);
     this.load.audio('bgm', ['/audios/bgm/2 - Big Giant Trees - Gotanda.mp3']);
-    //
+    
+    // Player assets preload
     Player.preload(this);
+
+    // 더미 festival atlas
+    this.load.atlas(
+      'festival',
+      '/images/map/festivals.png',
+      '/images/map/festivals_atlas.json',
+    );
   }
 
   create() {
     // 앱, 타일, 레이어 설정
     const map = this.make.tilemap({ key: 'map' });
     const tileset = map.addTilesetImage('jeonwoochi-tileset', 'tiles');
+    // const festival = map
     // 타일맵 레이어를 추가할 수도 있기 때문에 tiles -> tiles1로 이름 변경
     const worldLayer = map.createLayer('tiles1', tileset, 0, 0);
 
@@ -48,6 +57,21 @@ class BootScene extends Scene {
       obj => obj.name === 'Spawn Point',
     );
 
+    // 더미 festival 정보 생성
+    const festivalInfo = map.findObject(
+      'Objects',
+      obj => obj.name === 'festival',
+    );
+
+    const festival = this.physics.add.staticSprite(
+      festivalInfo.x || 0,
+      festivalInfo.y || 0,
+      'festival',
+      'festival2',
+    );
+
+    // console.log(festival);
+
     // 플레이어 인스턴스
     this.player = new Player(
       this,
@@ -58,7 +82,24 @@ class BootScene extends Scene {
     );
 
     // 맵 collider 설정 세팅
-    this.physics.add.collider(this.player, worldLayer);
+    this.physics.add.collider(this.player, worldLayer, (player, _) => {
+      if (!player.body.checkCollision.none) {
+        console.log('바다와 접촉했다');
+      }
+    });
+
+    this.physics.add.collider(this.player, festival, (player, _) => {
+      // 이곳이 바로 축제별 페이지를 부르는 함수를 호출하면 된다잉
+      // 근데 어떻게 호출하지...
+      if (!player.body.checkCollision.none) {
+        console.log('축제 오브젝트와 접촉했다');
+        // console.log('축제 오브젝트와 접촉했다');
+        // setTimeout(() => {
+        //   this.checkCollide = false;
+        //   console.log('다시 false로 바귐');
+        // }, 3000);
+      }
+    });
 
     // 카메라 설정
     const camera = this.cameras.main;
