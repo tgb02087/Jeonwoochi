@@ -1,9 +1,7 @@
 import axios from 'axios';
 
 const getFestivalList = async () => {
-  const {
-    data: { data },
-  } = await axios({
+  const { data } = await axios({
     method: 'GET',
     url: '/festival-service/list',
   });
