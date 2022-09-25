@@ -16,7 +16,7 @@ class BootScene extends Scene {
     this.load.image('tiles', '/images/map/jeonwoochi-tileset.png');
     this.load.tilemapTiledJSON('map', map);
     this.load.audio('bgm', ['/audios/bgm/2 - Big Giant Trees - Gotanda.mp3']);
-    
+
     // Player assets preload
     Player.preload(this);
 
