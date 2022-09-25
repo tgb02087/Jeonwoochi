@@ -1,6 +1,8 @@
+import { MapData } from './../mocks/handlers/festival_list';
 import { Scene } from 'phaser';
 import map from './country-map.json';
 import Player from './Player';
+import eventEmitter from '../utils/eventEmitter';
 
 /**
  * 게임 씬(Scene) 관리 클래스
@@ -59,17 +61,23 @@ class BootScene extends Scene {
     // 경계 밖으로 카메라가 나가지 않도록 설정
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
-    // 축제 오브젝트 생성
-    this.createFestivalObjects();
+    // 리액트 컴포넌트로부터 축제 리스트 받기
+    eventEmitter.on('festivals', (festivalList?: MapData[]) => {
+      // 축제 오브젝트 생성
+      this.createFestivalObjects(festivalList);
+    });
   }
 
   /**
    * 축제 오브젝트를 생성하는 메소드
    */
-  createFestivalObjects() {
+  createFestivalObjects(festivalList?: MapData[]) {
     this.spawns = this.physics.add.group({
       classType: Phaser.GameObjects.Sprite,
     });
+
+    // 우선 테스트를 위해 콘솔에 출력만 수행
+    console.log(festivalList);
 
     // 오브젝트 생성 테스트
     const festival = this.spawns.create(

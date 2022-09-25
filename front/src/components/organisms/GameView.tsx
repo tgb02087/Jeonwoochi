@@ -1,11 +1,12 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import config from '../../game/config';
 import useGame from '../../game/useGame';
 import { MapData } from '../../mocks/handlers/festival_list';
+import eventEmitter from '../../utils/eventEmitter';
 
 interface PropTypes {
-  festivalList: MapData;
+  festivalList?: MapData[];
 }
 
 const GameViewContainer = styled.section`
@@ -23,7 +24,11 @@ const GameViewContainer = styled.section`
 const GameView = ({ festivalList }: PropTypes) => {
   // 게임 화면 초기화
   const parentEl = useRef<HTMLDivElement>(null);
-  useGame(config, parentEl);
+  const game = useGame(config, parentEl);
+
+  useEffect(() => {
+    eventEmitter.emit('festivals', festivalList);
+  }, [game, festivalList]);
 
   return (
     <GameViewContainer>
