@@ -10,6 +10,7 @@ import Player from './Player';
 class BootScene extends Scene {
   private player!: Player;
   private checkCollide = false;
+  private minimap!: Phaser.Cameras.Scene2D.Camera;
 
   preload() {
     // 타일맵 불러오기
@@ -69,9 +70,6 @@ class BootScene extends Scene {
       'festival',
       'festival2',
     );
-
-    // console.log(festival);
-
     // 플레이어 인스턴스
     this.player = new Player(
       this,
@@ -80,6 +78,8 @@ class BootScene extends Scene {
       'atlas',
       'misa-front',
     );
+
+    // this.minimap.setBackgroundColor(0x002244);
 
     // 맵 collider 설정 세팅
     this.physics.add.collider(this.player, worldLayer, (player, _) => {
@@ -107,7 +107,26 @@ class BootScene extends Scene {
     camera.startFollow(this.player.me);
 
     // 경계 밖으로 카메라가 나가지 않도록 설정
-    camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    camera
+      .setBounds(0, 0, map.widthInPixels, map.heightInPixels)
+      .setZoom(1.8)
+      .setName('main');
+
+    // 미니맵 생성
+    // 위치 선정
+    // 줌 크기
+    this.minimap = this.cameras
+      .add(30, window.innerHeight - 430, 400, 400)
+      .setZoom(0.2)
+      .setName('mini');
+
+    // 미니맵 스크롤 설정
+    this.minimap.scrollX = this.player.x;
+    this.minimap.scrollY = this.player.y;
+
+    // 미니맵도 캐릭터에 포커싱 되도록
+    const minimapCamera = this.cameras.cameras.find(el => el.name === 'mini');
+    minimapCamera?.startFollow(this.player.me);
   }
 
   update() {
