@@ -2,7 +2,9 @@ import { MapData } from './../mocks/handlers/festival_list';
 import { Scene } from 'phaser';
 import map from './country-map.json';
 import Player from './Player';
+import Resource from './Resources';
 import eventEmitter from '../utils/eventEmitter';
+
 
 /**
  * 게임 씬(Scene) 관리 클래스
@@ -11,6 +13,7 @@ import eventEmitter from '../utils/eventEmitter';
  */
 class BootScene extends Scene {
   private player!: Player;
+  private festivalObject!: Resource;
   private checkCollide = false;
   private minimap!: Phaser.Cameras.Scene2D.Camera;
   private spawns!: Phaser.Physics.Arcade.Group; // 스폰되는 축제 오브젝트들을 관리하는 멤버
@@ -28,11 +31,7 @@ class BootScene extends Scene {
     Player.preload(this);
 
     // 더미 festival atlas
-    this.load.atlas(
-      'festival',
-      '/images/map/festivals.png',
-      '/images/map/festivals_atlas.json',
-    );
+    Resource.preload(this);
   }
 
   create() {
@@ -70,12 +69,6 @@ class BootScene extends Scene {
       obj => obj.name === 'festival',
     );
 
-    const festival = this.physics.add.staticSprite(
-      festivalInfo.x || 0,
-      festivalInfo.y || 0,
-      'festival',
-      'festival2',
-    );
     // 플레이어 인스턴스
     this.player = new Player(
       this,
@@ -83,6 +76,15 @@ class BootScene extends Scene {
       spawnPoint.y || 0,
       'atlas',
       'misa-front',
+    );
+
+    // 페스티벌 오브젝트 인스턴스
+    this.festivalObject = new Resource(
+      this,
+      festivalInfo.x || 0,
+      festivalInfo.y || 0,
+      'festival',
+      'festival2',
     );
 
     // this.minimap.setBackgroundColor(0x002244);
@@ -94,18 +96,22 @@ class BootScene extends Scene {
       }
     });
 
-    this.physics.add.collider(this.player, festival, (player, _) => {
-      // 이곳이 바로 축제별 페이지를 부르는 함수를 호출하면 된다잉
-      // 근데 어떻게 호출하지...
-      if (!player.body.checkCollision.none) {
-        console.log('축제 오브젝트와 접촉했다');
-        // console.log('축제 오브젝트와 접촉했다');
-        // setTimeout(() => {
-        //   this.checkCollide = false;
-        //   console.log('다시 false로 바귐');
-        // }, 3000);
-      }
-    });
+    this.physics.add.collider(
+      this.player,
+      this.festivalObject.me,
+      (player, _) => {
+        // 이곳이 바로 축제별 페이지를 부르는 함수를 호출하면 된다잉
+        // 근데 어떻게 호출하지...
+        if (!player.body.checkCollision.none) {
+          console.log('축제 오브젝트와 접촉했다');
+          // console.log('축제 오브젝트와 접촉했다');
+          // setTimeout(() => {
+          //   this.checkCollide = false;
+          //   console.log('다시 false로 바귐');
+          // }, 3000);
+        }
+      },
+    );
 
     // 카메라 설정
     const camera = this.cameras.main;
