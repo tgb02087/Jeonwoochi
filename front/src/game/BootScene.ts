@@ -5,7 +5,6 @@ import Player from './Player';
 import Resource from './Resources';
 import eventEmitter from '../utils/eventEmitter';
 
-
 /**
  * 게임 씬(Scene) 관리 클래스
  *
