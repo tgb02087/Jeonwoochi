@@ -1,20 +1,31 @@
 package com.ssafy.Dto.Response;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.stereotype.Component;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class WeatherResponse {
 
     private String fcstDate;
 
     private String fcstTime;
 
-    private String category;
+    private String SKY;
 
-    private String fcstValue;
+    private String TMP;
+
+    private String PTY;
+
+    private String TMN;
+
+    private String TMX;
+
+    public WeatherResponse(String fcstDate, String fcstTime){
+        this.fcstDate = fcstDate;
+        this.fcstTime = fcstTime;
+    }
 
 }
