@@ -17,7 +17,7 @@ declare global {
 
 // kakaoMap instance를 담아두기 위한 전역객체
 let map: any = undefined;
-let marker: any = undefined;
+// let marker: any = undefined;
 
 /**
  *
@@ -50,7 +50,7 @@ const mapInitHandler = (lat: number, lng: number): void => {
     const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
 
     // 마커 생성
-    marker = new window.kakao.maps.Marker({
+    const marker = new window.kakao.maps.Marker({
       map,
       image: markerImage,
       position: center,
@@ -68,6 +68,10 @@ const mapInitHandler = (lat: number, lng: number): void => {
   }
 };
 
+// const markerClickHandler = () => {
+
+// }
+
 /**
  * @description
  * lat, lng 기준으로 맵 API 렌더링
@@ -77,6 +81,8 @@ const mapInitHandler = (lat: number, lng: number): void => {
 
 const KakaoMap = ({ coord, restaurantData }: PropTypes) => {
   const { lat, lng } = coord;
+
+  let prevInfoWindow: any = null;
 
   useEffect(() => {
     mapInitHandler(lat, lng);
@@ -90,11 +96,78 @@ const KakaoMap = ({ coord, restaurantData }: PropTypes) => {
         const currPos = restaurantData[i];
         const position = new window.kakao.maps.LatLng(currPos.lat, currPos.lng);
 
-        marker = new window.kakao.maps.Marker({
+        const marker = new window.kakao.maps.Marker({
           map,
           position,
+          clickable: true,
         });
         marker.setMap(map);
+        /**
+         * author: jojo
+         */
+        // 해당 마커의 음식점 상호명
+        const restaurantName = '천복순대국밥 궁동점';
+
+        // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
+        const iwContent = document.createElement('div');
+        iwContent.setAttribute(
+          'style',
+          `display: flex;
+          flex-direction: column;
+          `,
+        );
+
+        const iwTitle = document.createElement('div');
+        iwTitle.innerText = restaurantName;
+        iwTitle.setAttribute(
+          'style',
+          `
+          font-weight: bold;
+        `,
+        );
+        const btnContainer = document.createElement('div');
+        btnContainer.setAttribute(
+          'style',
+          `
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+        `,
+        );
+
+        // 클릭하면 식당 이름에 맞는 맵 검색 결과 새 창을 띄움
+        // 상호명 + 지점명은 나중에 api 적용하면 데이터 거기서 받아오기
+        const kakaoLink = document.createElement('a');
+        const naverLink = document.createElement('a');
+        kakaoLink.innerHTML = '카카오 지도로 보기';
+        naverLink.innerHTML = '네이버 지도로 보기';
+        kakaoLink.href = 'https://map.kakao.com/?q=' + restaurantName;
+        kakaoLink.target = '_blank';
+        naverLink.href = 'https://map.naver.com/v5/search/' + restaurantName;
+        naverLink.target = '_blank';
+
+        iwContent.appendChild(iwTitle);
+        iwContent.appendChild(btnContainer);
+        btnContainer.appendChild(kakaoLink);
+        btnContainer.appendChild(naverLink);
+        // const iwContent = `<div style="padding:5px;">Hello World!</div>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+        const iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+        // 인포윈도우를 생성합니다
+        const infowindow = new window.kakao.maps.InfoWindow({
+          content: iwContent,
+          removable: iwRemoveable,
+        });
+
+        // 마커에 클릭이벤트를 등록합니다
+        window.kakao.maps.event.addListener(marker, 'click', function () {
+          // 이전에 클릭한 인포윈도우가 있으면 닫습니다
+          if (prevInfoWindow) prevInfoWindow.close();
+
+          // 마커 위에 인포윈도우를 표시합니다
+          infowindow.open(map, marker);
+          prevInfoWindow = infowindow;
+        });
       }
     }
   }, [restaurantData]);
