@@ -16,7 +16,7 @@ interface PropTypes {
     description: string;
   };
   // weatherInfo: any;
-  // newsInfo: any;
+  newsInfo: any;
   navigate: NavigateFunction;
 }
 const StyledFestivalDetail = styled.div`
@@ -52,11 +52,11 @@ const NewsInfo = styled.div`
 const FestivalDetail = ({
   info,
   // weatherInfo,
-  // newsInfo,
+  newsInfo,
   navigate,
 }: PropTypes) => {
   // console.log(weatherInfo);
-  // console.log(newsInfo);
+  console.log(newsInfo);
 
   const clickHandler = () => {
     navigate(-1);
@@ -94,7 +94,7 @@ const FestivalDetail = ({
           </WeatherInfo>
           <NewsInfo>
             <Text color="white" message="관련 기사" size={1.3} />
-            {/* {newsInfo ? (
+            {newsInfo ? (
               <>
                 <Link href={newsInfo[0].link} color="white">
                   {'- ' + newsInfo[0].title.substring(0, 25)}
@@ -106,8 +106,8 @@ const FestivalDetail = ({
               </>
             ) : (
               <Text color="white" message="로딩 중입니다..." />
-              )} */}
-            <Text color="white" message="로딩 중입니다..." />
+            )}
+            {/* <Text color="white" message="로딩 중입니다..." /> */}
           </NewsInfo>
         </InnerSheet>
       </Sheet>
