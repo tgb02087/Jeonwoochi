@@ -11,9 +11,8 @@ import eventEmitter from '../utils/eventEmitter';
  * @author Sckroll
  */
 class BootScene extends Scene {
-  private player!: Player;
+  public player!: Player;
   private festivalObject!: Resource;
-  private checkCollide = false;
   private minimap!: Phaser.Cameras.Scene2D.Camera;
   private spawns!: Phaser.Physics.Arcade.Group; // 스폰되는 축제 오브젝트들을 관리하는 멤버
 
@@ -34,11 +33,12 @@ class BootScene extends Scene {
   }
 
   create() {
+    // const festival = map
+    // 타일맵 레이어를 추가할 수도 있기 때문에 tiles -> tiles1로 이름 변경
+
     // 앱, 타일, 레이어 설정
     const map = this.make.tilemap({ key: 'map' });
     const tileset = map.addTilesetImage('jeonwoochi-tileset', 'tiles');
-    // const festival = map
-    // 타일맵 레이어를 추가할 수도 있기 때문에 tiles -> tiles1로 이름 변경
     const worldLayer = map.createLayer('tiles1', tileset, 0, 0);
 
     // bgm 설정
@@ -76,6 +76,7 @@ class BootScene extends Scene {
       spawnPoint.y || 0,
       'atlas',
       'misa-front',
+      worldLayer,
     );
 
     // 페스티벌 오브젝트 인스턴스
@@ -88,13 +89,6 @@ class BootScene extends Scene {
     );
 
     // this.minimap.setBackgroundColor(0x002244);
-
-    // 맵 collider 설정 세팅
-    this.physics.add.collider(this.player, worldLayer, (player, _) => {
-      if (!player.body.checkCollision.none) {
-        console.log('바다와 접촉했다');
-      }
-    });
 
     this.physics.add.collider(
       this.player,
@@ -111,7 +105,7 @@ class BootScene extends Scene {
           // }, 3000);
         }
       },
-    );
+    ).name = 'object';
 
     // 카메라 설정
     const camera = this.cameras.main;
@@ -156,7 +150,7 @@ class BootScene extends Scene {
     });
 
     // 우선 테스트를 위해 콘솔에 출력만 수행
-    console.log(festivalList);
+    // console.log(festivalList);
 
     // 오브젝트 생성 테스트
     const festival = this.spawns.create(
