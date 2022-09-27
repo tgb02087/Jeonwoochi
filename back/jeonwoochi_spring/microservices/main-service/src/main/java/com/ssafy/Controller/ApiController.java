@@ -1,7 +1,7 @@
 package com.ssafy.Controller;
 
 import com.ssafy.Dto.Response.SearchResponse;
-import com.ssafy.Dto.Response.WeatherResponse;
+import com.ssafy.Dto.Response.WeatherInfoResponse;
 import com.ssafy.Service.SearchService;
 import com.ssafy.Service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
@@ -30,9 +28,10 @@ public class ApiController {
         return new ResponseEntity<>("성공", HttpStatus.OK);
     }
 
-    @PostMapping("/api/weather")
-    public ResponseEntity<?> getWeather() throws IOException {
-        List<WeatherResponse> list = ws.getWeather();
+    @GetMapping("/api/weather")
+    public ResponseEntity<?> getWeather(@RequestParam(value = "x")String x, @RequestParam(value = "y")String y) throws IOException {
+        List<WeatherInfoResponse> list = ws.getWeather(x,y);
+        if(list==null) return new ResponseEntity<>("실패", HttpStatus.OK);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
