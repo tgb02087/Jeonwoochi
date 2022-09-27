@@ -42,16 +42,17 @@ class BootScene extends Scene {
     const worldLayer = map.createLayer('tiles1', tileset, 0, 0);
 
     // bgm 설정
-    const music = this.sound.add('bgm', {
-      mute: false,
-      volume: 0.05,
-      rate: 1,
-      detune: 0,
-      seek: 0,
-      loop: true,
-      delay: 1,
-    });
-    music.play();
+    // 시끄러워서 주석처리합니다
+    // const music = this.sound.add('bgm', {
+    //   mute: false,
+    //   volume: 0.05,
+    //   rate: 1,
+    //   detune: 0,
+    //   seek: 0,
+    //   loop: true,
+    //   delay: 1,
+    // });
+    // music.play();
 
     // 타일에 충돌(Collision) 적용
     worldLayer.setCollisionByProperty({ collides: true });
@@ -102,7 +103,7 @@ class BootScene extends Scene {
         // 이곳이 바로 축제별 페이지를 부르는 함수를 호출하면 된다잉
         // 근데 어떻게 호출하지...
         if (!player.body.checkCollision.none) {
-          console.log('축제 오브젝트와 접촉했다');
+          // console.log('축제 오브젝트와 접촉했다');
           // console.log('축제 오브젝트와 접촉했다');
           // setTimeout(() => {
           //   this.checkCollide = false;

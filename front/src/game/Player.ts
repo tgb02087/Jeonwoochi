@@ -21,7 +21,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   public me: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
 
   /** @description 커서 이벤트 설정 - 캐릭터 이동 */
-  private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+  // private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+  private inputKeys: any;
 
   constructor(
     scene: Phaser.Scene,
@@ -87,8 +88,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       repeat: -1,
     });
 
-    // 커서 설정 함수 호출
-    this.cursors = scene.input.keyboard.createCursorKeys();
+    // 방향기 설ㅈ어
+    this.inputKeys = scene.input.keyboard.addKeys({
+      up: Phaser.Input.Keyboard.KeyCodes.W,
+      down: Phaser.Input.Keyboard.KeyCodes.S,
+      left: Phaser.Input.Keyboard.KeyCodes.A,
+      right: Phaser.Input.Keyboard.KeyCodes.D,
+      shift: Phaser.Input.Keyboard.KeyCodes.SHIFT,
+    });
   }
 
   static preload(scene: Phaser.Scene) {
@@ -102,33 +109,33 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   update() {
     let speed: number;
     // Shift 키를 누르면서 이동하면 빠르게 이동
-    if (this.cursors.shift.isDown) speed = 350;
+    if (this.inputKeys.shift.isDown) speed = 350;
     else speed = 175;
     const prevVelocity = this.body.velocity.clone();
     // 이전 프레임의 속도를 0으로 설정
     this.body.setVelocity(0);
     // 좌우 이동
-    if (this.cursors.left.isDown) {
+    if (this.inputKeys.left.isDown) {
       this.body.setVelocityX(-speed);
-    } else if (this.cursors.right.isDown) {
+    } else if (this.inputKeys.right.isDown) {
       this.body.setVelocityX(speed);
     }
     // 상하 이동
-    if (this.cursors.up.isDown) {
+    if (this.inputKeys.up.isDown) {
       this.body.setVelocityY(-speed);
-    } else if (this.cursors.down.isDown) {
+    } else if (this.inputKeys.down.isDown) {
       this.body.setVelocityY(speed);
     }
     // 대각선으로 이동 시 속도 조절을 위해 속도 정규화(normalize) & 크기 조정(scale)
     this.body.velocity.normalize().scale(speed);
     // 애니메이션 업데이트 (상하 이동보다 좌우 이동을 우선시)
-    if (this.cursors.left.isDown) {
+    if (this.inputKeys.left.isDown) {
       this.me.anims.play('misa-left-walk', true);
-    } else if (this.cursors.right.isDown) {
+    } else if (this.inputKeys.right.isDown) {
       this.me.anims.play('misa-right-walk', true);
-    } else if (this.cursors.up.isDown) {
+    } else if (this.inputKeys.up.isDown) {
       this.me.anims.play('misa-back-walk', true);
-    } else if (this.cursors.down.isDown) {
+    } else if (this.inputKeys.down.isDown) {
       this.me.anims.play('misa-front-walk', true);
     } else {
       this.me.anims.stop();
