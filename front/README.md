@@ -285,3 +285,12 @@
   + 접속 성공 확인
   + 간간히 되었다 안되었다 하는 듯??
   + 포트포워딩 추가 6379 
++ `Player` `move` 이벤트 변경
+  + `cursor` -> `WASD` (마우스 사용 고려)
+  + `cursor` 이벤트에서 `inputKeys` 이벤트로 변경
+  + 새로운 키보드 이벤트의 경우 이어서 추가만 하면 됨
++ `Player's skill` : riding 설계
+  + 한번만 실행되는 키 이벤트 추가
+  + `class` 에 스킬 시전 상태 추가
+  + `activate` 상황에는 탈것 이미지가 나오고, collide 반영 안되도록
+  + `inactivate` 상황에는 탈것 이미지가 사라지도록, collide 반영 되도록

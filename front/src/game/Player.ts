@@ -23,6 +23,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   /** @description 커서 이벤트 설정 - 캐릭터 이동 */
   // private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private inputKeys: any;
+  private isRiding: boolean;
 
   constructor(
     scene: Phaser.Scene,
@@ -40,6 +41,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       .setOffset(0, 24);
 
     this.body = this.me.body;
+    this.isRiding = false;
 
     // 애니메이션 설정
     const anims = this.me.anims;
@@ -88,14 +90,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       repeat: -1,
     });
 
-    // 방향기 설ㅈ어
+    // 방향기 설정
     this.inputKeys = scene.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
       down: Phaser.Input.Keyboard.KeyCodes.S,
       left: Phaser.Input.Keyboard.KeyCodes.A,
       right: Phaser.Input.Keyboard.KeyCodes.D,
       shift: Phaser.Input.Keyboard.KeyCodes.SHIFT,
+      // riding: Phaser.Input.Keyboard.KeyCodes.C,
     });
+
+    scene.input.keyboard.on('keydown-' + 'C', this.skillRiding);
   }
 
   static preload(scene: Phaser.Scene) {
@@ -111,6 +116,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // Shift 키를 누르면서 이동하면 빠르게 이동
     if (this.inputKeys.shift.isDown) speed = 350;
     else speed = 175;
+
+    // if (this.inputKeys.riding.isDown) {
+    //   this.skillRiding();
+    // }
     const prevVelocity = this.body.velocity.clone();
     // 이전 프레임의 속도를 0으로 설정
     this.body.setVelocity(0);
@@ -145,6 +154,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       else if (prevVelocity.x > 0) this.me.setTexture('atlas', 'misa-right');
       else if (prevVelocity.y < 0) this.me.setTexture('atlas', 'misa-back');
       else if (prevVelocity.y > 0) this.me.setTexture('atlas', 'misa-front');
+    }
+  }
+
+  skillRiding() {
+    if (this.isRiding) {
+      console.log('스킬 끄기');
+      this.isRiding = false;
+    } else {
+      console.log('스킬 시전');
+      this.isRiding = true;
     }
   }
 }
