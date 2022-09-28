@@ -238,6 +238,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
+  /**
+   *
+   * @description
+   * "현재 시전 상태에 따라 스킬 토글""
+   * @description
+   * "캐릭터 speed 향상"
+   *
+   * @author bell
+   */
   skillHaste() {
     if (this.isHaste) {
       this.hasteIcon?.destroy();
@@ -258,19 +267,31 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
+  /**
+   *
+   * @description
+   * "현재 시전 상태에 따라 스킬 토글""
+   * @description
+   * "캐릭터 바다 collide 제거"
+   *
+   * @author bell
+   */
   skilllevitation() {
     const temp = this.scene.physics.world.colliders;
 
     if (this.isLevitation) {
+      // 아이콘 삭제
       this.levitationIcon?.destroy();
-      // ?.destroy();
+      // 시전상태 : false
       this.isLevitation = false;
 
+      // 만약 world 라는 이름이 collider가 존재하지 않는 경우에만
+      // world collider 생성
       if (!temp.getActive().find(el => el.name == 'world'))
         this.createColliderForWorldLayer();
-      // this.mana.increase();
-      // console.log(temp);
     } else {
+      // 레비테이션 아이콘 생성
+      // 스프라이트로 생성하여 x,y 설정 가능하도록
       this.levitationIcon = new Phaser.GameObjects.Sprite(
         this.scene,
         this.me.x,
@@ -278,26 +299,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         'items',
         56,
       );
+      // world collider 제거
       temp.remove(temp.getActive().filter(el => el.name == 'world')[0]);
-      // this.me.y -= 10;
+      // 아이콘 y좌표 설정
       this.levitationIcon.y -= 45;
-
-      // this.scene.physics.world.removeCollider();
+      // scene에 추가
       this.scene.add.existing(this.levitationIcon);
+      // 시전상태 : true
       this.isLevitation = true;
     }
   }
 
-  // skillCondition() {
-  //   if (this.mana.value < 10) {
-  //     this.skillHaste();
-  //     this.skilllevitation();
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
-
+  /**
+   * @description
+   * "바다 전용 collider 설정을 만들어주는 함수"
+   * @author bell
+   */
   createColliderForWorldLayer() {
     this.scene.physics.add.collider(this, this.worldLayer, player => {
       if (!player.body.checkCollision.none) {

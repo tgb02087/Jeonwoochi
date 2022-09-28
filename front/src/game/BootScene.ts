@@ -85,15 +85,6 @@ class BootScene extends Scene {
       worldLayer,
     );
 
-    // this.minimap.setBackgroundColor(0x002244);
-
-    // 맵 collider 설정 세팅
-    this.physics.add.collider(this.player, worldLayer, (player, _) => {
-      if (!player.body.checkCollision.none) {
-        console.log('바다와 접촉했다');
-      }
-    }).name = 'object';
-
     // 카메라 설정
     const camera = this.cameras.main;
 
