@@ -35,10 +35,6 @@ public class FestivalForm {
     @Enumerated(EnumType.STRING)
     private FestivalWayType way;
 
-    private Long x;
-
-    private Long y;
-
     private Float lat;
 
     private Float lng;
@@ -47,7 +43,9 @@ public class FestivalForm {
     @JoinColumn(name = "festival_type_id")
     private FestivalType festivalType;
 
-    public static FestivalForm create(FestivalFormCreateRequest request){
+    private Long userId;
+
+    public static FestivalForm create(FestivalFormCreateRequest request, FestivalType festivalType, Long userId){
         FestivalForm festival = new FestivalForm();
         festival.name = request.getName();
         festival.startDate = request.getStartDate();
@@ -56,13 +54,13 @@ public class FestivalForm {
         festival.locate = request.getLocate();
         festival.image = request.getImage();
         festival.way = request.getWay();
-        festival.x = request.getX();
-        festival.y = request.getY();
         festival.lat = request.getLat();
         festival.lng = request.getLng();
+        festival.festivalType = festivalType;
+        festival.userId = userId;
         return festival;
     }
-    public void update(FestivalFormUpdateRequest request){
+    public void update(FestivalFormUpdateRequest request, FestivalType festivalType){
         this.name = request.getName();
         this.startDate = request.getStartDate();
         this.finishDate = request.getFinishDate();
@@ -70,9 +68,8 @@ public class FestivalForm {
         this.locate = request.getLocate();
         this.image = request.getImage();
         this.way = request.getWay();
-        this.x = request.getX();
-        this.y = request.getY();
         this.lat = request.getLat();
         this.lng = request.getLng();
+        this.festivalType = festivalType;
     }
 }

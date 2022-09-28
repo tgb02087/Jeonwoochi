@@ -2,7 +2,9 @@ package com.ssafy.Service;
 
 import com.ssafy.Domain.Entity.Festival;
 import com.ssafy.Domain.Entity.FestivalForm;
+import com.ssafy.Domain.Entity.FestivalType;
 import com.ssafy.Domain.Repository.FestivalFormRepo;
+import com.ssafy.Domain.Repository.FestivalTypeRepo;
 import com.ssafy.Dto.FestivalFormCreateRequest;
 import com.ssafy.Dto.FestivalFormResponse;
 import com.ssafy.Dto.FestivalFormUpdateRequest;
@@ -15,21 +17,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.ssafy.exception.NotFoundException.FESTIVAL_FORM_NOT_FOUND;
-import static com.ssafy.exception.NotFoundException.FESTIVAL_NOT_FOUND;
+import static com.ssafy.exception.NotFoundException.*;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FestivalFormServiceImpl implements FestivalFormService{
     private final FestivalFormRepo festivalFormRepo;
-
+    private final FestivalTypeRepo festivalTypeRepo;
     // 축제 요청 추가
     @Override
     @Transactional
-    public void createFestivalForm(List<FestivalFormCreateRequest> requests) {
+    public void createFestivalForm(List<FestivalFormCreateRequest> requests, Long userId) {
         requests.forEach(request -> {
-            FestivalForm festivalForm = FestivalForm.create(request);
+            FestivalType festivalType = festivalTypeRepo.findById(request.getFestivalTypeId())
+                    .orElseThrow(()-> new NotFoundException(FESTIVAL_TYPE_NOT_FOUND));
+            FestivalForm festivalForm = FestivalForm.create(request, festivalType, userId);
             festivalFormRepo.save(festivalForm);
         });
     }
@@ -53,16 +56,21 @@ public class FestivalFormServiceImpl implements FestivalFormService{
     // 내가 요청한 축제 리스트 조회
     @Override
     @Transactional
-    public FestivalFormResponse findFestivalFormListByMe() {
-        return null;
+    public List<FestivalFormResponse> findFestivalFormListByMe(Long userId) {
+        List<FestivalFormResponse> festivalForms = festivalFormRepo.findByUserId(userId).stream()
+                .map(FestivalFormResponse::response)
+                .collect(Collectors.toList());
+        return festivalForms;
     }
     // 축제 요청 수정
     @Override
     @Transactional
     public FestivalFormResponse updateFestivalForm(FestivalFormUpdateRequest request) {
+        FestivalType festivalType = festivalTypeRepo.findById(request.getFestivalTypeId())
+                .orElseThrow(()-> new NotFoundException(FESTIVAL_TYPE_NOT_FOUND));
         FestivalForm festivalForm = festivalFormRepo.findById(request.getId())
                 .orElseThrow(()-> new NotFoundException(FESTIVAL_FORM_NOT_FOUND));
-        festivalForm.update(request);
+        festivalForm.update(request, festivalType);
         return FestivalFormResponse.response(festivalForm);
     }
     // 축제 요청 삭제

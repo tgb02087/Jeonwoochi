@@ -17,6 +17,8 @@ public class FestivalFormResponse {
 
     private String name;
 
+    private String festivalType;
+
     private Date startDate;
 
     private Date finishDate;
@@ -29,10 +31,6 @@ public class FestivalFormResponse {
 
     private FestivalWayType way;
 
-    private Long x;
-
-    private Long y;
-
     private Float lat;
 
     private Float lng;
@@ -41,14 +39,13 @@ public class FestivalFormResponse {
         return new FestivalFormResponse(
                 festivalForm.getId(),
                 festivalForm.getName(),
+                festivalForm.getFestivalType().getName(),
                 festivalForm.getStartDate(),
                 festivalForm.getFinishDate(),
                 festivalForm.getContents(),
                 festivalForm.getLocate(),
                 festivalForm.getImage(),
                 festivalForm.getWay(),
-                festivalForm.getX(),
-                festivalForm.getY(),
                 festivalForm.getLat(),
                 festivalForm.getLng()
         );
