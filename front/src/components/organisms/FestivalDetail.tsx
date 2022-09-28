@@ -5,6 +5,7 @@ import Image from '../atoms/Image';
 import Link from '../atoms/Link';
 import Sheet from '../atoms/Sheet';
 import Text from '../atoms/Text';
+import Weather from '../atoms/Weather';
 import FestivalInfos from './FestivalInfos';
 
 interface PropTypes {
@@ -15,9 +16,15 @@ interface PropTypes {
     posterUrl: string;
     description: string;
   };
-  // weatherInfo: any;
+  weatherInfo: any;
   newsInfo: any;
   navigate: NavigateFunction;
+}
+interface WeatherType {
+  data: string;
+  sky: string;
+  tmn: string;
+  tmx: string;
 }
 const StyledFestivalDetail = styled.div`
   width: 100%;
@@ -37,7 +44,14 @@ const StyledPoster = styled.div`
   width: 50%;
 `;
 const WeatherInfo = styled.div`
-  height: 10vh;
+  gap: 1rem;
+`;
+const TempInfo = styled.div`
+  ${tw`flex items-center`}
+  gap: 1rem;
+`;
+const WeatherIcon = styled.div`
+  width: 3rem;
 `;
 const NewsInfo = styled.div`
   height: 15vh;
@@ -51,12 +65,11 @@ const NewsInfo = styled.div`
  */
 const FestivalDetail = ({
   info,
-  // weatherInfo,
+  weatherInfo,
   newsInfo,
   navigate,
 }: PropTypes) => {
-  // console.log(weatherInfo);
-  console.log(newsInfo);
+  console.log(weatherInfo);
 
   const clickHandler = () => {
     navigate(-1);
@@ -76,21 +89,42 @@ const FestivalDetail = ({
                 <Text color="white" message={info.title} size={1.5} />
                 <FestivalInfos info={info} size={1.2} />
               </StyledFestivalInfo>
-              <StyledPoster>
+              {/* 나중에 title mouseover 시 나타나게 구현 */}
+              {/* <StyledPoster>
                 <Image src={info.posterUrl} alt="poster" />
-              </StyledPoster>
+              </StyledPoster> */}
             </>
           ) : (
             <Text color="white" message="로딩 중입니다..." />
           )}
           <WeatherInfo>
             <Text color="white" message="날씨 예보" size={1.3} />
-            {/* {weatherInfo ? (
-              <Text color="white" message="날씨 어쩌꾸" />
+            {weatherInfo ? (
+              weatherInfo.data.map(({ data, sky, tmn, tmx }: WeatherType) => {
+                const date =
+                  data.slice(0, 4) +
+                  '-' +
+                  data.slice(4, 6) +
+                  '-' +
+                  data.slice(6, 8);
+                return (
+                  <>
+                    <Text color="white" message={date} size={1.2} />
+                    <TempInfo>
+                      <WeatherIcon>
+                        <Weather code={sky[0]} />
+                      </WeatherIcon>
+                      <Text color="white" message="최저" size={1.1} />
+                      <Text color="white" message={tmn} size={1.1} />
+                      <Text color="white" message="최고" size={1.1} />
+                      <Text color="white" message={tmx} size={1.1} />
+                    </TempInfo>
+                  </>
+                );
+              })
             ) : (
               <Text color="white" message="로딩 중입니다..." />
-              )} */}
-            <Text color="white" message="로딩 중입니다..." />
+            )}
           </WeatherInfo>
           <NewsInfo>
             <Text color="white" message="관련 기사" size={1.3} />
@@ -107,7 +141,6 @@ const FestivalDetail = ({
             ) : (
               <Text color="white" message="로딩 중입니다..." />
             )}
-            {/* <Text color="white" message="로딩 중입니다..." /> */}
           </NewsInfo>
         </InnerSheet>
       </Sheet>
