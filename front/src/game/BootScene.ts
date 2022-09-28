@@ -28,6 +28,9 @@ class BootScene extends Scene {
     // 더미 festival atlas
     Resource.preload(this);
 
+    // 축제 오브젝트 이름표 배경 불러오기
+    this.load.image('nameTag', '/images/map/name-tag.png');
+
     // 리액트 컴포넌트로부터 축제 리스트를 받고 저장
     eventEmitter.on('festivals', (festivalList?: MapData[]) => {
       this.festivalList = festivalList;
@@ -139,20 +142,18 @@ class BootScene extends Scene {
       const { x, y } = this.convertLatLonToXY(festival);
       console.log(festival.name, x, y);
 
-      const { me } = new Resource(
-        this,
-        16 + 32 * x,
-        16 + 32 * y,
-        'festival',
-        'festival2',
-      );
-      // const { me } = new Resource(this, 9664.5, 5727, 'festival', 'festival2');
+      // 오브젝트 생성
+      const { me } = new Resource(this, x, y, 'festival', 'festival2');
 
+      // 충돌 적용
       this.physics.add.collider(this.player, me, player => {
         if (!player.body.checkCollision.none) {
           console.log('축제 오브젝트와 접촉했다');
         }
       });
+
+      // 축제명 표시
+      this.createFestivalNameTag(festival.name, x, y, me.height);
     });
   }
 
@@ -175,7 +176,7 @@ class BootScene extends Scene {
       south: 33.1,
     };
 
-    // 국토 타일맵의 상하좌우 간격
+    // 국토 타일맵의 동서남북 간격
     const padding = {
       east: 72,
       west: 83,
@@ -187,13 +188,13 @@ class BootScene extends Scene {
     const latLength = 800;
     const lngLength = 700;
 
-    // 1칸당 좌우 거리 = (극동 - 극서) / 800 = 0.0105512489147287º
-    // 1칸당 상하 거리 = (극북 - 극남) / 700 = 0.0087993421052632º
+    // 1칸 당 좌우 거리 = (극동 - 극서) / 800 = 0.0105512489147287º
+    // 1칸 당 상하 거리 = (극북 - 극남) / 700 = 0.0087993421052632º
     const tilePerLat = (extremePoints.east - extremePoints.west) / latLength;
     const tilePerLng = (extremePoints.north - extremePoints.south) / lngLength;
 
     /**
-     * 상하좌우 여분의 간격을 감안하면
+     * 동서남북 여분의 간격을 감안하면
      * 맵 전체 중 가장 왼쪽의 경도 = 극서 - (0.0105512489147287º * 83칸) = 124.1909130100775º
      * 맵 전체 중 가장 오른쪽의 경도 = 극동 + (0.0105512489147287º * 72칸) = 132.6319121418605º
      * 맵 전체 중 가장 위쪽의 위도 = 극북 + (0.0087993421052632º * 52칸) = 38.90756578947369º
@@ -202,15 +203,43 @@ class BootScene extends Scene {
     const latStartPoint = extremePoints.west - tilePerLat * padding.west;
     const lngStartPoint = extremePoints.south - tilePerLng * padding.south;
 
-    // console.log(lat, lng);
-    // console.log(latStartPoint, lngStartPoint);
-
     // 타일맵의 가장 왼쪽의 경도와 가장 아래쪽의 위도를 기준으로
     // 파라미터로 받은 축제의 경도 & 위도를 타일맵 x & y 좌표로 변환
-    const x = (lat - latStartPoint) / tilePerLat;
-    const y = (lng - lngStartPoint) / tilePerLng;
+    // 주의: x와 y는 칸의 개수가 아님!
+    const x = ((lat - latStartPoint) / tilePerLat) * 32 + 16;
+    const y = ((lng - lngStartPoint) / tilePerLng) * 32 + 16;
 
     return { x, y };
+  }
+
+  /**
+   * 축제 이름을 오브젝트 상단에 띄우는 메소드
+   *
+   * @param name 축제명
+   * @param x 이름표를 띄울 축제 오브젝트의 x 좌표
+   * @param y 이름표를 띄울 축제 오브젝트의 y 좌표
+   * @param height 축제 오브젝트 스프라이트의 높이
+   * @author Sckroll
+   */
+  createFestivalNameTag(name: string, x: number, y: number, height: number) {
+    const nameTag = this.add.group();
+    const background = this.add.sprite(0, 0, 'nameTag');
+    const text = this.add.text(0, 0, name, {
+      fontFamily: 'DungGeunMo',
+      wordWrap: { useAdvancedWrap: true },
+    });
+
+    // 이름표에 배경 및 텍스트 추가
+    nameTag.add(background);
+    nameTag.add(text);
+
+    // 이름표 좌표 설정
+    nameTag.setX(x);
+    nameTag.setY(y - height * (3 / 2));
+
+    // 텍스트 좌표 설정 (8은 텍스트 위치 보정값)
+    text.setX(x - height + 8);
+    text.setY(y - height * (3 / 2) - 8);
   }
 }
 
