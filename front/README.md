@@ -394,6 +394,11 @@
 
 ## 220929
 + 종현
+  + 미니맵 디데일 추가
+    + 마킹 캐릭터 변경 sample -> mira
+    + `react` 내의 효과음 관리를 위한,
+    + audio 파일 import 를 위한 환경설정 : Audio.d.ts
+    + 버튼 클릭시 효과음 추가 - 현재: 코인소리, 차후 바꿀 예정
   + 에러 확인 : `levitation` 적용 안됨
     + `collider` 중복 생성 문제
     + `scene`의 `collider` 생성 코드 제거
