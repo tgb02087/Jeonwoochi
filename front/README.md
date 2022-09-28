@@ -398,3 +398,4 @@
     + `collider` 중복 생성 문제
     + `scene`의 `collider` 생성 코드 제거
     + 항시 `collider`는 `player` 가 포함되기 때문에 `player` 쪽에서 `collider`를 관리하는 것으로 설정
+

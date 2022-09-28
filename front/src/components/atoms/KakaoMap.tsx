@@ -44,8 +44,8 @@ const mapInitHandler = (lat: number, lng: number): void => {
 
     // 마커 이미지 설정
     // 해당 프로젝트의 마킹 이미지는 "캐릭터"이다
-    const imageSrc = '/images/map/marker-example.gif';
-    const imageSize = new window.kakao.maps.Size(50, 50);
+    const imageSrc = '/images/map/mira.gif';
+    const imageSize = new window.kakao.maps.Size(32, 45);
 
     const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
 
