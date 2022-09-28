@@ -128,17 +128,87 @@ class BootScene extends Scene {
   }
 
   /**
-   * 위도 및 경도에 따라 축제 오브젝트를 생성하는 메소드
+   * 위도와 경도에 따라 축제 오브젝트를 생성하는 메소드
+   *
+   * @author Sckroll
    */
   createFestivalObjects() {
-    // 페스티벌 오브젝트 인스턴스
-    const { me } = new Resource(this, 9664.5, 5727, 'festival', 'festival2');
+    this.festivalList?.forEach(festival => {
+      const { x, y } = this.convertLatLonToXY(festival);
+      console.log(festival.name, x, y);
 
-    this.physics.add.collider(this.player, me, player => {
-      if (!player.body.checkCollision.none) {
-        console.log('축제 오브젝트와 접촉했다');
-      }
+      const { me } = new Resource(
+        this,
+        16 + 32 * x,
+        16 + 32 * y,
+        'festival',
+        'festival2',
+      );
+      // const { me } = new Resource(this, 9664.5, 5727, 'festival', 'festival2');
+
+      this.physics.add.collider(this.player, me, player => {
+        if (!player.body.checkCollision.none) {
+          console.log('축제 오브젝트와 접촉했다');
+        }
+      });
     });
+  }
+
+  /**
+   * 축제가 열리는 장소의 실제 경도와 위도를 게임 상의 `x`, `y` 좌표로 변환하는 메소드
+   *
+   * @param festival 축제 정보가 들어있는 객체
+   * @returns 게임 상의 `x`, `y` 좌표가 들어있는 객체
+   * @author Sckroll
+   */
+  convertLatLonToXY(festival: MapData) {
+    const { lat, lng } = festival;
+
+    // 남한 국토 극동, 극서의 경도와 극북, 극남의 위도
+    // 출처: http://aispiration.com/spatial/geo-info.html
+    const extremePoints = {
+      east: 131.87222222,
+      west: 125.06666667,
+      north: 38.45,
+      south: 33.1,
+    };
+
+    // 국토 타일맵의 상하좌우 간격
+    const padding = {
+      east: 72,
+      west: 83,
+      north: 52,
+      south: 40,
+    };
+
+    // 타일맵 가로 & 세로 길이
+    const latLength = 800;
+    const lngLength = 700;
+
+    // 1칸당 좌우 거리 = (극동 - 극서) / 800 = 0.0105512489147287º
+    // 1칸당 상하 거리 = (극북 - 극남) / 700 = 0.0087993421052632º
+    const tilePerLat = (extremePoints.east - extremePoints.west) / latLength;
+    const tilePerLng = (extremePoints.north - extremePoints.south) / lngLength;
+
+    /**
+     * 상하좌우 여분의 간격을 감안하면
+     * 맵 전체 중 가장 왼쪽의 경도 = 극서 - (0.0105512489147287º * 83칸) = 124.1909130100775º
+     * 맵 전체 중 가장 오른쪽의 경도 = 극동 + (0.0105512489147287º * 72칸) = 132.6319121418605º
+     * 맵 전체 중 가장 위쪽의 위도 = 극북 + (0.0087993421052632º * 52칸) = 38.90756578947369º
+     * 맵 전체 중 가장 아래쪽의 위도 = 극남 - (0.0087993421052632º * 40칸) = 32.74802631578947º
+     */
+    const latStartPoint = extremePoints.west - tilePerLat * padding.west;
+    const lngStartPoint = extremePoints.south - tilePerLng * padding.south;
+
+    // console.log(lat, lng);
+    // console.log(latStartPoint, lngStartPoint);
+
+    // 타일맵의 가장 왼쪽의 경도와 가장 아래쪽의 위도를 기준으로
+    // 파라미터로 받은 축제의 경도 & 위도를 타일맵 x & y 좌표로 변환
+    const x = (lat - latStartPoint) / tilePerLat;
+    const y = (lng - lngStartPoint) / tilePerLng;
+
+    return { x, y };
   }
 }
 
