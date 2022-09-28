@@ -125,68 +125,78 @@ pipeline{
         }
 		stage('Eureka Depoly'){
             steps {
-                try{
-                sh "docker run -d --name=${DISCOVERY_CONTAINER_NAME} -p 8761:8761 --net msa ${DISCOVERY_NAME}"
-                sh 'sleep 10'
-                mattermostSend (
-                    color: "good", 
-                    message: "Back Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
-                )
-                }catch(e){
-                    mattermostSend (
-                        color: "danger", 
-                        message: "Back Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
-                    )
-                }
-            }
-        }
-		stage('Config and Gateway Depoly'){
-            try{
-                steps {
-                    sh "docker run -d --name=${CONFIG_CONTAINER_NAME} -p 8888:8888 --net msa ${CONFIG_NAME}"
-                    sh "docker run -d --name=${GATEWAY_CONTAINER_NAME} -p 8000:8000 --net msa ${GATEWAY_NAME}"
+                script{
+                    try{
+                    sh "docker run -d --name=${DISCOVERY_CONTAINER_NAME} -p 8761:8761 --net msa ${DISCOVERY_NAME}"
                     sh 'sleep 10'
                     mattermostSend (
                         color: "good", 
                         message: "Back Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
                     )
+                    }catch(e){
+                        mattermostSend (
+                            color: "danger", 
+                            message: "Back Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+                        )
+                    }
                 }
-            }catch(e){
-                mattermostSend (
-                    color: "danger", 
-                    message: "Back Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
-                )
             }
         }
+
+		stage('Config and Gateway Depoly'){
+                steps {
+                    script{
+                        try{
+                        sh "docker run -d --name=${CONFIG_CONTAINER_NAME} -p 8888:8888 --net msa ${CONFIG_NAME}"
+                        sh "docker run -d --name=${GATEWAY_CONTAINER_NAME} -p 8000:8000 --net msa ${GATEWAY_NAME}"
+                        sh 'sleep 10'
+                        mattermostSend (
+                            color: "good", 
+                            message: "Back Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+                        )
+                        }catch(e){
+                            mattermostSend (
+                                color: "danger", 
+                                message: "Back Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+                            )
+                        }
+                    }
+                }
+        }
+
         stage('Micro Service Deploy'){
             steps {
-                try{
-                    sh "docker run -d --name=${USER_CONTAINER_NAME} --net msa ${USER_NAME}"
-                    //sh "docker run -d --name=${AUTH_CONTAINER_NAME} --net msa ${AUTH_NAME}"
-                    //sh "docker run -d --name=${INTEREST_CONTAINER_NAME} --net msa ${INTEREST_NAME}"
-                    sh "docker run -d --name=${FESTIVAL_CONTAINER_NAME} --net msa ${FESTIVAL_NAME}"
-                    //sh "docker run -d --name=${GAME_CONTAINER_NAME} --net msa ${GAME_NAME}"
-                    //sh "docker run -d --name=${RECOMM_CONTAINER_NAME} --net msa ${RECOMM_NAME}"
-                    //sh "docker run -d --name=${LOG_CONTAINER_NAME} --net msa ${LOG_NAME}"
-                    mattermostSend (
-                        color: "good", 
-                        message: "Back Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
-                    )
-                }catch(e){
-                    mattermostSend (
-                        color: "danger", 
-                        message: "Back Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
-                    )
+                script{
+                    try{
+                        sh "docker run -d --name=${USER_CONTAINER_NAME} --net msa ${USER_NAME}"
+                        //sh "docker run -d --name=${AUTH_CONTAINER_NAME} --net msa ${AUTH_NAME}"
+                        //sh "docker run -d --name=${INTEREST_CONTAINER_NAME} --net msa ${INTEREST_NAME}"
+                        sh "docker run -d --name=${FESTIVAL_CONTAINER_NAME} --net msa ${FESTIVAL_NAME}"
+                        //sh "docker run -d --name=${GAME_CONTAINER_NAME} --net msa ${GAME_NAME}"
+                        //sh "docker run -d --name=${RECOMM_CONTAINER_NAME} --net msa ${RECOMM_NAME}"
+                        //sh "docker run -d --name=${LOG_CONTAINER_NAME} --net msa ${LOG_NAME}"
+                        mattermostSend (
+                            color: "good", 
+                            message: "Back Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+                        )
+                    }catch(e){
+                        mattermostSend (
+                            color: "danger", 
+                            message: "Back Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+                        )
+                    }
                 }
             }
         }
         stage('Image Clean'){
             steps {
-                sh "docker image prune -a --force"
-                mattermostSend (
-                    color: "good", 
-                    message: "Back Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
-                )
+                script{
+                    sh "docker image prune -a --force"
+                    mattermostSend (
+                        color: "good", 
+                        message: "Back Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+                    )
+                }
             }
         }
     }
