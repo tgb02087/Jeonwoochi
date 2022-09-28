@@ -4,6 +4,8 @@ import com.ssafy.Dto.*;
 import com.ssafy.Service.FestivalFormService;
 import com.ssafy.Service.FestivalService;
 import com.ssafy.Service.FestivalTypeService;
+import com.ssafy.config.LoginUser.LoginUser;
+import com.ssafy.config.LoginUser.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,9 +63,10 @@ public class FestivalController {
     // 축제 요청 추가
     @PostMapping("/festival-form")
     public ResponseEntity<?> createFestivalForm(
-            @Valid @RequestBody List<FestivalFormCreateRequest> requests
+            @Valid @RequestBody List<FestivalFormCreateRequest> requests,
+            @LoginUser User user
     ){
-        festivalFormService.createFestivalForm(requests);
+        festivalFormService.createFestivalForm(requests, user.getId());
         return ResponseEntity.ok().build();
     }
     // 축제 요청 상세 보기

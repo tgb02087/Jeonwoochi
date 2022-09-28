@@ -23,6 +23,10 @@ dependencies {
     // @Value 관련
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // JWT
+    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
     // REDIS
     //implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 

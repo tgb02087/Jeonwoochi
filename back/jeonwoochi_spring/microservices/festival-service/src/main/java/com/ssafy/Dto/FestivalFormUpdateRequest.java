@@ -27,10 +27,6 @@ public class FestivalFormUpdateRequest {
 
     private FestivalWayType way;
 
-    private Long x;
-
-    private Long y;
-
     private Float lat;
 
     private Float lng;

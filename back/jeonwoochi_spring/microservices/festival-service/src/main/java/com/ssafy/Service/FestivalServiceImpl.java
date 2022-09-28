@@ -1,7 +1,9 @@
 package com.ssafy.Service;
 
 import com.ssafy.Domain.Entity.Festival;
+import com.ssafy.Domain.Entity.FestivalType;
 import com.ssafy.Domain.Repository.FestivalRepo;
+import com.ssafy.Domain.Repository.FestivalTypeRepo;
 import com.ssafy.Dto.FestivalCreateRequest;
 import com.ssafy.Dto.FestivalResponse;
 import com.ssafy.Dto.FestivalUpdateRequest;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.ssafy.exception.NotFoundException.FESTIVAL_NOT_FOUND;
+import static com.ssafy.exception.NotFoundException.FESTIVAL_TYPE_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -21,13 +24,15 @@ import static com.ssafy.exception.NotFoundException.FESTIVAL_NOT_FOUND;
 public class FestivalServiceImpl implements FestivalService {
 
     private final FestivalRepo festivalRepo;
-
+    private final FestivalTypeRepo festivalTypeRepo;
     //축제 추가 (승인) [어드민]
     @Override
     @Transactional
     public void createFestival(List<FestivalCreateRequest> requests) {
         requests.forEach(request -> {
-            Festival festival = Festival.create(request);
+            FestivalType festivalType = festivalTypeRepo.findById(request.getFestivalTypeId())
+                    .orElseThrow(()-> new NotFoundException(FESTIVAL_TYPE_NOT_FOUND));
+            Festival festival = Festival.create(request, festivalType);
             festivalRepo.save(festival);
         });
     }
@@ -54,10 +59,12 @@ public class FestivalServiceImpl implements FestivalService {
     @Override
     @Transactional
     public FestivalResponse updateFestival(FestivalUpdateRequest request) {
+        FestivalType festivalType = festivalTypeRepo.findById(request.getFestivalTypeId())
+                .orElseThrow(()-> new NotFoundException(FESTIVAL_TYPE_NOT_FOUND));
         Festival festival = festivalRepo.findById(request.getId())
                 .orElseThrow(()->new NotFoundException(FESTIVAL_NOT_FOUND));
 
-        festival.update(request);
+        festival.update(request, festivalType);
         return FestivalResponse.response(festival);
     }
 

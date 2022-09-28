@@ -35,10 +35,6 @@ public class Festival {
     @Enumerated(EnumType.STRING)
     private FestivalWayType way;
 
-    private Long x;
-
-    private Long y;
-
     private Float lat;
 
     private Float lng;
@@ -48,7 +44,7 @@ public class Festival {
     private FestivalType festivalType;
 
 
-    public static Festival create(FestivalCreateRequest request){
+    public static Festival create(FestivalCreateRequest request, FestivalType festivalType){
         Festival festival = new Festival();
         festival.name = request.getName();
         festival.startDate = request.getStartDate();
@@ -57,13 +53,12 @@ public class Festival {
         festival.locate = request.getLocate();
         festival.image = request.getImage();
         festival.way = request.getWay();
-        festival.x = request.getX();
-        festival.y = request.getY();
         festival.lat = request.getLat();
         festival.lng = request.getLng();
+        festival.festivalType = festivalType;
         return festival;
     }
-    public void update(FestivalUpdateRequest request){
+    public void update(FestivalUpdateRequest request, FestivalType festivalType){
         this.name = request.getName();
         this.startDate = request.getStartDate();
         this.finishDate = request.getFinishDate();
@@ -71,9 +66,8 @@ public class Festival {
         this.locate = request.getLocate();
         this.image = request.getImage();
         this.way = request.getWay();
-        this.x = request.getX();
-        this.y = request.getY();
         this.lat = request.getLat();
         this.lng = request.getLng();
+        this.festivalType = festivalType;
     }
 }
