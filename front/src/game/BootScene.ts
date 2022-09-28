@@ -143,13 +143,7 @@ class BootScene extends Scene {
       console.log(festival.name, x, y);
 
       // 오브젝트 생성
-      const { me } = new Resource(
-        this,
-        16 + 32 * x,
-        16 + 32 * y,
-        'festival',
-        'festival2',
-      );
+      const { me } = new Resource(this, x, y, 'festival', 'festival2');
 
       // 충돌 적용
       this.physics.add.collider(this.player, me, player => {
@@ -159,7 +153,7 @@ class BootScene extends Scene {
       });
 
       // 축제명 표시
-      this.createFestivalNameTag(festival.name, 16 + 32 * x, 16 + 32 * y - 30);
+      this.createFestivalNameTag(festival.name, x, y - 30);
     });
   }
 
@@ -211,8 +205,9 @@ class BootScene extends Scene {
 
     // 타일맵의 가장 왼쪽의 경도와 가장 아래쪽의 위도를 기준으로
     // 파라미터로 받은 축제의 경도 & 위도를 타일맵 x & y 좌표로 변환
-    const x = (lat - latStartPoint) / tilePerLat;
-    const y = (lng - lngStartPoint) / tilePerLng;
+    // 주의: x와 y는 칸의 개수가 아님!
+    const x = ((lat - latStartPoint) / tilePerLat) * 32 + 16;
+    const y = ((lng - lngStartPoint) / tilePerLng) * 32 + 16;
 
     return { x, y };
   }
