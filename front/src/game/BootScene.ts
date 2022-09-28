@@ -153,7 +153,7 @@ class BootScene extends Scene {
       });
 
       // 축제명 표시
-      this.createFestivalNameTag(festival.name, x, y - 30);
+      this.createFestivalNameTag(festival.name, x, y, me.height);
     });
   }
 
@@ -216,9 +216,12 @@ class BootScene extends Scene {
    * 축제 이름을 오브젝트 상단에 띄우는 메소드
    *
    * @param name 축제명
+   * @param x 이름표를 띄울 축제 오브젝트의 x 좌표
+   * @param y 이름표를 띄울 축제 오브젝트의 y 좌표
+   * @param height 축제 오브젝트 스프라이트의 높이
    * @author Sckroll
    */
-  createFestivalNameTag(name: string, x: number, y: number) {
+  createFestivalNameTag(name: string, x: number, y: number, height: number) {
     const nameTag = this.add.group();
     const background = this.add.sprite(0, 0, 'nameTag');
     const text = this.add.text(0, 0, name, {
@@ -232,11 +235,11 @@ class BootScene extends Scene {
 
     // 이름표 좌표 설정
     nameTag.setX(x);
-    nameTag.setY(y - 64);
+    nameTag.setY(y - height * (3 / 2));
 
-    // 텍스트 좌표 설정
-    text.setX(x - 64 + 8);
-    text.setY(y - 64 - 8);
+    // 텍스트 좌표 설정 (8은 텍스트 위치 보정값)
+    text.setX(x - height + 8);
+    text.setY(y - height * (3 / 2) - 8);
   }
 }
 
