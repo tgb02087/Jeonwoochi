@@ -3,7 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=venv,python,django,visualstudiocode
 
 ### local ###
-/mysettings.py
+; /mysettings.py
 
 ### Django ###
 *.log
