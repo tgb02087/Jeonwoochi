@@ -36,18 +36,20 @@ pipeline{
     stages {
 		stage('Build Gradle') {
             steps {
-                try{
-                    sh 'cd back/jeonwoochi_spring;chmod +x gradlew;./gradlew bootJar'
-                    sh 'exit 0'
-                    mattermostSend (
-                        color: "good", 
-                        message: "Back Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
-                    )
-                }catch(e){
-                    mattermostSend (
-                        color: "danger", 
-                        message: "Back Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
-                    )
+                script{
+                    try{
+                        sh 'cd back/jeonwoochi_spring;chmod +x gradlew;./gradlew bootJar'
+                        sh 'exit 0'
+                        mattermostSend (
+                            color: "good", 
+                            message: "Back Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+                        )
+                    }catch(e){
+                        mattermostSend (
+                            color: "danger", 
+                            message: "Back Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+                        )
+                    }
                 }
             }
         }
