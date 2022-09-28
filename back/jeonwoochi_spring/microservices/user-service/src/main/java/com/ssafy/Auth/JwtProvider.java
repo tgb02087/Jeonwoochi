@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -19,8 +20,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JwtProvider {
 
-    private final String SECRET_KEY = "secretKey";
-    private final String REFRESH_KEY = "refreshKey";
+    @Value("${token.secret}")
+    private String SECRET_KEY;
+
+    @Value("${token.refresh}")
+    private String REFRESH_KEY;
 
     //AceessToken 생성
     public String makeJwtToken(TokenInfoRequest tokenInfoRequest){

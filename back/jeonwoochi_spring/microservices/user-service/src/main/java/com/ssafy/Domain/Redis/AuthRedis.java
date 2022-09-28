@@ -1,9 +1,6 @@
 package com.ssafy.Domain.Redis;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
@@ -23,6 +20,7 @@ public class AuthRedis {
     @TimeToLive(unit = TimeUnit.DAYS)
     private Long expiration;
 
+    @Builder
     public static AuthRedis createAuth(Long userId, String refreshToken, Long expiration){
         AuthRedis authRedis = new AuthRedis();
         authRedis.userId = userId;

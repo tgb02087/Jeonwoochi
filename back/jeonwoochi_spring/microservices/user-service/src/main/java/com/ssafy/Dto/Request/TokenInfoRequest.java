@@ -15,7 +15,7 @@ public class TokenInfoRequest {
 
     private GenderType gender;
 
-    private String age;
+    private int age;
 
     private RoleType role;
 

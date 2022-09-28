@@ -7,24 +7,25 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @EnableRedisRepositories
 public class RedisConfig {
 
     //@Value("${spring.redis.host}")
-    @Value("localhost")
-    private String host;
+    private String host = "localhost";
 
     //@Value("${spring.redis.port}")
-    @Value("6379")
-    private int port;
+    private int port = 6379;
 
     @Bean
     public RedisTemplate<?, ?> redisTemplate() {
         RedisTemplate<byte[], byte[]> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
-        redisTemplate.setEnableTransactionSupport(true); // 해당 옵션이 켜져있을 경우 기존 트랜잭션에 참여할 수 있습니다. MULTI 명령어를 사용하여
+        redisTemplate.setEnableTransactionSupport(false); // 해당 옵션이 켜져있을 경우 기존 트랜잭션에 참여할 수 있습니다. MULTI 명령어를 사용하여
+//        redisTemplate.setKeySerializer(new StringRedisSerializer());
+//        redisTemplate.setValueSerializer(new StringRedisSerializer());
         return redisTemplate;
     }
 

@@ -35,7 +35,11 @@ public class AuthService {
     public JwtTokenResponse saveToken(TokenInfoRequest tokenInfoRequest){
         String AT = jp.makeJwtToken(tokenInfoRequest);
         String RT = jp.makeRefreshToken(tokenInfoRequest);
-        AuthRedis authRedis = new AuthRedis(tokenInfoRequest.getId(),RT,30L);
+        System.out.println("RT : "+RT);
+        System.out.println("id : "+ tokenInfoRequest.getId());
+        AuthRedis authRedis = AuthRedis.createAuth(tokenInfoRequest.getId(),RT,30L);
+        System.out.println("redis: "+authRedis);
+        System.out.println(arp);
         arp.save(authRedis);
         return new JwtTokenResponse(AT,RT);
     }
@@ -43,7 +47,7 @@ public class AuthService {
     public ReJwtTokenResponse resave(String RT) {
         Claims claims = jp.getClaimsToken(RT);
         Long id = Long.valueOf(claims.get("id").toString());
-        String age = claims.get("age").toString();
+        int age = Integer.parseInt(claims.get("age").toString());
         GenderType gender = GenderType.valueOf(claims.get("gender").toString());
         RoleType role = RoleType.valueOf(claims.get("role").toString());
         String kakaoToken = claims.get("kakaoToken").toString();

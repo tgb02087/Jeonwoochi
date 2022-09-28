@@ -99,6 +99,3 @@ configurations {
 //tasks.withType(JavaCompile) {
 //    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
 //}//compile에러 때문에 추가
-//bootJar{
-//    bootJarMainClassName = 'UserServiceApplication'
-//}

@@ -55,3 +55,7 @@ google:
   client:
     id: 1073863021513-50pq7vsg8kss0ooavsmptvguqhk171me.apps.googleusercontent.com
     secret: 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
+
+#token:
+  #secret: secretKey
+  #refresh: refreshKey
