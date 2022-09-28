@@ -59,24 +59,30 @@ const MapAPI = () => {
 
   // 축제 상세 정보 불러오기
   const { data } = useQuery(['info'], getFestivalItem, {
-    staleTime: 1000 * 20,
+    refetchOnWindowFocus: false,
   });
 
+  const x = 35;
+  const y = 127;
   // 날씨 정보 가져오기
-  // const weatherInfo = useQuery(['weatherInfo'], getWeather, { cacheTime: 0 });
-  // console.log(weatherInfo);
+  const weatherInfo = useQuery(['weather'], () => getWeather(x, y), {
+    enabled: !!data?.title,
+    refetchOnWindowFocus: false,
+  });
 
   // 뉴스 정보 가져오기
-  // const newsInfo = useQuery(['news'], getFestivalNews, { cacheTime: 0 });
-  // console.log(newsInfo.data);
+  const newsInfo = useQuery(['news'], () => getFestivalNews(data?.title), {
+    enabled: !!data?.title,
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <MapAPIContainer>
       <StyledFestivalDetail>
         <FestivalDetail
           info={data}
-          // weatherInfo={weatherInfo?.data?.item}
-          // newsInfo={newsInfo?.data}
+          weatherInfo={weatherInfo?.data}
+          newsInfo={newsInfo?.data}
           navigate={navigate}
         />
       </StyledFestivalDetail>

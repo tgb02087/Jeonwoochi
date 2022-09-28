@@ -1,9 +1,9 @@
-import { MapData } from './../mocks/handlers/festival_list';
 import { Scene } from 'phaser';
 import map from './country-map.json';
 import Player from './Player';
 import Resource from './Resources';
 import eventEmitter from '../utils/eventEmitter';
+import { MapData } from './../mocks/handlers/festival_list';
 
 /**
  * 게임 씬(Scene) 관리 클래스
@@ -12,7 +12,6 @@ import eventEmitter from '../utils/eventEmitter';
  */
 class BootScene extends Scene {
   private player!: Player;
-  private checkCollide = false;
   private minimap!: Phaser.Cameras.Scene2D.Camera;
   private festivalList!: MapData[] | undefined;
   private festivalListFetched = false;
@@ -37,24 +36,26 @@ class BootScene extends Scene {
   }
 
   create() {
+    // const festival = map
+    // 타일맵 레이어를 추가할 수도 있기 때문에 tiles -> tiles1로 이름 변경
+
     // 앱, 타일, 레이어 설정
     const map = this.make.tilemap({ key: 'map' });
     const tileset = map.addTilesetImage('jeonwoochi-tileset', 'tiles');
-    // const festival = map
-    // 타일맵 레이어를 추가할 수도 있기 때문에 tiles -> tiles1로 이름 변경
     const worldLayer = map.createLayer('tiles1', tileset, 0, 0);
 
     // bgm 설정
-    const music = this.sound.add('bgm', {
-      mute: false,
-      volume: 0.05,
-      rate: 1,
-      detune: 0,
-      seek: 0,
-      loop: true,
-      delay: 1,
-    });
-    music.play();
+    // 시끄러워서 주석처리합니다
+    // const music = this.sound.add('bgm', {
+    //   mute: false,
+    //   volume: 0.05,
+    //   rate: 1,
+    //   detune: 0,
+    //   seek: 0,
+    //   loop: true,
+    //   delay: 1,
+    // });
+    // music.play();
 
     // 타일에 충돌(Collision) 적용
     worldLayer.setCollisionByProperty({ collides: true });
@@ -78,6 +79,7 @@ class BootScene extends Scene {
       spawnPoint.y || 0,
       'atlas',
       'misa-front',
+      worldLayer,
     );
 
     // this.minimap.setBackgroundColor(0x002244);
@@ -87,7 +89,7 @@ class BootScene extends Scene {
       if (!player.body.checkCollision.none) {
         console.log('바다와 접촉했다');
       }
-    });
+    }).name = 'object';
 
     // 카메라 설정
     const camera = this.cameras.main;
