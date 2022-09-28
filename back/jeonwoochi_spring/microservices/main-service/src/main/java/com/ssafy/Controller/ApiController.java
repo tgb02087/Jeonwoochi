@@ -22,12 +22,13 @@ public class ApiController {
 
     @Autowired
     private SearchService ss;
-    @GetMapping("/")
-    public ResponseEntity<?> test(){
-        System.out.println("테스트");
-        return new ResponseEntity<>("성공", HttpStatus.OK);
-    }
+//    @GetMapping("/")
+//    public ResponseEntity<?> test(){
+//        System.out.println("테스트");
+//        return new ResponseEntity<>("성공", HttpStatus.OK);
+//    }
 
+    //날씨 api 호출
     @GetMapping("/api/weather")
     public ResponseEntity<?> getWeather(@RequestParam(value = "x")String x, @RequestParam(value = "y")String y) throws IOException {
         List<WeatherInfoResponse> list = ws.getWeather(x,y);
@@ -35,6 +36,7 @@ public class ApiController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    //네이버 뉴스 api 호출
     @GetMapping("/api/search")
     public ResponseEntity<?> getSearch(@RequestParam(value = "keyword") String keyword){
         List<SearchResponse> list = ss.getSearch(keyword);

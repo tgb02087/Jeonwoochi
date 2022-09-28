@@ -31,6 +31,7 @@ public class SearchService {
     @Value("${api.search.Secret}")
     public String secret;
 
+    //네이버 뉴스 api호출
     public List<SearchResponse> getSearch(String keyword) {
         List<SearchResponse> list = new ArrayList<>();
         try {

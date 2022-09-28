@@ -24,7 +24,7 @@ public class WeatherService {
     @Value("${api.weather}")
     public String key;
 
-
+    //날씨api 호출
     public List<WeatherInfoResponse> getWeather(String x, String y) throws IOException {
         LocalDate now = LocalDate.now();
         String time = now.toString().replaceAll("-","");
@@ -93,6 +93,7 @@ public class WeatherService {
         }
         return setList(list);
     }
+    //응답 데이터 저장
     public WeatherResponse saveValue(WeatherResponse weatherResponse, String category, String fcstValue){
         //System.out.println("category : "+category);
         //System.out.println("Val : "+fcstValue);
@@ -104,6 +105,7 @@ public class WeatherService {
         return weatherResponse;
     }
 
+    //날씨 데이터 정제
     public List<WeatherInfoResponse> setList(List<WeatherResponse> list){
 //        for(int i=0; i< list.size(); i++){
 //            System.out.println("list크기 : "+ list.size());
@@ -140,6 +142,7 @@ public class WeatherService {
         }
         return newlist;
     }
+    //날씨 데이터 정제
     private WeatherInfoResponse addSky(WeatherInfoResponse weatherInfoResponse, int[] sky_stat){
         String s = "";
         for(int j=1; j<sky_stat.length; j++){
@@ -149,6 +152,7 @@ public class WeatherService {
         return weatherInfoResponse;
     }
 
+    //날씨 세팅
     private int[] setSky(WeatherResponse weatherResponse, int[] sky_stat){
         if(weatherResponse.getSKY()!=null) {
             int sky = Integer.parseInt(weatherResponse.getSKY());
@@ -164,6 +168,7 @@ public class WeatherService {
         return sky_stat;
     }
 
+    //온도 세팅
     private void setTm(WeatherResponse cur, WeatherInfoResponse nw){
         if(cur.getTMN()!=null) nw.setTmn(cur.getTMN());
         if(cur.getTMX()!=null) nw.setTmx(cur.getTMX());
