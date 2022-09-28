@@ -40,3 +40,20 @@ spring:
 #          filters:
 #            - RemoveRequestHeader=Cookie
 #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth-service/**
+            - Method=GET,POST,PUT,DELETE
+          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+             #- AuthorizationFilter
+            # - JwtAuthenticationFilter
+  # bean중복 에러 해결
+  main:
+    allow-bean-definition-overriding: true
+token:
+  secret: secretKey
+  refresh: refreshKey

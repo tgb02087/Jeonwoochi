@@ -42,3 +42,20 @@ management:
     web:
       exposure:
         include: busrefresh
+client:
+  key: 653c5c4f76acf44b796a7c0e107d3d6f
+google:
+  auth:
+    url: https://oauth2.googleapis.com
+    scope: profile,email,openid
+  login:
+    url: https://accounts.google.com
+  redirect:
+    url: http://localhost:8080/google/login/redirect
+  client:
+    id: 1073863021513-50pq7vsg8kss0ooavsmptvguqhk171me.apps.googleusercontent.com
+    secret: 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
+
+#token:
+  #secret: secretKey
+  #refresh: refreshKey

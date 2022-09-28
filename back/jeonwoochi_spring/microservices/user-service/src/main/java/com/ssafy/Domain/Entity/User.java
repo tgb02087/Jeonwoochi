@@ -1,6 +1,8 @@
 package com.ssafy.Domain.Entity;
 
-import com.ssafy.Dto.UserCreateRequest;
+import com.ssafy.Domain.Entity.Type.GenderType;
+import com.ssafy.Domain.Entity.Type.RoleType;
+import com.ssafy.Dto.Request.UserRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,17 +25,21 @@ public class User {
 
     private String name;
 
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private GenderType gender;
 
     private int age;
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private RoleType role;
 
     @ManyToOne
     @JoinColumn(name= "state_type_id")
     private StatusType statusType;
 
-    public static User create(UserCreateRequest request){
+    private Boolean is_dummy;
+
+    public static User create(UserRequest request){
        User user = new User();
        user.kakao_id = request.getKakao_id();
        user.google_id = request.getGoogle_id();
@@ -44,7 +50,7 @@ public class User {
        return user;
     }
 
-    public void update(UserCreateRequest request){
+    public void update(UserRequest request){
         this.kakao_id = request.getKakao_id();
         this.google_id = request.getGoogle_id();
         this.name = request.getName();
