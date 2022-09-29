@@ -180,6 +180,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // 스킬
     // 스킬 아이콘 및 마나창에도 x,y가 적용되도록
     // 마나가 0 이면 강제 해제
+    // 사운드 추가
     if (this.mana.value === 0) {
       this.isHaste = false;
       this.isLevitation = false;
@@ -188,19 +189,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       if (!temp.getActive().find(el => el.name == 'world'))
         this.createColliderForWorldLayer();
 
+      this.skillSoundOnOff('skill_off');
+
       this.levitationIcon?.destroy();
       this.hasteIcon?.destroy();
     }
 
     if (this.isHaste) {
       this.hasteIcon.x = this.me.x;
-      this.hasteIcon.y = this.me.y - 40;
+      this.hasteIcon.y = this.me.y - 45;
       this.mana.decrease();
     }
 
     if (this.isLevitation) {
       this.levitationIcon.x = this.me.x;
-      this.levitationIcon.y = this.me.y - 40;
+      this.levitationIcon.y = this.me.y - 45;
       this.mana.decrease();
     }
 
@@ -250,6 +253,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   skillHaste() {
     if (this.isHaste) {
       this.hasteIcon?.destroy();
+
+      // skill off 효과음
+      this.skillSoundOnOff('skill_off');
       this.isHaste = false;
     } else {
       this.hasteIcon = new Phaser.GameObjects.Sprite(
@@ -261,6 +267,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       );
       // this.me.y -= 10;
       this.hasteIcon.y -= 45;
+
+      // skill on 효과음
+      this.skillSoundOnOff('skill_on');
 
       this.scene.add.existing(this.hasteIcon);
       this.isHaste = true;
@@ -282,6 +291,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     if (this.isLevitation) {
       // 아이콘 삭제
       this.levitationIcon?.destroy();
+
+      // skill off 효과음
+      this.skillSoundOnOff('skill_off');
+
       // 시전상태 : false
       this.isLevitation = false;
 
@@ -301,6 +314,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       );
       // world collider 제거
       temp.remove(temp.getActive().filter(el => el.name == 'world')[0]);
+
+      // skill on 효과음
+      this.skillSoundOnOff('skill_on');
+
       // 아이콘 y좌표 설정
       this.levitationIcon.y -= 45;
       // scene에 추가
@@ -321,6 +338,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         console.log('바다와 부딪힘');
       }
     }).name = 'world';
+  }
+
+  skillSoundOnOff(toggle: string) {
+    const sound = this.scene.sound.add(toggle, {
+      volume: 0.2,
+    });
+    sound.play();
+    setTimeout(() => {
+      this.scene.sound.remove(sound);
+    }, 1000);
   }
 }
 

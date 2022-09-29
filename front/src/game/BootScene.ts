@@ -4,6 +4,8 @@ import Player from './Player';
 import Resource from './Resources';
 import eventEmitter from '../utils/eventEmitter';
 import { MapData } from './../mocks/handlers/festival_list';
+import Audio from './Audio';
+import { ADDRCONFIG } from 'dns';
 
 /**
  * 게임 씬(Scene) 관리 클래스
@@ -20,7 +22,13 @@ class BootScene extends Scene {
     // 타일맵 불러오기
     this.load.image('tiles', '/images/map/jeonwoochi-tileset.png');
     this.load.tilemapTiledJSON('map', map);
-    this.load.audio('bgm', ['/audios/bgm/2 - Big Giant Trees - Gotanda.mp3']);
+
+    // 오디오 데이터 불러오기
+    Audio.preload(this, 'bgm', [
+      '/audios/bgm/2 - Big Giant Trees - Gotanda.mp3',
+    ]);
+    Audio.preload(this, 'skill_on', ['/audios/effects/skill on.wav']);
+    Audio.preload(this, 'skill_off', ['/audios/effects/skill off.wav']);
 
     // 플레이어 클래스 불러오기
     Player.preload(this);
@@ -49,16 +57,16 @@ class BootScene extends Scene {
 
     // bgm 설정
     // 시끄러워서 주석처리합니다
-    // const music = this.sound.add('bgm', {
-    //   mute: false,
-    //   volume: 0.05,
-    //   rate: 1,
-    //   detune: 0,
-    //   seek: 0,
-    //   loop: true,
-    //   delay: 1,
-    // });
-    // music.play();
+    const music = this.sound.add('bgm', {
+      mute: false,
+      volume: 0.05,
+      rate: 1,
+      detune: 0,
+      seek: 0,
+      loop: true,
+      delay: 1,
+    });
+    music.play();
 
     // 타일에 충돌(Collision) 적용
     worldLayer.setCollisionByProperty({ collides: true });
