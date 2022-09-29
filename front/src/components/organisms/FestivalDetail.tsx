@@ -46,6 +46,7 @@ const StyledPoster = styled.div`
 const WeatherInfo = styled.div`
   gap: 1rem;
 `;
+const WeatherWrapper = styled.div``;
 const TempInfo = styled.div`
   ${tw`flex items-center`}
   gap: 1rem;
@@ -108,7 +109,7 @@ const FestivalDetail = ({
                   '-' +
                   data.slice(6, 8);
                 return (
-                  <>
+                  <WeatherWrapper key={data + sky + tmn + tmx}>
                     <Text color="white" message={date} size={1.2} />
                     <TempInfo>
                       <WeatherIcon>
@@ -119,7 +120,7 @@ const FestivalDetail = ({
                       <Text color="white" message="최고" size={1.1} />
                       <Text color="white" message={tmx} size={1.1} />
                     </TempInfo>
-                  </>
+                  </WeatherWrapper>
                 );
               })
             ) : (

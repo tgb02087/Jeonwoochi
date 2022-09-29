@@ -11,6 +11,7 @@ import FestivalSideBar from '../organisms/FestivalSideBar';
 import GameView from '../organisms/GameView';
 import MainFooter from '../organisms/MainFooter';
 import MainHeader from '../organisms/MainHeader';
+import RequestModal from '../organisms/RequestModal';
 
 const StyledMain = styled.div`
   height: 95vh;
@@ -21,6 +22,11 @@ const MainFrame = styled.div`
   height: 100vh;
   padding: 1rem;
   ${tw`flex flex-col justify-between absolute`}
+`;
+const RequestModalWrapper = styled.div`
+  width: 100%;
+  height: 100vh;
+  ${tw`flex justify-center items-center`}
 `;
 const Main = () => {
   // 데이터를 초기 렌더링 시 fetch해 가지고 있다가
@@ -37,6 +43,7 @@ const Main = () => {
   // opened 여부에 따라 화살표 방향, display none 바꿔주기
   const [openedSideBar, setOpenedSideBar] = useState(true);
   const [openedFestivalModal, setOpenedFestivalModal] = useState(false);
+  const [openedRequestModal, setOpenedRequestModal] = useState(false);
   const clickHandler = () => {
     setOpenedSideBar(prev => !prev);
   };
@@ -49,7 +56,7 @@ const Main = () => {
   return (
     <StyledMain>
       <MainFrame>
-        <MainHeader isAdmin={false} />
+        <MainHeader isAdmin={false} setState={setOpenedRequestModal} />
         <MainFooter />
       </MainFrame>
 
@@ -60,6 +67,11 @@ const Main = () => {
       {openedFestivalModal ? (
         <FestivalModal setState={setOpenedFestivalModal} info={itemData} />
       ) : null}
+      <RequestModalWrapper>
+        {openedRequestModal ? (
+          <RequestModal setState={setOpenedRequestModal} />
+        ) : null}
+      </RequestModalWrapper>
 
       <GameView festivalList={listData} />
     </StyledMain>
