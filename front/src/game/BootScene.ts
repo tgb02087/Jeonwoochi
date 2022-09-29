@@ -1,4 +1,4 @@
-import { Scene } from 'phaser';
+import { Input, Scene } from 'phaser';
 import map from './country-map.json';
 import Player from './Player';
 import Resource from './Resources';
@@ -24,7 +24,9 @@ class BootScene extends Scene {
   private festivalListFetched = false;
   private collidedFestivalObject!: FestivalObject | undefined;
   private popupText!: Phaser.GameObjects.Group | undefined;
+  private popupOpened = false;
   private popupEnabledTime = 0;
+  private enterKey!: Input.Keyboard.Key;
 
   preload() {
     // 타일맵 불러오기
@@ -115,6 +117,9 @@ class BootScene extends Scene {
     // 미니맵도 캐릭터에 포커싱 되도록
     const minimapCamera = this.cameras.cameras.find(el => el.name === 'mini');
     minimapCamera?.startFollow(this.player.me);
+
+    // Enter 키 입력 초기화
+    this.enterKey = this.input.keyboard.addKey('ENTER');
   }
 
   update(time: number) {
@@ -127,21 +132,28 @@ class BootScene extends Scene {
     }
 
     // 축제 오브젝트와 충돌했을 때 축제 이름 아래에 텍스트 띄우기
-    if (this.collidedFestivalObject) {
+    if (this.collidedFestivalObject && this.popupOpened) {
       this.showPopupMessage(
         this.collidedFestivalObject,
         'Enter 키를 눌러서 축제 보기',
       );
       this.popupEnabledTime = time;
-      if (this.player.body.blocked.none)
-        this.collidedFestivalObject = undefined;
+      this.popupOpened = false;
     }
 
-    // 3초가 지나면 축제 이름 아래의 텍스트 없애기
-    if (this.popupEnabledTime > 0 && time - this.popupEnabledTime >= 3000) {
-      this.popupEnabledTime = 0;
-      this.popupText?.destroy(true, true);
-      this.popupText = undefined;
+    // 축제 이름 아래에 텍스트가 떠있을 경우
+    if (this.popupEnabledTime > 0) {
+      // Enter 키를 입력하면 축제 페이지로 이동하는 이벤트를 송신
+      if (this.enterKey.isDown)
+        eventEmitter.emit('visit', this.collidedFestivalObject);
+
+      // 3초가 지나면 축제 이름 아래의 텍스트 없애기
+      if (time - this.popupEnabledTime >= 3000) {
+        this.popupEnabledTime = 0;
+        this.popupText?.destroy(true, true);
+        this.popupText = undefined;
+        this.collidedFestivalObject = undefined;
+      }
     }
 
     // 디버그용 (1초 간격으로 플레이어 좌표를 콘솔에 출력)
@@ -169,9 +181,10 @@ class BootScene extends Scene {
       const festivalObject = { festival, x, y, height: me.height };
 
       // 충돌 적용
-      this.physics.add.collider(this.player, me, player => {
+      this.physics.add.collider(this.player, me, () => {
         console.log('축제 오브젝트와 접촉했다');
         this.collidedFestivalObject = festivalObject;
+        this.popupOpened = true;
       });
 
       // 축제명 표시
