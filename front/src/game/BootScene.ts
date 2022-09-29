@@ -29,6 +29,8 @@ class BootScene extends Scene {
     ]);
     Audio.preload(this, 'skill_on', ['/audios/effects/skill on.wav']);
     Audio.preload(this, 'skill_off', ['/audios/effects/skill off.wav']);
+    Audio.preload(this, 'walk', ['/audios/effects/walk.wav']);
+    Audio.preload(this, 'haste', ['/audios/effects/haste.wav']);
 
     // 플레이어 클래스 불러오기
     Player.preload(this);
@@ -59,7 +61,7 @@ class BootScene extends Scene {
     // 시끄러워서 주석처리합니다
     const music = this.sound.add('bgm', {
       mute: false,
-      volume: 0.05,
+      volume: 0.09,
       rate: 1,
       detune: 0,
       seek: 0,

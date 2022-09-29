@@ -189,7 +189,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       if (!temp.getActive().find(el => el.name == 'world'))
         this.createColliderForWorldLayer();
 
-      this.skillSoundOnOff('skill_off');
+      this.effectSound('skill_off');
 
       this.levitationIcon?.destroy();
       this.hasteIcon?.destroy();
@@ -211,6 +211,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.mana.increase();
     }
 
+    // 사운드
+    // 일반 걷기의 경우 일반 걷기 사운드
+
     // console.log(this.mana);
     // this.mana.x = this.me.x;
     // this.mana.y = this.me.y - 20;
@@ -224,12 +227,32 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // 애니메이션 업데이트 (상하 이동보다 좌우 이동을 우선시)
     if (this.inputKeys.left.isDown) {
       this.me.anims.play('misa-left-walk', true);
+      if (!this.isHaste) {
+        this.effectSound('walk', 200, 0.03);
+      } else {
+        this.effectSound('haste', 1100);
+      }
     } else if (this.inputKeys.right.isDown) {
       this.me.anims.play('misa-right-walk', true);
+      if (!this.isHaste) {
+        this.effectSound('walk', 200, 0.03);
+      } else {
+        this.effectSound('haste', 1100);
+      }
     } else if (this.inputKeys.up.isDown) {
       this.me.anims.play('misa-back-walk', true);
+      if (!this.isHaste) {
+        this.effectSound('walk', 200, 0.03);
+      } else {
+        this.effectSound('haste', 1100);
+      }
     } else if (this.inputKeys.down.isDown) {
       this.me.anims.play('misa-front-walk', true);
+      if (!this.isHaste) {
+        this.effectSound('walk', 200, 0.03);
+      } else {
+        this.effectSound('haste', 1100);
+      }
     } else {
       this.me.anims.stop();
 
@@ -255,7 +278,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.hasteIcon?.destroy();
 
       // skill off 효과음
-      this.skillSoundOnOff('skill_off');
+      this.effectSound('skill_off', 800, 0.1);
       this.isHaste = false;
     } else {
       this.hasteIcon = new Phaser.GameObjects.Sprite(
@@ -269,7 +292,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.hasteIcon.y -= 45;
 
       // skill on 효과음
-      this.skillSoundOnOff('skill_on');
+      this.effectSound('skill_on', 800, 0.1);
 
       this.scene.add.existing(this.hasteIcon);
       this.isHaste = true;
@@ -293,7 +316,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.levitationIcon?.destroy();
 
       // skill off 효과음
-      this.skillSoundOnOff('skill_off');
+      this.effectSound('skill_off', 800, 0.1);
 
       // 시전상태 : false
       this.isLevitation = false;
@@ -316,7 +339,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       temp.remove(temp.getActive().filter(el => el.name == 'world')[0]);
 
       // skill on 효과음
-      this.skillSoundOnOff('skill_on');
+      this.effectSound('skill_on', 800, 0.1);
 
       // 아이콘 y좌표 설정
       this.levitationIcon.y -= 45;
@@ -341,21 +364,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
-   *
-   *
-   * @param skill_on {string} - skill_on 사운드를 추가하고 재생한 후, 삭제한다.
-   * @param skill_off {string} - skill_off 사운드를 추가하고 재생한 후, 삭제한다.
+   * @param skillId {string} - load 한 skill의 참조값
+   * @param ms {number} - 삭제 시 setTimeout 값 조정
+   * @param volume {number} - 오디오 볼륨 조정
    *
    * @author bell
    */
-  skillSoundOnOff(toggle: string) {
-    const sound = this.scene.sound.add(toggle, {
-      volume: 0.2,
+  effectSound(skillId: string, ms?: number | 1000, volume?: number | 0.2) {
+    if (this.scene.sound.getAll(skillId).length > 0) return;
+
+    const sound = this.scene.sound.add(skillId, {
+      volume,
     });
     sound.play();
     setTimeout(() => {
       this.scene.sound.remove(sound);
-    }, 1000);
+    }, ms);
   }
 }
 
