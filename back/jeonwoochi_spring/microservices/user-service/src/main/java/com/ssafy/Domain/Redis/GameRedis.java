@@ -1,4 +1,4 @@
-package com.ssafy.Domain.Entity;
+package com.ssafy.Domain.Redis;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.data.redis.core.RedisHash;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Game {
+public class GameRedis {
     @Id
     private Long userId;
 
@@ -20,17 +20,11 @@ public class Game {
 
     private Long y;
 
-    private Long riding_id;
-
-    private Long character_id;
-
-    public static Game create (Long userId, Long x, Long y, Long riding_id, Long character_id){
-        Game game = new Game();
+    public static GameRedis create (Long userId, Long x, Long y){
+        GameRedis game = new GameRedis();
         game.userId = userId;
         game.x = x;
         game.y = y;
-        game.riding_id = riding_id;
-        game.character_id = character_id;
         return  game;
     }
 }

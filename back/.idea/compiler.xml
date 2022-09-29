@@ -63,6 +63,7 @@
       <module name="jeonwoochi_spring.microservice.user-service" target="1.8" />
       <module name="jeonwoochi_spring.microservice.user-service.main" target="1.8" />
       <module name="jeonwoochi_spring.microservice.user-service.test" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.game-service.querydsl" target="1.8" />
       <module name="microservices" target="1.8" />
       <module name="microservices.main" target="1.8" />
       <module name="microservices.test" target="1.8" />

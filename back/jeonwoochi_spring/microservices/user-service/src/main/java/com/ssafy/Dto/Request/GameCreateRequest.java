@@ -1,4 +1,4 @@
-package com.ssafy.Dto;
+package com.ssafy.Dto.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,13 +9,7 @@ import javax.validation.constraints.NotNull;
 @NotNull
 @AllArgsConstructor
 public class GameCreateRequest {
-    private Long userId;
-
     private Long x;
 
     private Long y;
-
-    private Long riding_id;
-
-    private Long character_id;
 }

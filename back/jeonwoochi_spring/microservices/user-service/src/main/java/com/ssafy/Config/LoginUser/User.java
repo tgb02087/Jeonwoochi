@@ -1,17 +1,17 @@
-package com.ssafy.Dto;
+package com.ssafy.Config.LoginUser;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlayerUpdateRequest {
+@Getter
+public class User {
 
     private Long id;
 
-    private String name;
+    private String Gender;
 
-    private String path;
+    private int age;
 }

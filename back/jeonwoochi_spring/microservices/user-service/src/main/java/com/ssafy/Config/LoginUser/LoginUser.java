@@ -1,4 +1,4 @@
-package com.ssafy.config.LoginUser;
+package com.ssafy.Config.LoginUser;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

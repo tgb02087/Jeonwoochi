@@ -1,6 +1,6 @@
-package com.ssafy.Dto;
+package com.ssafy.Dto.Response;
 
-import com.ssafy.Domain.Entity.Game;
+import com.ssafy.Domain.Redis.GameRedis;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,17 +15,11 @@ public class GameResponse {
 
     private Long y;
 
-    private Long riding_id;
-
-    private Long character_id;
-
-    public static GameResponse response(Game game){
+    public static GameResponse response(GameRedis game){
         return new GameResponse(
                 game.getUserId(),
                 game.getX(),
-                game.getY(),
-                game.getRiding_id(),
-                game.getCharacter_id()
+                game.getY()
         );
     }
 }
