@@ -3,16 +3,17 @@ import styled from 'styled-components';
 
 interface PropTypes {
   type: string;
-  placeholder: string;
+  placeholder?: string;
   name: string;
+  id?: string;
   accept?: string;
   setValue?: Dispatch<
     SetStateAction<{
-      name: string;
+      festivalName: string;
       start: string;
       end: string;
       host: string;
-      image: string;
+      posterSrc: string;
     }>
   >;
 }
@@ -21,9 +22,20 @@ const StyledInput = styled.input<PropTypes>`
   :focus {
     outline: none;
   }
+  width: 100%;
+  color: black;
+  color: ${({ type }) => (type === 'file' ? 'white' : 'black')};
+  height: 3vh;
 `;
 
-const Input = ({ type, placeholder, name, accept, setValue }: PropTypes) => {
+const Input = ({
+  type,
+  placeholder,
+  name,
+  id,
+  accept,
+  setValue,
+}: PropTypes) => {
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue &&
       setValue(prev => ({
@@ -36,6 +48,7 @@ const Input = ({ type, placeholder, name, accept, setValue }: PropTypes) => {
       type={type}
       placeholder={placeholder}
       name={name}
+      id={id}
       accept={accept}
       onChange={changeHandler}
     ></StyledInput>
