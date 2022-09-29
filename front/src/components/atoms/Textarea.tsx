@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
+import tw from 'twin.macro';
 
 interface PropTypes {
   id: string;
@@ -16,6 +17,7 @@ const StyledTextarea = styled.textarea<StyltedPropTypes>`
   resize: none;
   color: black;
   outline: none;
+  ${tw`rounded-lg`}
 `;
 
 const Textarea = ({ setValue, ...rest }: PropTypes) => {

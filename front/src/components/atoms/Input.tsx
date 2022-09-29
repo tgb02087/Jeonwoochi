@@ -1,5 +1,6 @@
-import React, { Dispatch, FocusEventHandler, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
+import tw from 'twin.macro';
 
 interface PropTypes {
   type: string;
@@ -11,8 +12,8 @@ interface PropTypes {
   setValue?: Dispatch<
     SetStateAction<{
       festivalName: string;
-      start: string;
-      end: string;
+      startDate: string;
+      endDate: string;
       address: string;
       posterSrc: string;
     }>
@@ -27,6 +28,7 @@ const StyledInput = styled.input<PropTypes>`
   width: 100%;
   color: ${({ type }) => (type === 'file' ? 'white' : 'black')};
   height: 3vh;
+  ${tw`rounded-lg`}
 `;
 
 const Input = ({
