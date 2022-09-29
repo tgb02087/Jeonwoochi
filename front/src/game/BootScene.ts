@@ -15,6 +15,9 @@ class BootScene extends Scene {
   private minimap!: Phaser.Cameras.Scene2D.Camera;
   private festivalList!: MapData[] | undefined;
   private festivalListFetched = false;
+  private collidedFestivalObject = false;
+  private popup!: Phaser.GameObjects.Text | undefined;
+  // private popup!: Phaser.Physics.Arcade.StaticGroup | undefined;
 
   preload() {
     // 타일맵 불러오기
@@ -116,6 +119,14 @@ class BootScene extends Scene {
       this.festivalListFetched = false;
     }
 
+    // 축제 오브젝트와 충돌했을 때 플레이어 머리 위에 팝업 창 띄우기
+    if (this.collidedFestivalObject && !this.popup) {
+      this.showPopupMessage('Enter 키를 눌러서 축제 보기');
+      this.collidedFestivalObject = false;
+    }
+    // 현재 여기서 에러 발생!!
+    if (this.popup) this.physics.moveToObject(this.popup, this.player.me, 1000);
+
     // 디버그용 (1초 간격으로 플레이어 좌표를 콘솔에 출력)
     // if (time % 1000 > 40 && time % 1000 < 60) {
     //   console.log(
@@ -143,6 +154,7 @@ class BootScene extends Scene {
       this.physics.add.collider(this.player, me, player => {
         if (!player.body.checkCollision.none) {
           console.log('축제 오브젝트와 접촉했다');
+          if (!this.popup) this.collidedFestivalObject = true;
         }
       });
 
@@ -238,6 +250,43 @@ class BootScene extends Scene {
     // 텍스트 좌표 설정 (8은 텍스트 위치 보정값)
     text.setX(x - height + 8);
     text.setY(y - height * (3 / 2) - 8);
+  }
+
+  /**
+   * 플레이어 머리 위에 메시지 팝업 창을 띄우는 메소드
+   *
+   * @param msg 팝업 창에 표시할 메시지
+   * @author Sckroll
+   */
+  showPopupMessage(msg: string) {
+    this.popup = this.add.text(
+      this.player.body.x,
+      this.player.body.y - this.player.body.height * (3 / 2),
+      msg,
+      {
+        fontFamily: 'DungGeunMo',
+        wordWrap: { useAdvancedWrap: true },
+      },
+    );
+
+    // this.popup = this.physics.add.staticGroup();
+    // const background = this.add.sprite(0, 0, 'nameTag');
+    // const text = this.add.text(0, 0, msg, {
+    //   fontFamily: 'DungGeunMo',
+    //   wordWrap: { useAdvancedWrap: true },
+    // });
+
+    // // 이름표에 배경 및 텍스트 추가
+    // this.popup.add(background);
+    // this.popup.add(text);
+
+    // // 이름표 좌표 설정
+    // this.popup.setX(this.player.body.x);
+    // this.popup.setY(this.player.body.y - this.player.body.height * (3 / 2));
+
+    // // 텍스트 좌표 설정 (8은 텍스트 위치 보정값)
+    // text.setX(this.player.body.x - this.player.body.height + 8);
+    // text.setY(this.player.body.y - this.player.body.height * (3 / 2) - 8);
   }
 }
 
