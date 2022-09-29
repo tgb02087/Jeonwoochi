@@ -22,11 +22,11 @@ public class ApiController {
 
     @Autowired
     private SearchService ss;
-//    @GetMapping("/")
-//    public ResponseEntity<?> test(){
-//        System.out.println("테스트");
-//        return new ResponseEntity<>("성공", HttpStatus.OK);
-//    }
+    @GetMapping("/")
+    public ResponseEntity<?> test(){
+        System.out.println("테스트");
+        return new ResponseEntity<>("성공", HttpStatus.OK);
+    }
 
     //날씨 api 호출
     @GetMapping("/api/weather")
