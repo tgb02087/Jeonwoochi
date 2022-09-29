@@ -44,7 +44,7 @@ eureka:
 cloud:
   aws:
     s3:
-      bucket: reniors
+      bucket: jeonwoochi
     credentials:
       access-key: AKIAXELMJ3LZ2PQAB47U
       secret-key: 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

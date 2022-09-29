@@ -33,6 +33,15 @@ spring:
         #            - RemoveRequestHeader=Cookie
         #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
 
+        - id: main-service
+          uri: lb://MAIN-SERVICE
+          predicates:
+            - Path=/api/main-service/**
+            - Method=GET,POST,PUT,DELETE
+        #          filters:
+        #            - RemoveRequestHeader=Cookie
+        #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+        -
         - id: recomm-service
           uri: lb://RECOMM-SERVICE
           predicates:
@@ -42,16 +51,9 @@ spring:
 #            - RemoveRequestHeader=Cookie
 #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
 
-        - id: main-service
-          uri: lb://MAIN-SERVICE
-          predicates:
-            - Path=/api/main-service/**
-            - Method=GET,POST,PUT,DELETE
-#          filters:
-#            - RemoveRequestHeader=Cookie
-#            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
 
-  # bean중복 에러 해결
+
+ # bean중복 에러 해결
   main:
     allow-bean-definition-overriding: true
 token:
