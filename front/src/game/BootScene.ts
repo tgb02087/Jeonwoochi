@@ -5,6 +5,13 @@ import Resource from './Resources';
 import eventEmitter from '../utils/eventEmitter';
 import { MapData } from './../mocks/handlers/festival_list';
 
+interface FestivalObject {
+  festival: MapData; // 타일맵 상의 축제 오브젝트
+  x: number; // 축제 오브젝트의 타일맵 x 좌표
+  y: number; // 축제 오브젝트의 타일맵 y 좌표
+  height: number; // 축제 오브젝트 스프라이트의 높이
+}
+
 /**
  * 게임 씬(Scene) 관리 클래스
  *
@@ -15,9 +22,9 @@ class BootScene extends Scene {
   private minimap!: Phaser.Cameras.Scene2D.Camera;
   private festivalList!: MapData[] | undefined;
   private festivalListFetched = false;
-  private collidedFestivalObject = false;
-  private popup!: Phaser.GameObjects.Text | undefined;
-  // private popup!: Phaser.Physics.Arcade.StaticGroup | undefined;
+  private collidedFestivalObject!: FestivalObject | undefined;
+  private popupText!: Phaser.GameObjects.Group | undefined;
+  private popupEnabledTime = 0;
 
   preload() {
     // 타일맵 불러오기
@@ -113,19 +120,29 @@ class BootScene extends Scene {
   update(time: number) {
     this.player.update();
 
-    // festivalListFetched 상태로 업데이트 여부 확인
+    // festivalListFetched 상태로 축제 리스트 업데이트 여부 확인
     if (this.festivalListFetched) {
       this.createFestivalObjects();
       this.festivalListFetched = false;
     }
 
-    // 축제 오브젝트와 충돌했을 때 플레이어 머리 위에 팝업 창 띄우기
-    if (this.collidedFestivalObject && !this.popup) {
-      this.showPopupMessage('Enter 키를 눌러서 축제 보기');
-      this.collidedFestivalObject = false;
+    // 축제 오브젝트와 충돌했을 때 축제 이름 아래에 텍스트 띄우기
+    if (this.collidedFestivalObject) {
+      this.showPopupMessage(
+        this.collidedFestivalObject,
+        'Enter 키를 눌러서 축제 보기',
+      );
+      this.popupEnabledTime = time;
+      if (this.player.body.blocked.none)
+        this.collidedFestivalObject = undefined;
     }
-    // 현재 여기서 에러 발생!!
-    if (this.popup) this.physics.moveToObject(this.popup, this.player.me, 1000);
+
+    // 3초가 지나면 축제 이름 아래의 텍스트 없애기
+    if (this.popupEnabledTime > 0 && time - this.popupEnabledTime >= 3000) {
+      this.popupEnabledTime = 0;
+      this.popupText?.destroy(true, true);
+      this.popupText = undefined;
+    }
 
     // 디버그용 (1초 간격으로 플레이어 좌표를 콘솔에 출력)
     // if (time % 1000 > 40 && time % 1000 < 60) {
@@ -149,17 +166,16 @@ class BootScene extends Scene {
 
       // 오브젝트 생성
       const { me } = new Resource(this, x, y, 'festival', 'festival2');
+      const festivalObject = { festival, x, y, height: me.height };
 
       // 충돌 적용
       this.physics.add.collider(this.player, me, player => {
-        if (!player.body.checkCollision.none) {
-          console.log('축제 오브젝트와 접촉했다');
-          if (!this.popup) this.collidedFestivalObject = true;
-        }
+        console.log('축제 오브젝트와 접촉했다');
+        this.collidedFestivalObject = festivalObject;
       });
 
       // 축제명 표시
-      this.createFestivalNameTag(festival.name, x, y, me.height);
+      this.createFestivalNameTag(festivalObject);
     });
   }
 
@@ -225,17 +241,18 @@ class BootScene extends Scene {
   /**
    * 축제 이름을 오브젝트 상단에 띄우는 메소드
    *
-   * @param name 축제명
-   * @param x 이름표를 띄울 축제 오브젝트의 x 좌표
-   * @param y 이름표를 띄울 축제 오브젝트의 y 좌표
-   * @param height 축제 오브젝트 스프라이트의 높이
+   * @param festivalObject 타일맵 상의 축제 오브젝트에 대한 정보가 담긴 객체
    * @author Sckroll
    */
-  createFestivalNameTag(name: string, x: number, y: number, height: number) {
+  createFestivalNameTag(festivalObject: FestivalObject) {
+    const { festival, x, y, height } = festivalObject;
+
     const nameTag = this.add.group();
     const background = this.add.sprite(0, 0, 'nameTag');
-    const text = this.add.text(0, 0, name, {
+    const text = this.add.text(0, 0, festival.name, {
       fontFamily: 'DungGeunMo',
+      fixedWidth: background.width,
+      align: 'center',
       wordWrap: { useAdvancedWrap: true },
     });
 
@@ -248,45 +265,35 @@ class BootScene extends Scene {
     nameTag.setY(y - height * (3 / 2));
 
     // 텍스트 좌표 설정 (8은 텍스트 위치 보정값)
-    text.setX(x - height + 8);
+    text.setX(x - background.width / 2);
     text.setY(y - height * (3 / 2) - 8);
   }
 
   /**
-   * 플레이어 머리 위에 메시지 팝업 창을 띄우는 메소드
+   * 축제 이름 아래에 메시지를 띄우는 메소드
    *
-   * @param msg 팝업 창에 표시할 메시지
+   * @param festivalObject 타일맵 상의 축제 오브젝트에 대한 정보가 담긴 객체
+   * @param msg 표시할 메시지
    * @author Sckroll
    */
-  showPopupMessage(msg: string) {
-    this.popup = this.add.text(
-      this.player.body.x,
-      this.player.body.y - this.player.body.height * (3 / 2),
-      msg,
-      {
-        fontFamily: 'DungGeunMo',
-        wordWrap: { useAdvancedWrap: true },
-      },
-    );
+  showPopupMessage(festivalObject: FestivalObject, msg: string) {
+    this.popupText?.destroy(true, true);
 
-    // this.popup = this.physics.add.staticGroup();
-    // const background = this.add.sprite(0, 0, 'nameTag');
-    // const text = this.add.text(0, 0, msg, {
-    //   fontFamily: 'DungGeunMo',
-    //   wordWrap: { useAdvancedWrap: true },
-    // });
+    const { x, y, height } = festivalObject;
 
-    // // 이름표에 배경 및 텍스트 추가
-    // this.popup.add(background);
-    // this.popup.add(text);
+    this.popupText = this.add.group();
+    const text = this.add.text(0, 0, msg, {
+      fontFamily: 'DungGeunMo',
+      backgroundColor: '#00000066',
+      padding: { x: 4, y: 4 },
+      wordWrap: { useAdvancedWrap: true },
+    });
 
-    // // 이름표 좌표 설정
-    // this.popup.setX(this.player.body.x);
-    // this.popup.setY(this.player.body.y - this.player.body.height * (3 / 2));
+    this.popupText.add(text);
 
-    // // 텍스트 좌표 설정 (8은 텍스트 위치 보정값)
-    // text.setX(this.player.body.x - this.player.body.height + 8);
-    // text.setY(this.player.body.y - this.player.body.height * (3 / 2) - 8);
+    // 좌표 설정
+    this.popupText.setX(x - text.width / 2);
+    this.popupText.setY(y - height + text.height / 2);
   }
 }
 
