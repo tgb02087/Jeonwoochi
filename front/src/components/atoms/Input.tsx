@@ -47,6 +47,7 @@ const Input = ({
       }));
   };
   const clickHandler = () => {
+    if (name !== 'address') return;
     handleClick && handleClick();
   };
   return (
