@@ -8,6 +8,7 @@ import Sheet from '../atoms/Sheet';
 import Text from '../atoms/Text';
 import Textarea from '../atoms/Textarea';
 import TitleCancelHeader from './TitleCancelHeader';
+import { useDaumPostcodePopup } from 'react-daum-postcode';
 
 interface PropTypes {
   setState: Dispatch<SetStateAction<boolean>>;
@@ -73,10 +74,37 @@ const RequestModal = ({ setState }: PropTypes) => {
     festivalName: '',
     start: '',
     end: '',
-    host: '',
+    address: '',
     posterSrc: '',
   });
   const [textarea, setTextarea] = useState('');
+  const open = useDaumPostcodePopup(
+    '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js',
+  );
+  const handleComplete = (data: any) => {
+    let fullAddress = data.address;
+    let extraAddress = '';
+
+    if (data.addressType === 'R') {
+      if (data.bname !== '') {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== '') {
+        extraAddress +=
+          extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+    }
+
+    setInputs(prev => ({
+      ...prev,
+      address: fullAddress,
+    }));
+  };
+  const handleClick = () => {
+    open({ onComplete: handleComplete });
+    window.blur();
+  };
   return (
     <StyledRequestModal>
       <Sheet transparent>
@@ -103,6 +131,7 @@ const RequestModal = ({ setState }: PropTypes) => {
                         type={arr[1]}
                         name={arr[0]}
                         id={arr[0]}
+                        value={inputs}
                         setValue={setInputs}
                         accept={arr[2]}
                       />
@@ -111,7 +140,9 @@ const RequestModal = ({ setState }: PropTypes) => {
                         type={arr[1]}
                         name={arr[0]}
                         id={arr[0]}
+                        value={inputs}
                         setValue={setInputs}
+                        handleClick={handleClick}
                       />
                     )}
                   </FlexInput>
