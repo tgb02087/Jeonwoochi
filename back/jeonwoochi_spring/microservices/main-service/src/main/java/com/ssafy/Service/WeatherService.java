@@ -35,8 +35,6 @@ public class WeatherService {
                 "&base_time=0200" +
                 "&nx=" +x+
                 "&ny="+ y;
-        System.out.println("현재날짜 : "+time);
-        System.out.println(key);
         List<WeatherResponse> list = new ArrayList<>();
         try {
             URL url = new URL(host);

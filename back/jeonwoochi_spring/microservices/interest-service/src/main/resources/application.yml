@@ -5,7 +5,7 @@ server:
       enabled: false
   servlet:
     # TODO : CONTEXT-PATH가 해당 서비스명과 같은지 확인
-    context-path: /interest-service
+    context-path: /api/interest-service
 #    encoding:
 #      charset: UTF-8
 #      enabled: true
@@ -17,13 +17,13 @@ spring:
 
   zipkin:
     # TODO : 서버에 Open Zipkin Jar 파일 다운로드 후 실행하면 연결됨
-    base-url: http://127.0.0.1:9411
+    base-url: http://j7b305.p.ssafy.io:9411
     enabled: true
   sleuth:
     sampler:
       probability: 1.0
   rabbitmq:
-    host: 127.0.0.1
+    host: j7b305.p.ssafy.io
     port: 5672
     username: guest
     password: guest
@@ -35,7 +35,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://127.0.0.1:8761/eureka
+      defaultZone: http://j7b305.p.ssafy.io:8761/eureka
 
 management:
   endpoints:
