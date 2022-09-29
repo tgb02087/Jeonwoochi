@@ -28,13 +28,11 @@ public class FestivalFormServiceImpl implements FestivalFormService{
     // 축제 요청 추가
     @Override
     @Transactional
-    public void createFestivalForm(List<FestivalFormCreateRequest> requests, Long userId) {
-        requests.forEach(request -> {
+    public void createFestivalForm(FestivalFormCreateRequest request, Long userId, String imgUrl) {
             FestivalType festivalType = festivalTypeRepo.findById(request.getFestivalTypeId())
                     .orElseThrow(()-> new NotFoundException(FESTIVAL_TYPE_NOT_FOUND));
-            FestivalForm festivalForm = FestivalForm.create(request, festivalType, userId);
+            FestivalForm festivalForm = FestivalForm.create(request, festivalType, userId, imgUrl);
             festivalFormRepo.save(festivalForm);
-        });
     }
     // 축제 요청 상세 보기
     @Override

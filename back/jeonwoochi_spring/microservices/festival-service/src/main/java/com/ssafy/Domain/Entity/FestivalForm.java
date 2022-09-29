@@ -1,6 +1,5 @@
 package com.ssafy.Domain.Entity;
 
-import com.ssafy.Domain.Entity.Type.FestivalWayType;
 import com.ssafy.Dto.FestivalFormCreateRequest;
 import com.ssafy.Dto.FestivalFormUpdateRequest;
 import lombok.AllArgsConstructor;
@@ -32,30 +31,20 @@ public class FestivalForm {
 
     private String image;
 
-    @Enumerated(EnumType.STRING)
-    private FestivalWayType way;
-
-    private Float lat;
-
-    private Float lng;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "festival_type_id")
     private FestivalType festivalType;
 
     private Long userId;
 
-    public static FestivalForm create(FestivalFormCreateRequest request, FestivalType festivalType, Long userId){
+    public static FestivalForm create(FestivalFormCreateRequest request, FestivalType festivalType, Long userId, String imgUrl){
         FestivalForm festival = new FestivalForm();
         festival.name = request.getName();
         festival.startDate = request.getStartDate();
         festival.finishDate = request.getFinishDate();
         festival.contents = request.getContents();
         festival.locate = request.getLocate();
-        festival.image = request.getImage();
-        festival.way = request.getWay();
-        festival.lat = request.getLat();
-        festival.lng = request.getLng();
+        festival.image = imgUrl;
         festival.festivalType = festivalType;
         festival.userId = userId;
         return festival;
@@ -67,9 +56,6 @@ public class FestivalForm {
         this.contents = request.getContents();
         this.locate = request.getLocate();
         this.image = request.getImage();
-        this.way = request.getWay();
-        this.lat = request.getLat();
-        this.lng = request.getLng();
         this.festivalType = festivalType;
     }
 }

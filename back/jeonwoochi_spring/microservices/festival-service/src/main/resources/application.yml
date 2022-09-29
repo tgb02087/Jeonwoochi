@@ -41,6 +41,21 @@ eureka:
       defaultZone: http://j7b305.p.ssafy.io:8761/eureka
       #defaultZone: http://localhost:8761/eureka
 
+cloud:
+  aws:
+    s3:
+      bucket: reniors
+    credentials:
+      access-key: AKIAXELMJ3LZ2PQAB47U
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+api:
+  kakaoKey : KakaoAK 1fd673d1a648568a5c7514d24c5abe4c
+
 management:
   endpoints:
     web:

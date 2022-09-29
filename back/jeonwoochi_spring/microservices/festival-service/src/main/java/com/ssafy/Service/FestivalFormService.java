@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface FestivalFormService {
     //축제 요청 추가
-    void createFestivalForm(List<FestivalFormCreateRequest> requests, Long userId);
+    void createFestivalForm(FestivalFormCreateRequest request, Long userId, String imgUrl);
     FestivalFormResponse findFestivalFormDetail(Long festivalFormId);
     //축제 요청 전체 리스트
     List<FestivalFormResponse> findFestivalFormListAll();

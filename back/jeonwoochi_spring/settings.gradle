@@ -14,4 +14,6 @@ include 'microservices:festival-service'
 findProject(':microservices:festival-service')?.name = 'festival-service'
 include 'microservices:interest-service'
 findProject(':microservices:interest-service')?.name = 'interest-service'
+include 'microservices:main-service'
+findProject(':microservices:main-service')?.name = 'main-service'
 

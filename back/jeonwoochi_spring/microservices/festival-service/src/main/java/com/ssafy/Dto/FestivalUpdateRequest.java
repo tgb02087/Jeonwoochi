@@ -1,6 +1,5 @@
 package com.ssafy.Dto;
 
-import com.ssafy.Domain.Entity.Type.FestivalWayType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,11 +25,9 @@ public class FestivalUpdateRequest {
 
     private String image;
 
-    private FestivalWayType way;
+    private Double lat;
 
-    private Float lat;
-
-    private Float lng;
+    private Double lng;
 
     private Long festivalTypeId;
 }

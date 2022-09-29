@@ -63,6 +63,21 @@ spring:
         - id: recomm-service
           uri: lb://RECOMM-SERVICE
           predicates:
+<<<<<<< HEAD
+            - Path=/recomm-service/**
+            - Method=GET,POST
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+        - id: main-service
+          uri: lb://MAIN-SERVICE
+          predicates:
+            - Path=/main-service/**
+            - Method=GET,POST,PUT,DELETE
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+=======
             - Path=/api/recomm-service/**
             - Method=GET,POST,PUT,DELETE
         #          filters:
@@ -83,3 +98,4 @@ spring:
 token:
   secret: secretKey
   refresh: refreshKey
+>>>>>>> 3a35cdae16d0e2f0850d2c2143b4f656fc3dfe06

@@ -12,10 +12,9 @@
             <option value="$PROJECT_DIR$/jeonwoochi_spring" />
             <option value="$PROJECT_DIR$/jeonwoochi_spring/common" />
             <option value="$PROJECT_DIR$/jeonwoochi_spring/microservices" />
-            <option value="$PROJECT_DIR$/jeonwoochi_spring/microservices/auth-service" />
             <option value="$PROJECT_DIR$/jeonwoochi_spring/microservices/festival-service" />
-            <option value="$PROJECT_DIR$/jeonwoochi_spring/microservices/game-service" />
             <option value="$PROJECT_DIR$/jeonwoochi_spring/microservices/interest-service" />
+            <option value="$PROJECT_DIR$/jeonwoochi_spring/microservices/main-service" />
             <option value="$PROJECT_DIR$/jeonwoochi_spring/microservices/user-service" />
             <option value="$PROJECT_DIR$/jeonwoochi_spring/spring-cloud" />
             <option value="$PROJECT_DIR$/jeonwoochi_spring/spring-cloud/config-service" />

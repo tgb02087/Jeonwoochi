@@ -8,16 +8,15 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar" />
         </processorPath>
         <module name="jeonwoochi_spring.spring-cloud.test" />
-        <module name="jeonwoochi_spring.microservices.auth-service.test" />
         <module name="jeonwoochi_spring.common.test" />
         <module name="jeonwoochi_spring.spring-cloud.discovery-service.test" />
         <module name="jeonwoochi_spring.microservices.interest-service.test" />
         <module name="jeonwoochi_spring.microservices.user-service.test" />
         <module name="jeonwoochi_spring.spring-cloud.gateway-service.test" />
-        <module name="jeonwoochi_spring.microservices.game-service.test" />
         <module name="jeonwoochi_spring.spring-cloud.config-service.test" />
         <module name="jeonwoochi_spring.microservices.festival-service.test" />
         <module name="jeonwoochi_spring.microservices.test" />
+        <module name="jeonwoochi_spring.microservices.main-service.test" />
       </profile>
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
@@ -33,9 +32,8 @@
         <module name="jeonwoochi_spring.spring-cloud.gateway-service.main" />
         <module name="jeonwoochi_spring.common.main" />
         <module name="jeonwoochi_spring.spring-cloud.discovery-service.main" />
-        <module name="jeonwoochi_spring.microservices.auth-service.main" />
         <module name="jeonwoochi_spring.microservices.festival-service.main" />
-        <module name="jeonwoochi_spring.microservices.game-service.main" />
+        <module name="jeonwoochi_spring.microservices.main-service.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -63,7 +61,14 @@
       <module name="jeonwoochi_spring.microservice.user-service" target="1.8" />
       <module name="jeonwoochi_spring.microservice.user-service.main" target="1.8" />
       <module name="jeonwoochi_spring.microservice.user-service.test" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.auth-service" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.auth-service.main" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.auth-service.querydsl" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.auth-service.test" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.game-service" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.game-service.main" target="1.8" />
       <module name="jeonwoochi_spring.microservices.game-service.querydsl" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.game-service.test" target="1.8" />
       <module name="microservices" target="1.8" />
       <module name="microservices.main" target="1.8" />
       <module name="microservices.test" target="1.8" />

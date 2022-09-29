@@ -4,11 +4,13 @@ import com.ssafy.Dto.*;
 import com.ssafy.Service.FestivalFormService;
 import com.ssafy.Service.FestivalService;
 import com.ssafy.Service.FestivalTypeService;
+import com.ssafy.config.AwsS3Service;
 import com.ssafy.config.LoginUser.LoginUser;
 import com.ssafy.config.LoginUser.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -16,6 +18,11 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class FestivalController {
+
+    private static final String baseURL = "https://jeonwoochi.s3.ap-northeast-2.amazonaws.com/";
+
+    private final AwsS3Service awsS3Service;
+
     private final FestivalService festivalService;
     private final FestivalFormService festivalFormService;
     private final FestivalTypeService festivalTypeService;
@@ -24,9 +31,9 @@ public class FestivalController {
     // 축제 추가 ( 승인 ) [ 어드민 ]
     @PostMapping("/festival")
     public ResponseEntity<?> createFestival(
-            @Valid @RequestBody List<FestivalCreateRequest> requests
+            @Valid @RequestBody FestivalCreateRequest request
             ){
-        festivalService.createFestival(requests);
+        festivalService.createFestival(request);
         return ResponseEntity.ok().build();
     }
     // 축제 상세 정보
@@ -61,12 +68,14 @@ public class FestivalController {
 
 
     // 축제 요청 추가
-    @PostMapping("/festival-form")
+    @PostMapping(path = "/festival-form", consumes = {"multipart/form-data"})
     public ResponseEntity<?> createFestivalForm(
-            @Valid @RequestBody List<FestivalFormCreateRequest> requests,
+            @RequestPart(value = "img", required = false) final MultipartFile file,
+            @Valid @RequestPart(value = "data", required = true) final FestivalFormCreateRequest request,
             @LoginUser User user
     ){
-        festivalFormService.createFestivalForm(requests, user.getId());
+        String imgUrl = awsS3Service.uploadFile(file);
+        festivalFormService.createFestivalForm(request, user.getId(), imgUrl);
         return ResponseEntity.ok().build();
     }
     // 축제 요청 상세 보기
