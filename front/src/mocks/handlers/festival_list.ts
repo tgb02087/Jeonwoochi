@@ -24,6 +24,21 @@ export interface MapData {
  */
 const mapData: MapData[] = [
   {
+    festivalId: 0,
+    name: 'Sample festival',
+    startDate: new Date('2022-08-22'),
+    finishDate: new Date('2022-10-07'),
+    contents: 'SSAFY 7기 특화 프로젝트 진행 중...',
+    locate: '서울특별시 송파구 백제고분로44길 13-25',
+    // image :
+    way: false,
+    festivalTypeId: 1,
+    // x:
+    // y:
+    lat: 127.11313422641568,
+    lng: 37.50708968446814,
+  },
+  {
     festivalId: 1,
     name: '김제지평선축제',
     startDate: new Date('2022-10-24'),

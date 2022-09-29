@@ -69,12 +69,6 @@ class BootScene extends Scene {
       obj => obj.name === 'Spawn Point',
     );
 
-    // 더미 festival 정보 생성
-    // const festivalInfo = map.findObject(
-    //   'Objects',
-    //   obj => obj.name === 'festival',
-    // );
-
     // 플레이어 인스턴스
     this.player = new Player(
       this,
@@ -113,7 +107,7 @@ class BootScene extends Scene {
     minimapCamera?.startFollow(this.player.me);
   }
 
-  update() {
+  update(time: number) {
     this.player.update();
 
     // festivalListFetched 상태로 업데이트 여부 확인
@@ -121,6 +115,15 @@ class BootScene extends Scene {
       this.createFestivalObjects();
       this.festivalListFetched = false;
     }
+
+    // 디버그용 (1초 간격으로 플레이어 좌표를 콘솔에 출력)
+    // if (time % 1000 > 40 && time % 1000 < 60) {
+    //   console.log(
+    //     `현재 좌표: ${Math.floor(this.player.body.x)}, ${Math.floor(
+    //       this.player.body.y,
+    //     )}`,
+    //   );
+    // }
   }
 
   /**
@@ -130,7 +133,7 @@ class BootScene extends Scene {
    */
   createFestivalObjects() {
     this.festivalList?.forEach(festival => {
-      const { x, y } = this.convertLatLonToXY(festival);
+      const { x, y } = this.convertLatLngToXY(festival);
       console.log(festival.name, x, y);
 
       // 오브젝트 생성
@@ -155,7 +158,7 @@ class BootScene extends Scene {
    * @returns 게임 상의 `x`, `y` 좌표가 들어있는 객체
    * @author Sckroll
    */
-  convertLatLonToXY(festival: MapData) {
+  convertLatLngToXY(festival: MapData) {
     const { lat, lng } = festival;
 
     // 남한 국토 극동, 극서의 경도와 극북, 극남의 위도
@@ -167,7 +170,7 @@ class BootScene extends Scene {
       south: 33.1,
     };
 
-    // 국토 타일맵의 동서남북 간격
+    // 국토 타일맵과 전체 타일맵 간 동서남북 여백
     const padding = {
       east: 72,
       west: 83,
@@ -175,30 +178,34 @@ class BootScene extends Scene {
       south: 40,
     };
 
-    // 타일맵 가로 & 세로 길이
+    // 국토 타일맵 가로 & 세로 길이
+    // const latLength = 800 - padding.east - padding.west;
+    // const lngLength = 700 - padding.north - padding.south;
     const latLength = 800;
     const lngLength = 700;
 
-    // 1칸 당 좌우 거리 = (극동 - 극서) / 800 = 0.0105512489147287º
-    // 1칸 당 상하 거리 = (극북 - 극남) / 700 = 0.0087993421052632º
+    // 1칸 당 좌우 거리 = (극동 - 극서) / 국토 타일맵 가로 길이
+    // 1칸 당 상하 거리 = (극북 - 극남) / 국토 타일맵 세로 길이
     const tilePerLat = (extremePoints.east - extremePoints.west) / latLength;
     const tilePerLng = (extremePoints.north - extremePoints.south) / lngLength;
 
     /**
      * 동서남북 여분의 간격을 감안하면
-     * 맵 전체 중 가장 왼쪽의 경도 = 극서 - (0.0105512489147287º * 83칸) = 124.1909130100775º
-     * 맵 전체 중 가장 오른쪽의 경도 = 극동 + (0.0105512489147287º * 72칸) = 132.6319121418605º
-     * 맵 전체 중 가장 위쪽의 위도 = 극북 + (0.0087993421052632º * 52칸) = 38.90756578947369º
-     * 맵 전체 중 가장 아래쪽의 위도 = 극남 - (0.0087993421052632º * 40칸) = 32.74802631578947º
+     * 맵 전체 중 가장 왼쪽의 경도 = 극서 - (1칸 당 좌우 거리 * 서쪽 여백)
+     * 맵 전체 중 가장 오른쪽의 경도 = 극동 + (1칸 당 좌우 거리 * 동쪽 여백)
+     * 맵 전체 중 가장 위쪽의 위도 = 극북 + (1칸 당 상하 거리 * 북쪽 여백)
+     * 맵 전체 중 가장 아래쪽의 위도 = 극남 - (1칸 당 상하 거리 * 남쪽 여백)
      */
     const latStartPoint = extremePoints.west - tilePerLat * padding.west;
-    const lngStartPoint = extremePoints.south - tilePerLng * padding.south;
+    const lngStartPoint = extremePoints.north + tilePerLng * padding.north;
 
-    // 타일맵의 가장 왼쪽의 경도와 가장 아래쪽의 위도를 기준으로
+    // console.log(tilePerLat, tilePerLng, latStartPoint, lngStartPoint);
+
+    // 타일맵의 가장 왼쪽의 경도와 가장 위쪽의 위도를 기준으로
     // 파라미터로 받은 축제의 경도 & 위도를 타일맵 x & y 좌표로 변환
     // 주의: x와 y는 칸의 개수가 아님!
     const x = ((lat - latStartPoint) / tilePerLat) * 32 + 16;
-    const y = ((lng - lngStartPoint) / tilePerLng) * 32 + 16;
+    const y = ((lngStartPoint - lng) / tilePerLng) * 32 + 16;
 
     return { x, y };
   }
