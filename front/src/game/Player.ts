@@ -340,6 +340,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }).name = 'world';
   }
 
+  /**
+   *
+   *
+   * @param skill_on {string} - skill_on 사운드를 추가하고 재생한 후, 삭제한다.
+   * @param skill_off {string} - skill_off 사운드를 추가하고 재생한 후, 삭제한다.
+   *
+   * @author bell
+   */
   skillSoundOnOff(toggle: string) {
     const sound = this.scene.sound.add(toggle, {
       volume: 0.2,
