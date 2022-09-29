@@ -1,4 +1,4 @@
-package com.ssafy.config.LoginUser;
+package com.ssafy.Config.LoginUser;
 
 import com.ssafy.exception.NotMatchException;
 import io.jsonwebtoken.Claims;
@@ -6,8 +6,6 @@ import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.MethodParameter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -23,13 +21,12 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
     private String SecretKey;
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        boolean isLoginUserAnnotation = parameter.getParameterAnnotation(LoginUser.class) != null;
-        boolean isLongClass = Long.class.equals(parameter.getParameterType());
-        return isLoginUserAnnotation && isLongClass;
+        //return parameter.getParameterAnnotation(LoginUser.class) != null;
+        return parameter.hasParameterAnnotation(LoginUser.class);
     }
 
     @Override
-    public Long resolveArgument(MethodParameter parameter,
+    public User resolveArgument(MethodParameter parameter,
                                   ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) throws Exception {
@@ -40,7 +37,8 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 
             Claims body = Jwts.parser().setSigningKey(SecretKey)
                     .parseClaimsJws(jwt).getBody();
-            return (Long)body.get("id");
+            User user = new User((Long)body.get("id"), (String)body.get("gender"),(Integer)body.get("age"));
+            return user;
         } catch (ClassCastException e) {
             throw new NotMatchException(TOKEN_NOT_MATCH);
         }

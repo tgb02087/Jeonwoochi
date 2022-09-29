@@ -1,4 +1,4 @@
-package com.ssafy.config;
+package com.ssafy.Config;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
@@ -31,9 +31,9 @@ import java.util.List;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-    private static final String API_NAME = "전우치 게임 API 문서";
+    private static final String API_NAME = "전우치 축제 API 문서";
     private static final String API_VERSION = "0.0.1";
-    private static final String API_DESCRIPTION = "게임 API 명세서";
+    private static final String API_DESCRIPTION = "축제 API 명세서";
     // documentationpluginsbootstrapper 에러 설정
     @Bean
     public WebMvcEndpointHandlerMapping webEndpointServletHandlerMapping(WebEndpointsSupplier webEndpointsSupplier, ServletEndpointsSupplier servletEndpointsSupplier, ControllerEndpointsSupplier controllerEndpointsSupplier, EndpointMediaTypes endpointMediaTypes, CorsEndpointProperties corsProperties, WebEndpointProperties webEndpointProperties, Environment environment) {

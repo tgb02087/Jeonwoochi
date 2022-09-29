@@ -1,4 +1,4 @@
-package com.ssafy.config.LoginUser;
+package com.ssafy.Config.LoginUser;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
