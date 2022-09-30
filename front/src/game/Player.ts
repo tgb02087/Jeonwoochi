@@ -134,7 +134,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     );
   }
 
-  static preload(scene: Phaser.Scene) {
+  static preload(scene: Phaser.Scene): void {
     scene.load.atlas(
       'atlas',
       'https://mikewesthad.github.io/phaser-3-tilemap-blog-posts/post-1/assets/atlas/atlas.png',
@@ -146,7 +146,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
-  update() {
+  update(): void {
     // 기본
     let speed = 200;
     if (this.isHaste) {
@@ -180,6 +180,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // 스킬
     // 스킬 아이콘 및 마나창에도 x,y가 적용되도록
     // 마나가 0 이면 강제 해제
+    // 사운드 추가
     if (this.mana.value === 0) {
       this.isHaste = false;
       this.isLevitation = false;
@@ -188,19 +189,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       if (!temp.getActive().find(el => el.name == 'world'))
         this.createColliderForWorldLayer();
 
+      this.effectSound('skill_off');
+
       this.levitationIcon?.destroy();
       this.hasteIcon?.destroy();
     }
 
     if (this.isHaste) {
       this.hasteIcon.x = this.me.x;
-      this.hasteIcon.y = this.me.y - 40;
+      this.hasteIcon.y = this.me.y - 45;
       this.mana.decrease();
     }
 
     if (this.isLevitation) {
       this.levitationIcon.x = this.me.x;
-      this.levitationIcon.y = this.me.y - 40;
+      this.levitationIcon.y = this.me.y - 45;
       this.mana.decrease();
     }
 
@@ -219,14 +222,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // 대각선으로 이동 시 속도 조절을 위해 속도 정규화(normalize) & 크기 조정(scale)
     this.body.velocity.normalize().scale(speed);
     // 애니메이션 업데이트 (상하 이동보다 좌우 이동을 우선시)
+    // 사운드도 함께 반영
+    // 일반 걷기의 경우 일반 걷기 사운드
+    // 헤이스트의 경우, 바람을 가르는 사운드
     if (this.inputKeys.left.isDown) {
       this.me.anims.play('misa-left-walk', true);
+      this.isHasteSound();
     } else if (this.inputKeys.right.isDown) {
       this.me.anims.play('misa-right-walk', true);
+      this.isHasteSound();
     } else if (this.inputKeys.up.isDown) {
       this.me.anims.play('misa-back-walk', true);
+      this.isHasteSound();
     } else if (this.inputKeys.down.isDown) {
       this.me.anims.play('misa-front-walk', true);
+      this.isHasteSound();
     } else {
       this.me.anims.stop();
 
@@ -247,9 +257,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
    *
    * @author bell
    */
-  skillHaste() {
+  skillHaste(): void {
     if (this.isHaste) {
       this.hasteIcon?.destroy();
+
+      // skill off 효과음
+      this.effectSound('skill_off', 800, 0.1);
       this.isHaste = false;
     } else {
       this.hasteIcon = new Phaser.GameObjects.Sprite(
@@ -262,6 +275,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       // this.me.y -= 10;
       this.hasteIcon.y -= 45;
 
+      // skill on 효과음
+      this.effectSound('skill_on', 800, 0.1);
+
       this.scene.add.existing(this.hasteIcon);
       this.isHaste = true;
     }
@@ -270,18 +286,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   /**
    *
    * @description
-   * "현재 시전 상태에 따라 스킬 토글""
+   * 현재 시전 상태에 따라 스킬 토글
    * @description
-   * "캐릭터 바다 collide 제거"
+   * 캐릭터 바다 collide 제거
    *
    * @author bell
    */
-  skilllevitation() {
+  skilllevitation(): void {
     const temp = this.scene.physics.world.colliders;
 
     if (this.isLevitation) {
       // 아이콘 삭제
       this.levitationIcon?.destroy();
+
+      // skill off 효과음
+      this.effectSound('skill_off', 800, 0.1);
+
       // 시전상태 : false
       this.isLevitation = false;
 
@@ -301,6 +321,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       );
       // world collider 제거
       temp.remove(temp.getActive().filter(el => el.name == 'world')[0]);
+
+      // skill on 효과음
+      this.effectSound('skill_on', 800, 0.1);
+
       // 아이콘 y좌표 설정
       this.levitationIcon.y -= 45;
       // scene에 추가
@@ -312,15 +336,51 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   /**
    * @description
-   * "바다 전용 collider 설정을 만들어주는 함수"
+   * 바다 전용 collider 설정을 만들어주는 함수
+   *
    * @author bell
    */
-  createColliderForWorldLayer() {
+  createColliderForWorldLayer(): void {
     this.scene.physics.add.collider(this, this.worldLayer, player => {
       if (!player.body.checkCollision.none) {
         console.log('바다와 부딪힘');
       }
     }).name = 'world';
+  }
+
+  /**
+   * @param skillId {string} - load 한 skill의 참조값
+   * @param ms {number} - 삭제 시 setTimeout 값 조정
+   * @param volume {number} - 오디오 볼륨 조정
+   *
+   * @author bell
+   */
+  effectSound(
+    skillId: string,
+    ms?: number | 1000,
+    volume?: number | 0.2,
+  ): void {
+    if (this.scene.sound.getAll(skillId).length > 0) return;
+
+    const sound = this.scene.sound.add(skillId, {
+      volume,
+    });
+    sound.play();
+    setTimeout(() => {
+      this.scene.sound.remove(sound);
+    }, ms);
+  }
+
+  /**
+   * @description
+   * 일반 상태와, 헤이스트 상태에 따라 사운드를 바꾸는 함수
+   *
+   * @author bell
+   */
+  isHasteSound() {
+    !this.isHaste
+      ? this.effectSound('walk', 200, 0.03)
+      : this.effectSound('haste', 1000);
   }
 }
 
