@@ -10,7 +10,6 @@
         <module name="jeonwoochi_spring.spring-cloud.test" />
         <module name="jeonwoochi_spring.common.test" />
         <module name="jeonwoochi_spring.spring-cloud.discovery-service.test" />
-        <module name="jeonwoochi_spring.microservices.interest-service.test" />
         <module name="jeonwoochi_spring.microservices.user-service.test" />
         <module name="jeonwoochi_spring.spring-cloud.gateway-service.test" />
         <module name="jeonwoochi_spring.spring-cloud.config-service.test" />
@@ -27,7 +26,6 @@
         <module name="jeonwoochi_spring.spring-cloud.config-service.main" />
         <module name="jeonwoochi_spring.spring-cloud.main" />
         <module name="jeonwoochi_spring.microservices.main" />
-        <module name="jeonwoochi_spring.microservices.interest-service.main" />
         <module name="jeonwoochi_spring.microservices.user-service.main" />
         <module name="jeonwoochi_spring.spring-cloud.gateway-service.main" />
         <module name="jeonwoochi_spring.common.main" />
@@ -69,6 +67,10 @@
       <module name="jeonwoochi_spring.microservices.game-service.main" target="1.8" />
       <module name="jeonwoochi_spring.microservices.game-service.querydsl" target="1.8" />
       <module name="jeonwoochi_spring.microservices.game-service.test" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.interest-service" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.interest-service.main" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.interest-service.querydsl" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.interest-service.test" target="1.8" />
       <module name="microservices" target="1.8" />
       <module name="microservices.main" target="1.8" />
       <module name="microservices.test" target="1.8" />

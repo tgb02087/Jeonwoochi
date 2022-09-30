@@ -44,7 +44,7 @@ spring:
         #          filters:
         #            - RemoveRequestHeader=Cookie
         #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
-        -
+
         - id: recomm-service
           uri: lb://RECOMM-SERVICE
           predicates:
