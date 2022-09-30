@@ -5,7 +5,7 @@ import Resource from './Resources';
 import eventEmitter from '../utils/eventEmitter';
 import { MapData } from './../mocks/handlers/festival_list';
 import Audio from './Audio';
-import { ADDRCONFIG } from 'dns';
+// import { ADDRCONFIG } from 'dns';
 
 /**
  * 게임 씬(Scene) 관리 클래스
@@ -24,9 +24,7 @@ class BootScene extends Scene {
     this.load.tilemapTiledJSON('map', map);
 
     // 오디오 데이터 불러오기
-    Audio.preload(this, 'bgm', [
-      '/audios/bgm/2 - Big Giant Trees - Gotanda.mp3',
-    ]);
+    Audio.preload(this, 'bgm', ['/audios/bgm/Coffee Break.mp3']);
     Audio.preload(this, 'skill_on', ['/audios/effects/skill on.wav']);
     Audio.preload(this, 'skill_off', ['/audios/effects/skill off.wav']);
     Audio.preload(this, 'walk', ['/audios/effects/walk.wav']);
@@ -65,9 +63,10 @@ class BootScene extends Scene {
       rate: 1,
       detune: 0,
       seek: 0,
-      loop: true,
+      loop: false,
       delay: 1,
     });
+    console.log(this.sound);
     music.play();
 
     // 타일에 충돌(Collision) 적용
@@ -103,7 +102,7 @@ class BootScene extends Scene {
     // 경계 밖으로 카메라가 나가지 않도록 설정
     camera
       .setBounds(0, 0, map.widthInPixels, map.heightInPixels)
-      .setZoom(1.8)
+      .setZoom(1.5)
       .setName('main');
 
     // 미니맵 생성

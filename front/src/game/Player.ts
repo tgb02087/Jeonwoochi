@@ -134,7 +134,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     );
   }
 
-  static preload(scene: Phaser.Scene) {
+  static preload(scene: Phaser.Scene): void {
     scene.load.atlas(
       'atlas',
       'https://mikewesthad.github.io/phaser-3-tilemap-blog-posts/post-1/assets/atlas/atlas.png',
@@ -146,7 +146,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
-  update() {
+  update(): void {
     // 기본
     let speed = 200;
     if (this.isHaste) {
@@ -211,9 +211,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.mana.increase();
     }
 
-    // 사운드
-    // 일반 걷기의 경우 일반 걷기 사운드
-
     // console.log(this.mana);
     // this.mana.x = this.me.x;
     // this.mana.y = this.me.y - 20;
@@ -225,34 +222,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // 대각선으로 이동 시 속도 조절을 위해 속도 정규화(normalize) & 크기 조정(scale)
     this.body.velocity.normalize().scale(speed);
     // 애니메이션 업데이트 (상하 이동보다 좌우 이동을 우선시)
+    // 사운드도 함께 반영
+    // 일반 걷기의 경우 일반 걷기 사운드
+    // 헤이스트의 경우, 바람을 가르는 사운드
     if (this.inputKeys.left.isDown) {
       this.me.anims.play('misa-left-walk', true);
-      if (!this.isHaste) {
-        this.effectSound('walk', 200, 0.03);
-      } else {
-        this.effectSound('haste', 1100);
-      }
+      this.isHasteSound();
     } else if (this.inputKeys.right.isDown) {
       this.me.anims.play('misa-right-walk', true);
-      if (!this.isHaste) {
-        this.effectSound('walk', 200, 0.03);
-      } else {
-        this.effectSound('haste', 1100);
-      }
+      this.isHasteSound();
     } else if (this.inputKeys.up.isDown) {
       this.me.anims.play('misa-back-walk', true);
-      if (!this.isHaste) {
-        this.effectSound('walk', 200, 0.03);
-      } else {
-        this.effectSound('haste', 1100);
-      }
+      this.isHasteSound();
     } else if (this.inputKeys.down.isDown) {
       this.me.anims.play('misa-front-walk', true);
-      if (!this.isHaste) {
-        this.effectSound('walk', 200, 0.03);
-      } else {
-        this.effectSound('haste', 1100);
-      }
+      this.isHasteSound();
     } else {
       this.me.anims.stop();
 
@@ -273,7 +257,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
    *
    * @author bell
    */
-  skillHaste() {
+  skillHaste(): void {
     if (this.isHaste) {
       this.hasteIcon?.destroy();
 
@@ -302,13 +286,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   /**
    *
    * @description
-   * "현재 시전 상태에 따라 스킬 토글""
+   * 현재 시전 상태에 따라 스킬 토글
    * @description
-   * "캐릭터 바다 collide 제거"
+   * 캐릭터 바다 collide 제거
    *
    * @author bell
    */
-  skilllevitation() {
+  skilllevitation(): void {
     const temp = this.scene.physics.world.colliders;
 
     if (this.isLevitation) {
@@ -352,10 +336,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   /**
    * @description
-   * "바다 전용 collider 설정을 만들어주는 함수"
+   * 바다 전용 collider 설정을 만들어주는 함수
+   *
    * @author bell
    */
-  createColliderForWorldLayer() {
+  createColliderForWorldLayer(): void {
     this.scene.physics.add.collider(this, this.worldLayer, player => {
       if (!player.body.checkCollision.none) {
         console.log('바다와 부딪힘');
@@ -370,7 +355,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
    *
    * @author bell
    */
-  effectSound(skillId: string, ms?: number | 1000, volume?: number | 0.2) {
+  effectSound(
+    skillId: string,
+    ms?: number | 1000,
+    volume?: number | 0.2,
+  ): void {
     if (this.scene.sound.getAll(skillId).length > 0) return;
 
     const sound = this.scene.sound.add(skillId, {
@@ -380,6 +369,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     setTimeout(() => {
       this.scene.sound.remove(sound);
     }, ms);
+  }
+
+  /**
+   * @description
+   * 일반 상태와, 헤이스트 상태에 따라 사운드를 바꾸는 함수
+   *
+   * @author bell
+   */
+  isHasteSound() {
+    !this.isHaste
+      ? this.effectSound('walk', 200, 0.03)
+      : this.effectSound('haste', 1000);
   }
 }
 

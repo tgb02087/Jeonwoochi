@@ -14,6 +14,9 @@ import getFestivalItem from '../../api/getFestivalItem';
 import getWeather from '../../api/getWeather';
 import getFestivalNews from '../../api/getFestivalNews';
 import getFestivalList from '../../api/getFestivalList';
+import { useEffect } from 'react';
+
+import sound from '../../bgm/Thought Soup.mp3';
 
 const MapAPIContainer = styled.div`
   ${tw`flex flex-row`}
@@ -39,6 +42,13 @@ const StyledMapAPI = styled.div`
 const MapAPI = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id?: string | undefined }>();
+
+  useEffect(() => {
+    const bgm = new Audio(sound);
+    bgm.volume = 0.08;
+    bgm.loop = true;
+    bgm.play();
+  }, []);
 
   const MAPIDX = id && parseInt(id);
   // 축제 좌표 불러오기
