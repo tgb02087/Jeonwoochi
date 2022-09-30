@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Restaurant } from '../../mocks/handlers/festival_recomm_dist';
+import { Restaurant } from '../../mocks/handlers/festival_recomm_restaurant';
 
 interface PropTypes {
   coord: {

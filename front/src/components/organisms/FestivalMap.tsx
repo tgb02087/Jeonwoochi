@@ -5,7 +5,8 @@ import styled from 'styled-components';
 import Button from '../atoms/Button';
 import Text from '../atoms/Text';
 
-import { Restaurant } from '../../mocks/handlers/festival_recomm_dist';
+import { Restaurant } from '../../mocks/handlers/festival_recomm_restaurant';
+import { Lodge } from '../../mocks/handlers/festival_recomm_lodge';
 
 interface PropTypes {
   coord: {
@@ -13,12 +14,17 @@ interface PropTypes {
     lng: number;
   };
   restaurantData?: Restaurant[] | undefined;
-  clickHandler?: React.MouseEventHandler<HTMLButtonElement>;
+  lodgeData?: Lodge[] | undefined;
+  // clickHandler?: Array<React.MouseEventHandler<HTMLButtonElement>> | undefined;
+  restaurantRecommClickHandler?: React.MouseEventHandler<HTMLButtonElement>;
+  lodgeRecommClickHandler?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 // 맛집 추천 position 설정용 STMP
 const PositionButton = styled.button`
-  ${tw`absolute bottom-2 right-2 z-10`}
+  ${tw`flex justify-between absolute bottom-5 right-5 z-10`}
+  // 일단 그냥 고정값으로 넣음
+  width: 14rem;
 `;
 
 /**
@@ -29,12 +35,20 @@ const PositionButton = styled.button`
  * @author bell
  */
 
-const FestivalMap = ({ coord, clickHandler, restaurantData }: PropTypes) => {
+const FestivalMap = ({
+  coord,
+  restaurantRecommClickHandler,
+  lodgeRecommClickHandler,
+  restaurantData,
+}: PropTypes) => {
   return (
     <>
       <PositionButton>
-        <Button isText={true} clickHandler={clickHandler}>
+        <Button isText={true} clickHandler={restaurantRecommClickHandler}>
           <Text message={'맛집 추천'} />
+        </Button>
+        <Button isText={true} clickHandler={lodgeRecommClickHandler}>
+          <Text message={'숙박 추천'} />
         </Button>
       </PositionButton>
       <KakaoMap restaurantData={restaurantData} coord={coord} />
