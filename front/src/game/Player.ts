@@ -1,4 +1,6 @@
+import Effect from './Effect';
 import Mana from './Mana';
+import Skill from './Skill';
 
 /**
  * @class
@@ -25,19 +27,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   /** @description 캐릭터 키 이벤트 설정 - 캐릭터 이동, 스킬 */
   private inputKeys: any;
 
-  /** @description 캐릭터 스킬 시전 상태 확인*/
-  public isHaste: boolean;
-  public isLevitation: boolean;
+  // /** @description 캐릭터 스킬 시전 상태 확인*/
+  // public isHaste: boolean;
+  // public isLevitation: boolean;
 
-  /** @description 캐릭터 스킬 사용시 아이콘 */
-  public hasteIcon!: Phaser.GameObjects.Sprite;
-  public levitationIcon!: Phaser.GameObjects.Sprite;
+  // /** @description 캐릭터 스킬 사용시 아이콘 */
+  // public hasteIcon!: Phaser.GameObjects.Sprite;
+  // public levitationIcon!: Phaser.GameObjects.Sprite;
+
+  private skill: Skill;
 
   /** @description 스킬 레비테이션 한정 - collider 해제 할 레이어 */
   private worldLayer!: Phaser.Tilemaps.TilemapLayer;
 
   /** @description 캐릭터 마나 창 */
-  public mana!: Mana;
+  private mana!: Mana;
 
   constructor(
     scene: Phaser.Scene,
@@ -62,13 +66,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // 기본 collider 생성
     this.createColliderForWorldLayer();
 
-    // 스킬 초기화
-    this.isHaste = false;
-    this.isLevitation = false;
+    // 스킬 생성
+    this.skill = new Skill(scene, x, y, frame, texture);
 
     // 마나 생성
     this.mana = new Mana(scene, x, y);
-    console.log(this.mana);
 
     // 애니메이션 설정
     const anims = this.me.anims;
@@ -119,18 +121,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     // 방향기 설정
     this.inputKeys = this.scene.input.keyboard.addKeys({
-      up: Phaser.Input.Keyboard.KeyCodes.W,
-      down: Phaser.Input.Keyboard.KeyCodes.S,
-      left: Phaser.Input.Keyboard.KeyCodes.A,
-      right: Phaser.Input.Keyboard.KeyCodes.D,
+      up: Phaser.Input.Keyboard.KeyCodes.UP,
+      down: Phaser.Input.Keyboard.KeyCodes.DOWN,
+      left: Phaser.Input.Keyboard.KeyCodes.LEFT,
+      right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
       // shift: Phaser.Input.Keyboard.KeyCodes.SHIFT,
       // riding: Phaser.Input.Keyboard.KeyCodes.C,
     });
 
-    this.scene.input.keyboard.on('keydown-' + 'Z', this.skillHaste.bind(this));
-    this.scene.input.keyboard.on(
-      'keydown-' + 'X',
-      this.skilllevitation.bind(this),
+    this.scene.input.keyboard.on('keydown-' + 'Z', () =>
+      this.skill.skillHaste(this),
+    );
+    this.scene.input.keyboard.on('keydown-' + 'X', () =>
+      this.skill.skilllevitation(this),
     );
   }
 
@@ -149,7 +152,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   update(): void {
     // 기본
     let speed = 200;
-    if (this.isHaste) {
+    if (this.skill.isHaste) {
       speed = 750;
     } else {
       speed = 200;
@@ -182,32 +185,32 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // 마나가 0 이면 강제 해제
     // 사운드 추가
     if (this.mana.value === 0) {
-      this.isHaste = false;
-      this.isLevitation = false;
+      this.skill.isHaste = false;
+      this.skill.isLevitation = false;
 
       const temp = this.scene.physics.world.colliders;
       if (!temp.getActive().find(el => el.name == 'world'))
         this.createColliderForWorldLayer();
 
-      this.effectSound('skill_off');
+      Effect.effectSound(this.scene, 'skill_off');
 
-      this.levitationIcon?.destroy();
-      this.hasteIcon?.destroy();
+      this.skill.levitationIcon?.destroy();
+      this.skill.hasteIcon?.destroy();
     }
 
-    if (this.isHaste) {
-      this.hasteIcon.x = this.me.x;
-      this.hasteIcon.y = this.me.y - 45;
+    if (this.skill.isHaste) {
+      this.skill.hasteIcon.x = this.me.x - 10;
+      this.skill.hasteIcon.y = this.me.y - 45;
       this.mana.decrease();
     }
 
-    if (this.isLevitation) {
-      this.levitationIcon.x = this.me.x;
-      this.levitationIcon.y = this.me.y - 45;
+    if (this.skill.isLevitation) {
+      this.skill.levitationIcon.x = this.me.x + 10;
+      this.skill.levitationIcon.y = this.me.y - 45;
       this.mana.decrease();
     }
 
-    if (!this.isHaste && !this.isLevitation) {
+    if (!this.skill.isHaste && !this.skill.isLevitation) {
       this.mana.increase();
     }
 
@@ -257,31 +260,31 @@ class Player extends Phaser.Physics.Arcade.Sprite {
    *
    * @author bell
    */
-  skillHaste(): void {
-    if (this.isHaste) {
-      this.hasteIcon?.destroy();
+  // skillHaste(): void {
+  //   if (this.isHaste) {
+  //     this.hasteIcon?.destroy();
 
-      // skill off 효과음
-      this.effectSound('skill_off', 800, 0.1);
-      this.isHaste = false;
-    } else {
-      this.hasteIcon = new Phaser.GameObjects.Sprite(
-        this.scene,
-        this.me.x,
-        this.me.y,
-        'items',
-        61,
-      );
-      // this.me.y -= 10;
-      this.hasteIcon.y -= 45;
+  //     // skill off 효과음
+  //     this.effectSound('skill_off', 800, 0.1);
+  //     this.isHaste = false;
+  //   } else {
+  //     this.hasteIcon = new Phaser.GameObjects.Sprite(
+  //       this.scene,
+  //       this.me.x,
+  //       this.me.y,
+  //       'items',
+  //       61,
+  //     );
+  //     // this.me.y -= 10;
+  //     this.hasteIcon.y -= 45;
 
-      // skill on 효과음
-      this.effectSound('skill_on', 800, 0.1);
+  //     // skill on 효과음
+  //     this.effectSound('skill_on', 800, 0.1);
 
-      this.scene.add.existing(this.hasteIcon);
-      this.isHaste = true;
-    }
-  }
+  //     this.scene.add.existing(this.hasteIcon);
+  //     this.isHaste = true;
+  //   }
+  // }
 
   /**
    *
@@ -292,47 +295,47 @@ class Player extends Phaser.Physics.Arcade.Sprite {
    *
    * @author bell
    */
-  skilllevitation(): void {
-    const temp = this.scene.physics.world.colliders;
+  // skilllevitation(): void {
+  //   const temp = this.scene.physics.world.colliders;
 
-    if (this.isLevitation) {
-      // 아이콘 삭제
-      this.levitationIcon?.destroy();
+  //   if (this.isLevitation) {
+  //     // 아이콘 삭제
+  //     this.levitationIcon?.destroy();
 
-      // skill off 효과음
-      this.effectSound('skill_off', 800, 0.1);
+  //     // skill off 효과음
+  //     this.effectSound('skill_off', 800, 0.1);
 
-      // 시전상태 : false
-      this.isLevitation = false;
+  //     // 시전상태 : false
+  //     this.isLevitation = false;
 
-      // 만약 world 라는 이름이 collider가 존재하지 않는 경우에만
-      // world collider 생성
-      if (!temp.getActive().find(el => el.name == 'world'))
-        this.createColliderForWorldLayer();
-    } else {
-      // 레비테이션 아이콘 생성
-      // 스프라이트로 생성하여 x,y 설정 가능하도록
-      this.levitationIcon = new Phaser.GameObjects.Sprite(
-        this.scene,
-        this.me.x,
-        this.me.y,
-        'items',
-        56,
-      );
-      // world collider 제거
-      temp.remove(temp.getActive().filter(el => el.name == 'world')[0]);
+  //     // 만약 world 라는 이름이 collider가 존재하지 않는 경우에만
+  //     // world collider 생성
+  //     if (!temp.getActive().find(el => el.name == 'world'))
+  //       this.createColliderForWorldLayer();
+  //   } else {
+  //     // 레비테이션 아이콘 생성
+  //     // 스프라이트로 생성하여 x,y 설정 가능하도록
+  //     this.levitationIcon = new Phaser.GameObjects.Sprite(
+  //       this.scene,
+  //       this.me.x,
+  //       this.me.y,
+  //       'items',
+  //       56,
+  //     );
+  //     // world collider 제거
+  //     temp.remove(temp.getActive().filter(el => el.name == 'world')[0]);
 
-      // skill on 효과음
-      this.effectSound('skill_on', 800, 0.1);
+  //     // skill on 효과음
+  //     this.effectSound('skill_on', 800, 0.1);
 
-      // 아이콘 y좌표 설정
-      this.levitationIcon.y -= 45;
-      // scene에 추가
-      this.scene.add.existing(this.levitationIcon);
-      // 시전상태 : true
-      this.isLevitation = true;
-    }
-  }
+  //     // 아이콘 y좌표 설정
+  //     this.levitationIcon.y -= 45;
+  //     // scene에 추가
+  //     this.scene.add.existing(this.levitationIcon);
+  //     // 시전상태 : true
+  //     this.isLevitation = true;
+  //   }
+  // }
 
   /**
    * @description
@@ -348,28 +351,28 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }).name = 'world';
   }
 
-  /**
-   * @param skillId {string} - load 한 skill의 참조값
-   * @param ms {number} - 삭제 시 setTimeout 값 조정
-   * @param volume {number} - 오디오 볼륨 조정
-   *
-   * @author bell
-   */
-  effectSound(
-    skillId: string,
-    ms?: number | 1000,
-    volume?: number | 0.2,
-  ): void {
-    if (this.scene.sound.getAll(skillId).length > 0) return;
+  // /**
+  //  * @param skillId {string} - load 한 skill의 참조값
+  //  * @param ms {number} - 삭제 시 setTimeout 값 조정
+  //  * @param volume {number} - 오디오 볼륨 조정
+  //  *
+  //  * @author bell
+  //  */
+  // effectSound(
+  //   skillId: string,
+  //   ms?: number | 1000,
+  //   volume?: number | 0.2,
+  // ): void {
+  //   if (this.scene.sound.getAll(skillId).length > 0) return;
 
-    const sound = this.scene.sound.add(skillId, {
-      volume,
-    });
-    sound.play();
-    setTimeout(() => {
-      this.scene.sound.remove(sound);
-    }, ms);
-  }
+  //   const sound = this.scene.sound.add(skillId, {
+  //     volume,
+  //   });
+  //   sound.play();
+  //   setTimeout(() => {
+  //     this.scene.sound.remove(sound);
+  //   }, ms);
+  // }
 
   /**
    * @description
@@ -378,9 +381,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
    * @author bell
    */
   isHasteSound() {
-    !this.isHaste
-      ? this.effectSound('walk', 200, 0.03)
-      : this.effectSound('haste', 1000);
+    !this.skill.isHaste
+      ? Effect.effectSound(this.scene, 'walk', 200, 0.03)
+      : Effect.effectSound(this.scene, 'haste', 1000);
   }
 }
 
