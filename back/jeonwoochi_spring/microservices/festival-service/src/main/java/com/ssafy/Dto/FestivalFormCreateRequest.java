@@ -11,19 +11,15 @@ import java.util.Date;
 @AllArgsConstructor
 public class FestivalFormCreateRequest {
 
-    private String name;
+    private String festivalName;
 
     private Date startDate;
 
-    private Date finishDate;
+    private Date endDate;
 
-    private String contents;
+    private String description;
 
-    private String locate;
-
-    private Float lat;
-
-    private Float lng;
+    private String address;
 
     private Long festivalTypeId;
 }

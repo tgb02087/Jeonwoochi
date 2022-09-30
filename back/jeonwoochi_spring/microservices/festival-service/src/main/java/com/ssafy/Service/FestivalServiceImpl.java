@@ -48,7 +48,7 @@ public class FestivalServiceImpl implements FestivalService {
             HashMap<String, Object> map = new HashMap<>();
 
             String apiURL = "https://dapi.kakao.com/v2/local/search/address.json?query="
-                    + URLEncoder.encode(festivalForm.getLocate(), "UTF-8");
+                    + URLEncoder.encode(festivalForm.getAddress(), "UTF-8");
 
             HttpResponse<JsonNode> response = Unirest.get(apiURL)
                     .header("Authorization", key)

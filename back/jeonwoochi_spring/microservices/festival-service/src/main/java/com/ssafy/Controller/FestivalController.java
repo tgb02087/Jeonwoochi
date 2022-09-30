@@ -70,12 +70,12 @@ public class FestivalController {
     // 축제 요청 추가
     @PostMapping(path = "/festival-form", consumes = {"multipart/form-data"})
     public ResponseEntity<?> createFestivalForm(
-            @RequestPart(value = "img", required = false) final MultipartFile file,
+            @RequestPart(value = "img", required = true) final MultipartFile file,
             @Valid @RequestPart(value = "data", required = true) final FestivalFormCreateRequest request,
             @LoginUser User user
     ){
         String imgUrl = awsS3Service.uploadFile(file);
-        festivalFormService.createFestivalForm(request, user.getId(), imgUrl);
+        festivalFormService.createFestivalForm(request, user.getId(), baseURL+imgUrl);
         return ResponseEntity.ok().build();
     }
     // 축제 요청 상세 보기

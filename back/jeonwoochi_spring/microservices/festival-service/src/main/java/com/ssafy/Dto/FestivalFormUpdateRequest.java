@@ -12,15 +12,15 @@ import java.util.Date;
 public class FestivalFormUpdateRequest {
     private Long id;
 
-    private String name;
+    private String festivalName;
 
     private Date startDate;
 
-    private Date finishDate;
+    private Date endDate;
 
-    private String contents;
+    private String description;
 
-    private String locate;
+    private String address;
 
     private String image;
 

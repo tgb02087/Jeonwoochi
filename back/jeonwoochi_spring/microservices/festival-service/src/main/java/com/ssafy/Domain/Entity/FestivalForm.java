@@ -19,15 +19,15 @@ public class FestivalForm {
     @Column(name = "festival_form_id")
     private Long id;
 
-    private String name;
+    private String festivalName;
 
     private Date startDate;
 
-    private Date finishDate;
+    private Date endDate;
 
-    private String contents;
+    private String description;
 
-    private String locate;
+    private String address;
 
     private String image;
 
@@ -39,22 +39,22 @@ public class FestivalForm {
 
     public static FestivalForm create(FestivalFormCreateRequest request, FestivalType festivalType, Long userId, String imgUrl){
         FestivalForm festival = new FestivalForm();
-        festival.name = request.getName();
+        festival.festivalName = request.getFestivalName();
         festival.startDate = request.getStartDate();
-        festival.finishDate = request.getFinishDate();
-        festival.contents = request.getContents();
-        festival.locate = request.getLocate();
+        festival.endDate = request.getEndDate();
+        festival.description = request.getDescription();
+        festival.address = request.getAddress();
         festival.image = imgUrl;
         festival.festivalType = festivalType;
         festival.userId = userId;
         return festival;
     }
     public void update(FestivalFormUpdateRequest request, FestivalType festivalType){
-        this.name = request.getName();
+        this.festivalName = request.getFestivalName();
         this.startDate = request.getStartDate();
-        this.finishDate = request.getFinishDate();
-        this.contents = request.getContents();
-        this.locate = request.getLocate();
+        this.endDate = request.getEndDate();
+        this.description = request.getDescription();
+        this.address = request.getAddress();
         this.image = request.getImage();
         this.festivalType = festivalType;
     }

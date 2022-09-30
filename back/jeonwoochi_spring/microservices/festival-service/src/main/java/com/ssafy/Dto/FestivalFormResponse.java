@@ -14,29 +14,29 @@ public class FestivalFormResponse {
 
     private Long id;
 
-    private String name;
+    private String festivalName;
 
     private String festivalType;
 
     private Date startDate;
 
-    private Date finishDate;
+    private Date endDate;
 
-    private String contents;
+    private String description;
 
-    private String locate;
+    private String address;
 
     private String image;
 
     public static FestivalFormResponse response(FestivalForm festivalForm){
         return new FestivalFormResponse(
                 festivalForm.getId(),
-                festivalForm.getName(),
+                festivalForm.getFestivalName(),
                 festivalForm.getFestivalType().getName(),
                 festivalForm.getStartDate(),
-                festivalForm.getFinishDate(),
-                festivalForm.getContents(),
-                festivalForm.getLocate(),
+                festivalForm.getEndDate(),
+                festivalForm.getDescription(),
+                festivalForm.getAddress(),
                 festivalForm.getImage()
         );
     }
