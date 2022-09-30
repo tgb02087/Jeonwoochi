@@ -8,9 +8,19 @@ import Sheet from '../atoms/Sheet';
 import Text from '../atoms/Text';
 import Textarea from '../atoms/Textarea';
 import TitleCancelHeader from './TitleCancelHeader';
+import { useDaumPostcodePopup } from 'react-daum-postcode';
+import Select from '../atoms/Select';
 
 interface PropTypes {
   setState: Dispatch<SetStateAction<boolean>>;
+}
+interface InputTypes {
+  [index: string]: string;
+  festivalName: string;
+  startDate: string;
+  endDate: string;
+  address: string;
+  posterSrc: string;
 }
 const StyledRequestModal = styled.div`
   width: 40vw;
@@ -18,7 +28,7 @@ const StyledRequestModal = styled.div`
   z-index: 1;
 `;
 const InnerSheet = styled.div`
-  ${tw`flex flex-col`}
+  ${tw`flex flex-col justify-between`}
   width: 100%;
   height: 60vh;
   gap: 1rem;
@@ -51,6 +61,7 @@ const inputProps = [
   ['endDate', 'date'],
   ['address', 'text'],
   ['posterSrc', 'file', 'image/*'],
+  ['select'],
   ['description', 'text'],
 ];
 const labelProps = [
@@ -59,6 +70,7 @@ const labelProps = [
   '축제 종료일',
   '축제 주소',
   '포스터 이미지',
+  '카테고리',
   '축제 설명',
 ];
 /**
@@ -69,14 +81,59 @@ const labelProps = [
  * @author jojo
  */
 const RequestModal = ({ setState }: PropTypes) => {
-  const [inputs, setInputs] = useState({
+  const [inputs, setInputs] = useState<InputTypes>({
     festivalName: '',
-    start: '',
-    end: '',
-    host: '',
+    startDate: '',
+    endDate: '',
+    address: '',
     posterSrc: '',
   });
+  const [select, setSelect] = useState('');
   const [textarea, setTextarea] = useState('');
+
+  const [isAllFilled, setIsAllFilled] = useState(true);
+  const open = useDaumPostcodePopup(
+    '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js',
+  );
+  const handleComplete = (data: any) => {
+    let fullAddress = data.address;
+    let extraAddress = '';
+
+    if (data.addressType === 'R') {
+      if (data.bname !== '') {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== '') {
+        extraAddress +=
+          extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+    }
+
+    setInputs(prev => ({
+      ...prev,
+      address: fullAddress,
+    }));
+  };
+  const handleClick = () => {
+    open({ onComplete: handleComplete });
+  };
+  const submitRequest = () => {
+    // inputs에 빈 값이 있는지 확인
+    Object.keys(inputs).forEach(key => {
+      if (inputs[key].trim() === '') {
+        setIsAllFilled(false);
+        return;
+      }
+    });
+    // select나 textarea에 빈 값이 있는지 확인
+    if (select.trim() === '' || textarea.trim() === '') {
+      setIsAllFilled(false);
+      return;
+    }
+    setIsAllFilled(true);
+    // 서버로 데이터 전송
+  };
   return (
     <StyledRequestModal>
       <Sheet transparent>
@@ -88,7 +145,7 @@ const RequestModal = ({ setState }: PropTypes) => {
           />
           <SheetBody>
             {inputProps.map((arr, idx) => {
-              if (idx === 5) return;
+              if (idx === 5 || idx === 6) return;
               return (
                 <InputLine>
                   <FlexLabel>
@@ -103,6 +160,7 @@ const RequestModal = ({ setState }: PropTypes) => {
                         type={arr[1]}
                         name={arr[0]}
                         id={arr[0]}
+                        value={inputs}
                         setValue={setInputs}
                         accept={arr[2]}
                       />
@@ -111,7 +169,9 @@ const RequestModal = ({ setState }: PropTypes) => {
                         type={arr[1]}
                         name={arr[0]}
                         id={arr[0]}
+                        value={inputs}
                         setValue={setInputs}
+                        handleClick={handleClick}
                       />
                     )}
                   </FlexInput>
@@ -125,19 +185,37 @@ const RequestModal = ({ setState }: PropTypes) => {
                 </Label>
               </FlexLabel>
               <FlexInput>
+                <Select
+                  value={select}
+                  setValue={setSelect}
+                  name={inputProps[6][0]}
+                  id={inputProps[6][0]}
+                />
+              </FlexInput>
+            </InputLine>
+            <InputLine>
+              <FlexLabel>
+                <Label color="white" htmlFor={inputProps[6][0]}>
+                  {labelProps[6]}
+                </Label>
+              </FlexLabel>
+              <FlexInput>
                 <Textarea
-                  id={inputProps[5][0]}
+                  id={inputProps[6][0]}
                   height={15}
                   setValue={setTextarea}
                 />
               </FlexInput>
             </InputLine>
-            <SubmitButton>
-              <Button isText>
-                <Text message="제출" />
-              </Button>
-            </SubmitButton>
+            {isAllFilled ? null : (
+              <Text message="모든 항목을 입력해주세요!" color="red" />
+            )}
           </SheetBody>
+          <SubmitButton>
+            <Button isText clickHandler={submitRequest}>
+              <Text message="제출" />
+            </Button>
+          </SubmitButton>
         </InnerSheet>
       </Sheet>
     </StyledRequestModal>
