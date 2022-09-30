@@ -28,7 +28,7 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/api/user2-service/**
+            - Path=/api/user-service/**
             - Method=GET,POST,PUT,DELETE
         #          filters:
         #            - RemoveRequestHeader=Cookie

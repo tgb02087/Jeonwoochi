@@ -25,6 +25,14 @@ pipeline{
 
     }
     stages {
+        stage('Checkout') {
+            // Get some code from a Git repository
+            checkout scm
+            mattermostSend (
+                color: "good", 
+                message: "Back Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+            )
+        }
         stage('Container Clean'){
             steps{
                 script {
