@@ -112,7 +112,7 @@ pipeline{
                 script{
                     try{
                     sh "docker run -d --name=${DISCOVERY_CONTAINER_NAME} -p 8761:8761 --net msa ${DISCOVERY_NAME}"
-                    sh 'sleep 1'
+                    sh 'sleep 5'
                     mattermostSend (
                         color: "good", 
                         message: "Back Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
