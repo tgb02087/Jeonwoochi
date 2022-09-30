@@ -4,6 +4,7 @@ import Sheet from '../atoms/Sheet';
 import Button from '../atoms/Button';
 import Text from '../atoms/Text';
 import Image from '../atoms/Image';
+import { useNavigate } from 'react-router-dom';
 
 const SheetWrapper = styled.section`
   ${tw`flex flex-col gap-2`}
@@ -43,15 +44,15 @@ const GuestButtonContainer = styled.div`
  * @author Sckroll
  */
 const LoginForm = () => {
+  const navigate = useNavigate();
+
   const kakaoLoginHandler = () => {
     console.log('kakao');
   };
   const googleLoginHandler = () => {
     console.log('google');
   };
-  const guestLoginHandler = () => {
-    console.log('guest');
-  };
+  const guestLoginHandler = () => navigate('/game');
 
   return (
     <Sheet transparent wide>
