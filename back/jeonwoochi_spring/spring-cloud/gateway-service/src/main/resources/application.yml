@@ -28,7 +28,7 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/api/user-service/**
+            - Path=/api/user2-service/**
             - Method=GET,POST,PUT,DELETE
         #          filters:
         #            - RemoveRequestHeader=Cookie
@@ -44,7 +44,7 @@ spring:
         #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
 
         - id: main-service
-          uri: lb://USER-SERVICE
+          uri: lb://MAIN-SERVICE
           predicates:
             - Path=/api/main-service/**
             - Method=GET,POST,PUT,DELETE
