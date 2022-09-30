@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import Alert from '../../icons/Alert';
@@ -7,6 +8,7 @@ import Text from '../atoms/Text';
 
 interface PropTypes {
   isAdmin: boolean;
+  setState: Dispatch<SetStateAction<boolean>>;
 }
 const StyledMainHeader = styled.div`
   ${tw`flex justify-between`}
@@ -24,11 +26,16 @@ const RightButton = styled.div``;
  *
  * @author: jojo
  */
-const MainHeader = ({ isAdmin }: PropTypes) => {
+const MainHeader = ({ isAdmin, setState }: PropTypes) => {
   const clickHandler = (isAdmin: boolean) => {
     // admin이면 관리자 모달 열고
+    if (isAdmin) {
+    }
     // user면 축제 요청 모달 열기
-    // 로그인 안한 guest면 로그인이 필요한 서비스라고 alert
+    else {
+      // 로그인 안한 guest면 로그인이 필요한 서비스라고 alert
+      setState(prev => !prev);
+    }
   };
   return (
     <StyledMainHeader>
