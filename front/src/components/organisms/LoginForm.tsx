@@ -42,7 +42,6 @@ const GuestButtonContainer = styled.div`
  *
  * @author Sckroll
  */
-// TODO: 시트 패딩 간격 넓히기
 const LoginForm = () => {
   const kakaoLoginHandler = () => {
     console.log('kakao');
@@ -55,7 +54,7 @@ const LoginForm = () => {
   };
 
   return (
-    <Sheet transparent>
+    <Sheet transparent wide>
       <SheetWrapper>
         <TempTitle>전우치 - 전국 우리 지역잔치</TempTitle>
         <ButtonContainer>
