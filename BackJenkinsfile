@@ -25,6 +25,41 @@ pipeline{
 
     }
     stages {
+        stage('Container Clean'){
+            steps{
+                script {
+                    try{
+                        sh "docker stop ${DISCOVERY_CONTAINER_NAME}"
+                        sh "docker stop ${CONFIG_CONTAINER_NAME}"
+                        sh "docker stop ${GATEWAY_CONTAINER_NAME}"
+
+                        sh "docker stop ${USER_CONTAINER_NAME}"
+                        sh "docker stop ${FESTIVAL_CONTAINER_NAME}"
+                        sh "docker stop ${MAIN_CONTAINER_NAME}"
+                        //sh "docker stop ${RECOMM_CONTAINER_NAME}"
+                        //sh "docker stop ${LOG_CONTAINER_NAME}"
+                        sleep 1
+                        sh "docker rm ${DISCOVERY_CONTAINER_NAME}"
+                        sh "docker rm ${CONFIG_CONTAINER_NAME}"
+                        sh "docker rm ${GATEWAY_CONTAINER_NAME}"
+
+                        sh "docker rm ${USER_CONTAINER_NAME}"
+                        sh "docker rm ${FESTIVAL_CONTAINER_NAME}"
+                        sh "docker rm ${MAIN_CONTAINER_NAME}"
+                        //sh "docker rm ${RECOMM_CONTAINER_NAME}"
+                        //sh "docker rm ${LOG_CONTAINER_NAME}"
+                    }catch(e){
+                        sh 'exit 0'
+                    }finally{
+                        sh "docker image prune -a --force"
+                        mattermostSend (
+                            color: "good", 
+                            message: "Back Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
+                        )
+                    }
+                }
+            }
+        }
 		stage('Build Gradle') {
             steps {
                 script{
@@ -73,40 +108,7 @@ pipeline{
                 }
             }
         }
-        stage('Container Clean'){
-            steps{
-                script {
-                    try{
-                        sh "docker stop ${DISCOVERY_CONTAINER_NAME}"
-                        sh "docker stop ${CONFIG_CONTAINER_NAME}"
-                        sh "docker stop ${GATEWAY_CONTAINER_NAME}"
 
-                        sh "docker stop ${USER_CONTAINER_NAME}"
-                        sh "docker stop ${FESTIVAL_CONTAINER_NAME}"
-                        sh "docker stop ${MAIN_CONTAINER_NAME}"
-                        //sh "docker stop ${RECOMM_CONTAINER_NAME}"
-                        //sh "docker stop ${LOG_CONTAINER_NAME}"
-                        sleep 1
-                        sh "docker rm ${DISCOVERY_CONTAINER_NAME}"
-                        sh "docker rm ${CONFIG_CONTAINER_NAME}"
-                        sh "docker rm ${GATEWAY_CONTAINER_NAME}"
-
-                        sh "docker rm ${USER_CONTAINER_NAME}"
-                        sh "docker rm ${FESTIVAL_CONTAINER_NAME}"
-                        sh "docker rm ${MAIN_CONTAINER_NAME}"
-                        //sh "docker rm ${RECOMM_CONTAINER_NAME}"
-                        //sh "docker rm ${LOG_CONTAINER_NAME}"
-                    }catch(e){
-                        sh 'exit 0'
-                    }finally{
-                        mattermostSend (
-                            color: "good", 
-                            message: "Back Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
-                        )
-                    }
-                }
-            }
-        }
 		stage('Eureka Depoly'){
             steps {
                 script{
