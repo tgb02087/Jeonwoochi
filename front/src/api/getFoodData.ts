@@ -4,7 +4,7 @@ import sound from '../effect/walk.wav';
 
 const getFoodData = async () => {
   try {
-    const response = await axios.get('/festival_service/recomm/dist');
+    const response = await axios.get('/festival_service/recomm/restaurant');
 
     // 소리 삽입
     const audio = new Audio(sound);

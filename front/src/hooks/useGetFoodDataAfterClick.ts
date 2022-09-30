@@ -5,4 +5,5 @@ import { Restaurant } from '../mocks/handlers/festival_recomm_restaurant';
 export const useGetFoodDataAfterClick = () =>
   useQuery<Restaurant[]>(['festival_service/recomn/restaurant'], getFoodData, {
     enabled: false,
+    cacheTime: 0,
   });

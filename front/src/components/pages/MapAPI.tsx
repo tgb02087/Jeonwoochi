@@ -65,6 +65,8 @@ const MapAPI = () => {
   const clickFoodButtonHandler = () => restaurantData.refetch();
   const clickLodgeButtonhandler = () => lodgingData.refetch();
 
+  console.log(lodgingData);
+
   const getCoordHandler = (idx: number) => {
     const result = mapData.data!.filter(d => d.festivalId === idx);
     return {
@@ -111,6 +113,7 @@ const MapAPI = () => {
           <>
             <FestivalMap
               restaurantData={restaurantData.data}
+              lodgeData={lodgingData.data}
               restaurantRecommClickHandler={clickFoodButtonHandler}
               lodgeRecommClickHandler={clickLodgeButtonhandler}
               coord={getCoordHandler(MAPIDX)}

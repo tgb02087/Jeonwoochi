@@ -5,12 +5,14 @@ import festival_recomm_restaurant from './handlers/festival_recomm_restaurant';
 import festival_item from './handlers/festival_item';
 import search_news from './handlers/search_news';
 import weather from './handlers/weather';
+import festival_recomm_lodge from './handlers/festival_recomm_lodge';
 
 export const handlers = [
   interest_question,
   interest_answer,
   festival_list,
   festival_recomm_restaurant,
+  festival_recomm_lodge,
   festival_item,
   search_news,
   weather,

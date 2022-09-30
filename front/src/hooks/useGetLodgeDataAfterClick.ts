@@ -5,6 +5,7 @@ import getLodgeData from '../api/getLodgeData';
 // import { Restaurant } from '../mocks/handlers/festival_recomm_dist';
 
 export const useGetLodgeDataAfterClick = () =>
-  useQuery<Lodge[]>(['festival_service/recomn/lodge'], getLodgeData, {
+  useQuery<Lodge[]>(['/festival_service/recomm/lodge'], getLodgeData, {
     enabled: false,
+    cacheTime: 0,
   });

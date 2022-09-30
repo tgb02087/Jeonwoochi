@@ -40,6 +40,7 @@ const FestivalMap = ({
   restaurantRecommClickHandler,
   lodgeRecommClickHandler,
   restaurantData,
+  lodgeData,
 }: PropTypes) => {
   return (
     <>
@@ -51,7 +52,11 @@ const FestivalMap = ({
           <Text message={'숙박 추천'} />
         </Button>
       </PositionButton>
-      <KakaoMap restaurantData={restaurantData} coord={coord} />
+      <KakaoMap
+        lodgeData={lodgeData}
+        restaurantData={restaurantData}
+        coord={coord}
+      />
     </>
   );
 };
