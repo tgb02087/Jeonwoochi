@@ -44,7 +44,7 @@ spring:
         #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
 
         - id: main-service
-          uri: lb://MAIN-SERVICE
+          uri: lb://USER-SERVICE
           predicates:
             - Path=/api/main-service/**
             - Method=GET,POST,PUT,DELETE
