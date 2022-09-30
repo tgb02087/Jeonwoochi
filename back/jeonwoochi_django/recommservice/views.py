@@ -13,4 +13,5 @@ from .algorithm import user_based_cf
 # Create your views here.
 @api_view(['GET'])
 def get_snbr(request, user_id):
+    # print(user_id)
     return Response(user_based_cf(user_id), status=status.HTTP_200_OK)

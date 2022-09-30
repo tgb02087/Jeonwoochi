@@ -27,13 +27,13 @@ class Restaurant(models.Model):
 
 class Review(models.Model):
     review_id = models.BigAutoField(primary_key=True)
-    store = models.TextField()
-    user_id = models.TextField()
+    restaurant_id = models.BigIntegerField(blank=True, null=True)
+    user_id = models.BigIntegerField(blank=True, null=True)
     score = models.BigIntegerField()
-    content = models.TextField(blank=True, null=True)
-    reg_time = models.DateTimeField(blank=True, null=True)
+    content = models.CharField(max_length=2000, blank=True, null=True)
+    created_at = models.DateTimeField(blank=True, null=True)
     gender = models.TextField(blank=True, null=True)
-    born_year = models.IntegerField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
