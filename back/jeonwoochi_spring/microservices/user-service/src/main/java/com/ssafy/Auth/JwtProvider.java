@@ -120,8 +120,6 @@ public class JwtProvider {
         }
     }
 
-}
-
     // 토큰에서 userID 조회
     public CheckUserResponse getUserId(String AT){
         CheckUserResponse checkUserResponse = null;
@@ -143,4 +141,4 @@ public class JwtProvider {
         }
         return checkUserResponse;
     }
-}>>>>>>>c6cf5eeec70ec6f0430832f1c1431cbe7fe35443
+}
