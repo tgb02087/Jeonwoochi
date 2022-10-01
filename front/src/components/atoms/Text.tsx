@@ -48,4 +48,8 @@ const Text = ({ message, clickHandler, color, size }: PropTypes) => {
   );
 };
 
+Text.defaultProps = {
+  color: 'white',
+};
+
 export default Text;
