@@ -23,6 +23,7 @@ class Mana extends Phaser.GameObjects.Graphics {
     this.value = 100;
     this.p = 76 / 100;
 
+    this.bar.setDepth(1);
     this.draw();
     scene.add.existing(this.bar);
   }

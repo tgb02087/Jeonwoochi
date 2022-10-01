@@ -4,7 +4,8 @@ import Player from './Player';
 import Resource from './Resources';
 import eventEmitter from '../utils/eventEmitter';
 import { MapData } from './../mocks/handlers/festival_list';
-import Audio from './Audio';
+import Bgm from './Bgm';
+import Effect from './Effect';
 // import { ADDRCONFIG } from 'dns';
 
 interface FestivalObject {
@@ -36,11 +37,12 @@ class BootScene extends Scene {
     this.load.tilemapTiledJSON('map', map);
 
     // 오디오 데이터 불러오기
-    Audio.preload(this, 'bgm', ['/audios/bgm/Coffee Break.mp3']);
-    Audio.preload(this, 'skill_on', ['/audios/effects/skill on.wav']);
-    Audio.preload(this, 'skill_off', ['/audios/effects/skill off.wav']);
-    Audio.preload(this, 'walk', ['/audios/effects/walk.wav']);
-    Audio.preload(this, 'haste', ['/audios/effects/haste.wav']);
+    Bgm.preload(this, 'bgm', ['/audios/bgm/Coffee Break.mp3']);
+    Effect.preload(this, 'skill_on', ['/audios/effects/skill on.wav']);
+    Effect.preload(this, 'skill_off', ['/audios/effects/skill off.wav']);
+    Effect.preload(this, 'walk', ['/audios/effects/walk.wav']);
+    Effect.preload(this, 'haste', ['/audios/effects/haste.wav']);
+    Effect.preload(this, 'event', ['/audios/effects/event.wav']);
 
     // 플레이어 클래스 불러오기
     Player.preload(this);
@@ -153,8 +155,11 @@ class BootScene extends Scene {
     // 축제 이름 아래에 텍스트가 떠있을 경우
     if (this.popupEnabledTime > 0) {
       // Enter 키를 입력하면 축제 페이지로 이동하는 이벤트를 송신
-      if (this.enterKey.isDown)
+      if (this.enterKey.isDown) {
+        // event 사운드 추가
+        Effect.effectSound(this, 'event', 300, 0.2);
         eventEmitter.emit('visit', this.collidedFestivalObject);
+      }
 
       // 3초가 지나면 축제 이름 아래의 텍스트 없애기
       if (time - this.popupEnabledTime >= 3000) {

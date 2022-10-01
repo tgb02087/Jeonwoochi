@@ -444,6 +444,26 @@
     + 소리 설정
     + 맛집 버튼 소리 추가
       + 걸음 소리 추가
-
-  
-
+  + 에러 고치기 1: 키보드 입력 방향키로 변경
+    + 키 이벤트 각각 LEFT, RIGHT, UP, DOWN 변경 완료
+  + 에러 고치기 2: 마력창 덮이는 문제
+    + `setDepth` 적용
+    + 먼저 만들어지는 순으로, 레이어가 생성되는 것을 확인 (map -> 캐릭터 -> 마력창 -> 오브젝트 -> 스킬 아이콘)
+    + 캐릭터는 덮어씌워질 일 없고 (왜냐면, collide 설정해서 안덮이게 할테니), 마력창만 depth 적용하면 될듯!
+    + default `setDepth() = 0`
+    + 마력창 `setDepth = 1` 설정
+    + 에러 해결 
+  + 코드 리팩토링
+    + `Bgm`, `Effect` 클래스 생성 
+      + `Audio` 클래스를 두 클래스로 분할
+      + `Effect` 클래스에 `effectSound()` 이관, 단 `Effect` 인스턴스는 쓸 일이 없으므로 `static` 으로 설정
+    + `Skill` 클래스
+      + `isHaste`, `isLevitation`,`hasteIcon`, `levitationIcon` ,`skillHaste()`, `skillLevitation()` 이관
+      + `skillHaste()`, `skillLevitaion()` `Player` 클래스 데이터에 접근하기 위한 `player` 매개변수 추가
+      + `Player` 클래스에서 `Skill` 클래스 접근 가능하도록 모두 변수,함수 `public` 상태로 설정
+  + 에러 고치기 3: 스킬 아이콘 겹치는 문제
+    + 중복 x,y 설정 제거 `Player`, ~~`Skill`~~
+    + `Player` 인스턴스가 움직일 때 마다, 아이콘 x,y도 바뀌어야 하기 때문에, `Player` 이동 시 업데이트 하는 것이 옳다고 판단.
+  + 사운드 추가 `collidedFestival`
+    + 축제 오브젝트를 발견하여, `enter` 입력 시 사운드가 일어나게 함
+    + 게임 및 리액트 컴포넌트의 모든 버튼에도 해당 사운드를 추가해볼 예정
