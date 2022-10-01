@@ -10,6 +10,7 @@ import festival_recomm_lodge from './handlers/festival_recomm_lodge';
 import festival_request_list from './handlers/festival_request_list';
 import festival_recomm_shopping from './handlers/festival_recomm_shopping';
 import festival_recomm_culture from './handlers/festival_recomm_culture';
+import festival_recomm_leisure from './handlers/festival_recomm_leisure';
 
 export const handlers = [
   interest_question,
@@ -19,6 +20,7 @@ export const handlers = [
   festival_recomm_lodge,
   festival_recomm_shopping,
   festival_recomm_culture,
+  festival_recomm_leisure,
   festival_item,
   search_news,
   weather,

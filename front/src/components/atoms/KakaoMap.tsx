@@ -4,6 +4,7 @@ import { Lodge } from '../../mocks/handlers/festival_recomm_lodge';
 import { Shopping } from '../../mocks/handlers/festival_recomm_shopping';
 import { Culture } from '../../mocks/handlers/festival_recomm_culture';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Leisure } from '../../mocks/handlers/festival_recomm_leisure';
 
 // 마커 사이즈
 
@@ -93,10 +94,12 @@ interface PropTypes {
   lodgeData?: Lodge[] | undefined;
   shoppingData?: Shopping[] | undefined;
   cultureData?: Culture[] | undefined;
+  leisureData?: Leisure[] | undefined;
   isVisibleMarkerRestaurant: boolean;
   isVisibleMarkerLodge: boolean;
   isVisibleMarkerShopping: boolean;
   isVisibleMarkerCulture: boolean;
+  isVisibleMarkerLeisure: boolean;
 }
 
 /**
@@ -112,10 +115,12 @@ const KakaoMap = ({
   lodgeData,
   shoppingData,
   cultureData,
+  leisureData,
   isVisibleMarkerRestaurant,
   isVisibleMarkerLodge,
   isVisibleMarkerShopping,
   isVisibleMarkerCulture,
+  isVisibleMarkerLeisure,
 }: PropTypes) => {
   const { lat, lng } = coord;
   // 마커 이미지
@@ -124,6 +129,7 @@ const KakaoMap = ({
   const lodgeSrc = '/images/map/lodge_marker.png';
   const shoppingSrc = '/images/map/shopping_marker.png';
   const cultureSrc = '/images/map/culture_marker.png';
+  const leisureSrc = '/images/map/leisure_marker.png';
 
   const size = { width: 32, height: 45 };
   const mapRef = useRef(null);
@@ -195,6 +201,15 @@ const KakaoMap = ({
             key={index}
             position={{ lat: position.lat, lng: position.lng }}
             markerSrc={cultureSrc}
+          />
+        ))}
+      {isVisibleMarkerLeisure &&
+        leisureData &&
+        leisureData.map((position, index) => (
+          <EventMarkerContainer
+            key={index}
+            position={{ lat: position.lat, lng: position.lng }}
+            markerSrc={leisureSrc}
           />
         ))}
     </Map>
