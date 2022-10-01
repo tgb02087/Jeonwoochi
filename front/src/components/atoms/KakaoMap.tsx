@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useMemo, useState } from 'react';
 import { Restaurant } from '../../mocks/handlers/festival_recomm_restaurant';
 import { Lodge } from '../../mocks/handlers/festival_recomm_lodge';
-
+import { Shopping } from '../../mocks/handlers/festival_recomm_shopping';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 // 마커 사이즈
@@ -90,8 +90,10 @@ interface PropTypes {
   };
   restaurantData?: Restaurant[] | undefined;
   lodgeData?: Lodge[] | undefined;
+  shoppingData?: Shopping[] | undefined;
   isVisibleMarkerRestaurant: boolean;
   isVisibleMarkerLodge: boolean;
+  isVisibleMarkerShopping: boolean;
 }
 
 /**
@@ -105,14 +107,17 @@ const KakaoMap = ({
   coord,
   restaurantData,
   lodgeData,
+  shoppingData,
   isVisibleMarkerRestaurant,
   isVisibleMarkerLodge,
+  isVisibleMarkerShopping,
 }: PropTypes) => {
   const { lat, lng } = coord;
   // 마커 이미지
   const playerSrc = '/images/map/mira.gif';
   const restaurantSrc = '/images/map/restaurant_marker.png';
   const lodgeSrc = '/images/map/lodge_marker.png';
+  const shoppingSrc = '/images/map/shopping_marker.png';
 
   const size = { width: 32, height: 45 };
   const mapRef = useRef(null);
@@ -166,6 +171,15 @@ const KakaoMap = ({
             key={index}
             position={{ lat: position.lat, lng: position.lng }}
             markerSrc={lodgeSrc}
+          />
+        ))}
+      {isVisibleMarkerShopping &&
+        shoppingData &&
+        shoppingData.map((position, index) => (
+          <EventMarkerContainer
+            key={index}
+            position={{ lat: position.lat, lng: position.lng }}
+            markerSrc={shoppingSrc}
           />
         ))}
     </Map>
