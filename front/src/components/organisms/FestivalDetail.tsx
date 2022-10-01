@@ -70,7 +70,7 @@ const FestivalDetail = ({
   newsInfo,
   navigate,
 }: PropTypes) => {
-  console.log(weatherInfo);
+  // console.log(weatherInfo);
 
   const clickHandler = () => {
     navigate(-1);

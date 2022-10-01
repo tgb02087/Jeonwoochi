@@ -22,7 +22,7 @@ const StyledButtonText = styled.button`
   }
 
   &:active {
-    border-bottom-width: 2px;
+    border-bottom-width: 1px;
     transition: all 0.1s;
   }
 `;

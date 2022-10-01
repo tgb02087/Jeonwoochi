@@ -42,6 +42,9 @@ const restaurantData: Restaurant[] = [
   },
 ];
 
-export default rest.get('/festival_service/recomm/dist', (req, res, ctx) => {
-  return res(ctx.status(200), ctx.json(restaurantData));
-});
+export default rest.get(
+  '/festival_service/recomm/restaurant',
+  (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(restaurantData));
+  },
+);
