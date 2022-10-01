@@ -59,6 +59,7 @@ public class FestivalFormServiceImpl implements FestivalFormService{
                 .map(FestivalFormResponse::response);
         return festivalForms;
     }
+    
     // 축제 요청 수정
     @Override
     @Transactional
