@@ -10,5 +10,5 @@ import java.util.List;
 public interface FestivalFormRepo extends JpaRepository<FestivalForm, Long> {
     Page<FestivalForm> findByUserIdOrderByIdDesc(Long userId, Pageable pageable);
 
-    Page<FestivalForm> findAllOrderByIdDesc(Pageable pageable);
+    Page<FestivalForm> findAllByOrderByIdDesc(Pageable pageable);
 }

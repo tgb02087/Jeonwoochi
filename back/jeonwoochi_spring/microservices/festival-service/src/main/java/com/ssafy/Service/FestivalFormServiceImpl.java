@@ -46,7 +46,7 @@ public class FestivalFormServiceImpl implements FestivalFormService{
     @Override
     @Transactional
     public Page<FestivalFormResponse> findFestivalFormListAll(Pageable pageable) {
-        Page<FestivalFormResponse> festivalForms = festivalFormRepo.findAllOrderByIdDesc(pageable)
+        Page<FestivalFormResponse> festivalForms = festivalFormRepo.findAllByOrderByIdDesc(pageable)
                 .map(FestivalFormResponse::response);
 
         return festivalForms;
