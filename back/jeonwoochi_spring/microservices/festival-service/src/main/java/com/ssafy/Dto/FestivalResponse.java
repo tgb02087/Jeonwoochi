@@ -16,8 +16,6 @@ public class FestivalResponse {
 
     private String festivalName;
 
-    private String festivalType;
-
     private Date startDate;
 
     private Date endDate;
@@ -32,18 +30,20 @@ public class FestivalResponse {
 
     private Double lng;
 
+    private String fee;
+
     public static FestivalResponse response(Festival festival){
         return new FestivalResponse(
                 festival.getId(),
                 festival.getFestivalName(),
-                festival.getFestivalType().getName(),
                 festival.getStartDate(),
                 festival.getEndDate(),
                 festival.getDescription(),
                 festival.getAddress(),
                 festival.getImage(),
                 festival.getLat(),
-                festival.getLng()
+                festival.getLng(),
+                festival.getFee()
         );
     }
 }

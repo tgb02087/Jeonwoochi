@@ -34,11 +34,7 @@ public class Festival {
 
     private Double lng;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "festival_type_id")
-    private FestivalType festivalType;
-
-
+    private String fee;
     public static Festival create(FestivalForm festivalForm, Double lat, Double lng){
         Festival festival = new Festival();
         festival.festivalName = festivalForm.getFestivalName();
@@ -49,10 +45,10 @@ public class Festival {
         festival.image = festivalForm.getImage();
         festival.lat = lat;
         festival.lng = lng;
-        festival.festivalType = festivalForm.getFestivalType();
+
         return festival;
     }
-    public void update(FestivalUpdateRequest request, FestivalType festivalType){
+    public void update(FestivalUpdateRequest request){
         this.festivalName = request.getFestivalName();
         this.startDate = request.getStartDate();
         this.endDate = request.getEndDate();
@@ -61,6 +57,6 @@ public class Festival {
         this.image = request.getImage();
         this.lat = request.getLat();
         this.lng = request.getLng();
-        this.festivalType = festivalType;
+        this.fee = request.getFee();
     }
 }

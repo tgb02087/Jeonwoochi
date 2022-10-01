@@ -24,5 +24,5 @@ public class FestivalFormUpdateRequest {
 
     private String image;
 
-    private Long festivalTypeId;
+    private String fee;
 }

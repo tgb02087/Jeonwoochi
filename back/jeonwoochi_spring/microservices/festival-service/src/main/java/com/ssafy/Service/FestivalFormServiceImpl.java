@@ -1,9 +1,7 @@
 package com.ssafy.Service;
 
 import com.ssafy.Domain.Entity.FestivalForm;
-import com.ssafy.Domain.Entity.FestivalType;
 import com.ssafy.Domain.Repository.FestivalFormRepo;
-import com.ssafy.Domain.Repository.FestivalTypeRepo;
 import com.ssafy.Dto.FestivalFormCreateRequest;
 import com.ssafy.Dto.FestivalFormResponse;
 import com.ssafy.Dto.FestivalFormUpdateRequest;
@@ -14,9 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static com.ssafy.exception.NotFoundException.*;
 
 @Service
@@ -24,14 +19,11 @@ import static com.ssafy.exception.NotFoundException.*;
 @Transactional(readOnly = true)
 public class FestivalFormServiceImpl implements FestivalFormService{
     private final FestivalFormRepo festivalFormRepo;
-    private final FestivalTypeRepo festivalTypeRepo;
     // 축제 요청 추가
     @Override
     @Transactional
     public void createFestivalForm(FestivalFormCreateRequest request, Long userId, String imgUrl) {
-            FestivalType festivalType = festivalTypeRepo.findById(request.getFestivalTypeId())
-                    .orElseThrow(()-> new NotFoundException(FESTIVAL_TYPE_NOT_FOUND));
-            FestivalForm festivalForm = FestivalForm.create(request, festivalType, userId, imgUrl);
+            FestivalForm festivalForm = FestivalForm.create(request, userId, imgUrl);
             festivalFormRepo.save(festivalForm);
     }
     // 축제 요청 상세 보기
@@ -64,11 +56,9 @@ public class FestivalFormServiceImpl implements FestivalFormService{
     @Override
     @Transactional
     public FestivalFormResponse updateFestivalForm(FestivalFormUpdateRequest request) {
-        FestivalType festivalType = festivalTypeRepo.findById(request.getFestivalTypeId())
-                .orElseThrow(()-> new NotFoundException(FESTIVAL_TYPE_NOT_FOUND));
         FestivalForm festivalForm = festivalFormRepo.findById(request.getId())
                 .orElseThrow(()-> new NotFoundException(FESTIVAL_FORM_NOT_FOUND));
-        festivalForm.update(request, festivalType);
+        festivalForm.update(request);
         return FestivalFormResponse.response(festivalForm);
     }
     // 축제 요청 삭제

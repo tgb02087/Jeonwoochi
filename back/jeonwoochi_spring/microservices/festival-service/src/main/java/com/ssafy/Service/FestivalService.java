@@ -14,6 +14,12 @@ public interface FestivalService {
     FestivalResponse findFestivalDetail(Long festivalId);
     //축제 전체 리스트
     List<FestivalResponse> findFestivalListAll();
+    // 마감한 축제 리스트
+    List<FestivalResponse> findFestivalListEd();
+    // 진행중인 축제 리스트
+    List<FestivalResponse> findFestivalListIng();
+    // 예정인 축제 리스트
+    List<FestivalResponse> findFestivalListWill();
     //축제 수정
     FestivalResponse updateFestival(FestivalUpdateRequest request);
     //축제 삭제
