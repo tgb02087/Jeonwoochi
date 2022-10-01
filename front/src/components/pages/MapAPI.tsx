@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { useGetFoodDataAfterClick } from './useGetFoodDataAfterClick';
+
+import { useGetFoodDataAfterClick } from '../../hooks/useGetFoodDataAfterClick';
+import { useGetLodgeDataAfterClick } from '../../hooks/useGetLodgeDataAfterClick';
 
 import { MapData } from '../../mocks/handlers/festival_list';
 import { AxiosError } from 'axios';
@@ -57,7 +59,11 @@ const MapAPI = () => {
   // 맛집 데이터 불러오기
   const restaurantData = useGetFoodDataAfterClick();
 
+  // 숙박 데이터 불러오기
+  const lodgingData = useGetLodgeDataAfterClick();
+
   const clickFoodButtonHandler = () => restaurantData.refetch();
+  const clickLodgeButtonhandler = () => lodgingData.refetch();
 
   const getCoordHandler = (idx: number) => {
     const result = mapData.data!.filter(d => d.festivalId === idx);
@@ -105,7 +111,9 @@ const MapAPI = () => {
           <>
             <FestivalMap
               restaurantData={restaurantData.data}
-              clickHandler={clickFoodButtonHandler}
+              lodgeData={lodgingData.data}
+              restaurantRecommClickHandler={clickFoodButtonHandler}
+              lodgeRecommClickHandler={clickLodgeButtonhandler}
               coord={getCoordHandler(MAPIDX)}
             />
           </>
