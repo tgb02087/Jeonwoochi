@@ -31,8 +31,8 @@ public class KakaoService {
     @Value("${client.key}")
     private String clientkey;
 
+    //인가코드로 토큰 받기
     public String getToken(String code) throws IOException {
-        //인가코드로 토큰 받기
         String host = "https://kauth.kakao.com/oauth/token";
         URL url = new URL(host);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -83,6 +83,7 @@ public class KakaoService {
         return token;
     }
 
+    //유저 정보 받기
     public UserReponse getUserInfo(String access_token) throws IOException {
         String host = "https://kapi.kakao.com/v2/user/me";
         UserReponse userReponse = null;
@@ -129,18 +130,20 @@ public class KakaoService {
             }
             //String birthday = obj.get("birthday").toString();
             //System.out.println("생일"+birthday);
-            userReponse = new UserReponse(id, nickname, gender, age,access_token);
+            userReponse = new UserReponse(id, nickname, gender, age, access_token);
 
             br.close();
 
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-
         return userReponse;
     }
-    public void userchk(UserReponse userReponse) {
+    // 회원가입 유저인지 확인
+    public User userchk(UserReponse userReponse) {
         List<User> list = findById(userReponse.getId());
+        System.out.println("검새사이즈 : "+ list.size());
+        //List<User> list = userrepo.findById(userReponse.getId());
         User user = null;
         if(list.size()==0) {
             String kakaoid = userReponse.getId();
@@ -153,8 +156,10 @@ public class KakaoService {
             user=User.create(userRequest);
             save(user);
         }
+        else user = list.get(0);
+        System.out.println(user.getId());
         // 토큰 재발급
-
+        return user;
     }
 
     public void save(User user){

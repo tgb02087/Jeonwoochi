@@ -1,6 +1,7 @@
 package com.ssafy.Auth;
 
 import com.ssafy.Dto.Request.TokenInfoRequest;
+import com.ssafy.Dto.Response.CheckUserResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -20,9 +21,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JwtProvider {
 
+    //엑세스 토큰 생성 키
     @Value("${token.secret}")
     private String SECRET_KEY;
 
+    //리프레쉬 토큰 생성 키
     @Value("${token.refresh}")
     private String REFRESH_KEY;
 
@@ -93,6 +96,7 @@ public class JwtProvider {
                 .getBody();
     }
 
+    //토큰 유효시간체킹
     public boolean validateToken(String AT) {
         System.out.println("검증");
         System.out.println(AT);
@@ -107,5 +111,26 @@ public class JwtProvider {
         }catch (Exception e){
             return false;
         }
+    }
+    //토큰에서 userID 조회
+    public CheckUserResponse getUserId(String AT){
+        CheckUserResponse checkUserResponse = null;
+        try {
+            Jws<Claims> claims = Jwts.parser()
+                    .setSigningKey(SECRET_KEY)
+                    .parseClaimsJws(AT);
+
+            Long id = Long.parseLong(claims.getBody().get("id").toString());
+            boolean isAdmin = true;
+            if(claims.getBody().get("role").toString().equals("USER")){
+                isAdmin = false;
+            }
+            checkUserResponse = new CheckUserResponse(id,isAdmin);
+            System.out.println("id : "+id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new CheckUserResponse(null,null);
+        }
+        return checkUserResponse;
     }
 }
