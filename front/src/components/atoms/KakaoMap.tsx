@@ -2,16 +2,69 @@ import React, { useEffect, useRef, useMemo, useState } from 'react';
 import { Restaurant } from '../../mocks/handlers/festival_recomm_restaurant';
 import { Lodge } from '../../mocks/handlers/festival_recomm_lodge';
 
-import { Map, MapMarker, useMap } from 'react-kakao-maps-sdk';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
-interface PropTypes {
-  coord: {
+interface PropTypesInfoWindow {
+  title: string;
+}
+
+/**
+ * @descrition
+ * 인포윈도우 컴포넌트
+ * 각 마커의 요약된 내용을 보여준다.
+ *
+ * @author jojo
+ */
+const InfoWindow = ({ title }: PropTypesInfoWindow): JSX.Element => (
+  <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <div style={{ fontWeight: 'bold' }}>{title}</div>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+      }}
+    >
+      <a href={`https://map.kakao.com/?q=${title}`} target={'_blank'}>
+        카카오 지도로 보기
+      </a>
+      <a href={`https://map.naver.com/v5/search/${title}`} target={'_blank'}>
+        네이버 지도로 보기
+      </a>
+    </div>
+  </div>
+);
+
+/**
+ * @description
+ * EventMarkerContainer의
+ *
+ * @author bell
+ */
+
+interface PropTypesEventMarkerContainer {
+  position: {
     lat: number;
     lng: number;
   };
-  restaurantData?: Restaurant[] | undefined;
-  lodgeData?: Lodge[] | undefined;
 }
+
+const EventMarkerContainer = ({
+  position,
+}: PropTypesEventMarkerContainer): JSX.Element => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  return (
+    <MapMarker
+      position={{ lat: position.lat, lng: position.lng }}
+      onClick={() => setIsVisible(prev => !prev)}
+      // onMouseOver={() => setIsVisible(true)}
+      // onMouseOut={() => setIsVisible(false)}
+    >
+      {isVisible && <InfoWindow title={'천복 순대국밥 궁동점'} />}
+    </MapMarker>
+  );
+};
 
 // declare global {
 //   interface Window {
@@ -76,6 +129,15 @@ interface PropTypes {
 
 // }
 
+interface PropTypes {
+  coord: {
+    lat: number;
+    lng: number;
+  };
+  restaurantData?: Restaurant[] | undefined;
+  lodgeData?: Lodge[] | undefined;
+}
+
 /**
  * @description
  * lat, lng 기준으로 맵 API 렌더링
@@ -88,311 +150,6 @@ const KakaoMap = ({ coord, restaurantData, lodgeData }: PropTypes) => {
   const src = '/images/map/mira.gif';
   const size = { width: 32, height: 45 };
   const mapRef = useRef(null);
-
-  const prevInfoWindow: any = null;
-
-  // useEffect(() => {
-  //   if (restaurantData) {
-  //     for (let i = 0; i < restaurantData.length; i++) {
-  //             const currPos = restaurantData[i];
-  //             const position = new window.kakao.maps.LatLng(currPos.lat, currPos.lng);
-
-  //             const marker = new window.kakao.maps.Marker({
-  //               map,
-  //               position,
-  //               clickable: true,
-  //             });
-  //             marker.setMap(map);
-  //             /**
-  //              * author: jojo
-  //              */
-  //             // 해당 마커의 음식점 상호명
-  //             const restaurantName = '천복순대국밥 궁동점';
-
-  //             // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
-  //             const iwContent = document.createElement('div');
-  //             iwContent.setAttribute(
-  //               'style',
-  //               `display: flex;
-  //               flex-direction: column;
-  //               `,
-  //             );
-
-  //             const iwTitle = document.createElement('div');
-  //             iwTitle.innerText = restaurantName;
-  //             iwTitle.setAttribute(
-  //               'style',
-  //               `
-  //               font-weight: bold;
-  //             `,
-  //             );
-  //             const btnContainer = document.createElement('div');
-  //             btnContainer.setAttribute(
-  //               'style',
-  //               `
-  //               display: flex;
-  //               flex-direction: column;
-  //               justify-content: space-around;
-  //             `,
-  //             );
-
-  //             // 클릭하면 식당 이름에 맞는 맵 검색 결과 새 창을 띄움
-  //             // 상호명 + 지점명은 나중에 api 적용하면 데이터 거기서 받아오기
-  //             const kakaoLink = document.createElement('a');
-  //             const naverLink = document.createElement('a');
-  //             kakaoLink.innerHTML = '카카오 지도로 보기';
-  //             naverLink.innerHTML = '네이버 지도로 보기';
-  //             kakaoLink.href = 'https://map.kakao.com/?q=' + restaurantName;
-  //             kakaoLink.target = '_blank';
-  //             naverLink.href = 'https://map.naver.com/v5/search/' + restaurantName;
-  //             naverLink.target = '_blank';
-
-  //             iwContent.appendChild(iwTitle);
-  //             iwContent.appendChild(btnContainer);
-  //             btnContainer.appendChild(kakaoLink);
-  //             btnContainer.appendChild(naverLink);
-  //             // const iwContent = `<div style="padding:5px;">Hello World!</div>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-  //             const iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-  //             // 인포윈도우를 생성합니다
-  //             const infowindow = new window.kakao.maps.InfoWindow({
-  //               content: iwContent,
-  //               removable: iwRemoveable,
-  //             });
-
-  //             // 마커에 클릭이벤트를 등록합니다
-  //             window.kakao.maps.event.addListener(marker, 'click', function () {
-  //               // 이전에 클릭한 인포윈도우가 있으면 닫습니다
-  //               if (prevInfoWindow) prevInfoWindow.close();
-
-  //               // 마커 위에 인포윈도우를 표시합니다
-  //               infowindow.open(map, marker);
-  //               prevInfoWindow = infowindow;
-  //             });
-  //           }
-  //         }
-  //   }
-  // }, [restaurantData]);
-
-  // useEffect(() => {
-  //   mapInitHandler(lat, lng);
-  // }, []);
-
-  // useEffect(() => {
-  //   if (restaurantData) {
-  //     mapInitHandler(lat, lng);
-  //     console.log('요청함');
-
-  //     for (let i = 0; i < restaurantData.length; i++) {
-  //       const currPos = restaurantData[i];
-  //       const position = new window.kakao.maps.LatLng(currPos.lat, currPos.lng);
-
-  //       const marker = new window.kakao.maps.Marker({
-  //         map,
-  //         position,
-  //         clickable: true,
-  //       });
-  //       marker.setMap(map);
-  //       /**
-  //        * author: jojo
-  //        */
-  //       // 해당 마커의 음식점 상호명
-  //       const restaurantName = '천복순대국밥 궁동점';
-
-  //       // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
-  //       const iwContent = document.createElement('div');
-  //       iwContent.setAttribute(
-  //         'style',
-  //         `display: flex;
-  //         flex-direction: column;
-  //         `,
-  //       );
-
-  //       const iwTitle = document.createElement('div');
-  //       iwTitle.innerText = restaurantName;
-  //       iwTitle.setAttribute(
-  //         'style',
-  //         `
-  //         font-weight: bold;
-  //       `,
-  //       );
-  //       const btnContainer = document.createElement('div');
-  //       btnContainer.setAttribute(
-  //         'style',
-  //         `
-  //         display: flex;
-  //         flex-direction: column;
-  //         justify-content: space-around;
-  //       `,
-  //       );
-
-  //       // 클릭하면 식당 이름에 맞는 맵 검색 결과 새 창을 띄움
-  //       // 상호명 + 지점명은 나중에 api 적용하면 데이터 거기서 받아오기
-  //       const kakaoLink = document.createElement('a');
-  //       const naverLink = document.createElement('a');
-  //       kakaoLink.innerHTML = '카카오 지도로 보기';
-  //       naverLink.innerHTML = '네이버 지도로 보기';
-  //       kakaoLink.href = 'https://map.kakao.com/?q=' + restaurantName;
-  //       kakaoLink.target = '_blank';
-  //       naverLink.href = 'https://map.naver.com/v5/search/' + restaurantName;
-  //       naverLink.target = '_blank';
-
-  //       iwContent.appendChild(iwTitle);
-  //       iwContent.appendChild(btnContainer);
-  //       btnContainer.appendChild(kakaoLink);
-  //       btnContainer.appendChild(naverLink);
-  //       // const iwContent = `<div style="padding:5px;">Hello World!</div>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-  //       const iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-  //       // 인포윈도우를 생성합니다
-  //       const infowindow = new window.kakao.maps.InfoWindow({
-  //         content: iwContent,
-  //         removable: iwRemoveable,
-  //       });
-
-  //       // 마커에 클릭이벤트를 등록합니다
-  //       window.kakao.maps.event.addListener(marker, 'click', function () {
-  //         // 이전에 클릭한 인포윈도우가 있으면 닫습니다
-  //         if (prevInfoWindow) prevInfoWindow.close();
-
-  //         // 마커 위에 인포윈도우를 표시합니다
-  //         infowindow.open(map, marker);
-  //         prevInfoWindow = infowindow;
-  //       });
-  //     }
-  //   }
-  // }, [restaurantData]);
-
-  // useEffect(() => {
-  //   if (lodgeData) {
-  //     mapInitHandler(lat, lng);
-  //     console.log('요청함');
-
-  //     for (let i = 0; i < lodgeData.length; i++) {
-  //       const currPos = lodgeData[i];
-  //       const position = new window.kakao.maps.LatLng(currPos.lat, currPos.lng);
-
-  //       const marker = new window.kakao.maps.Marker({
-  //         map,
-  //         position,
-  //         clickable: true,
-  //       });
-  //       marker.setMap(map);
-  //       /**
-  //        * author: jojo
-  //        */
-  //       // 해당 마커의 음식점 상호명
-  //       const restaurantName = '천복순대국밥 궁동점';
-
-  //       // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
-  //       const iwContent = document.createElement('div');
-  //       iwContent.setAttribute(
-  //         'style',
-  //         `display: flex;
-  //         flex-direction: column;
-  //         `,
-  //       );
-
-  //       const iwTitle = document.createElement('div');
-  //       iwTitle.innerText = restaurantName;
-  //       iwTitle.setAttribute(
-  //         'style',
-  //         `
-  //         font-weight: bold;
-  //       `,
-  //       );
-  //       const btnContainer = document.createElement('div');
-  //       btnContainer.setAttribute(
-  //         'style',
-  //         `
-  //         display: flex;
-  //         flex-direction: column;
-  //         justify-content: space-around;
-  //       `,
-  //       );
-
-  //       // 클릭하면 식당 이름에 맞는 맵 검색 결과 새 창을 띄움
-  //       // 상호명 + 지점명은 나중에 api 적용하면 데이터 거기서 받아오기
-  //       const kakaoLink = document.createElement('a');
-  //       const naverLink = document.createElement('a');
-  //       kakaoLink.innerHTML = '카카오 지도로 보기';
-  //       naverLink.innerHTML = '네이버 지도로 보기';
-  //       kakaoLink.href = 'https://map.kakao.com/?q=' + restaurantName;
-  //       kakaoLink.target = '_blank';
-  //       naverLink.href = 'https://map.naver.com/v5/search/' + restaurantName;
-  //       naverLink.target = '_blank';
-
-  //       iwContent.appendChild(iwTitle);
-  //       iwContent.appendChild(btnContainer);
-  //       btnContainer.appendChild(kakaoLink);
-  //       btnContainer.appendChild(naverLink);
-  //       // const iwContent = `<div style="padding:5px;">Hello World!</div>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-  //       const iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-  //       // 인포윈도우를 생성합니다
-  //       const infowindow = new window.kakao.maps.InfoWindow({
-  //         content: iwContent,
-  //         removable: iwRemoveable,
-  //       });
-
-  //       // 마커에 클릭이벤트를 등록합니다
-  //       window.kakao.maps.event.addListener(marker, 'click', function () {
-  //         // 이전에 클릭한 인포윈도우가 있으면 닫습니다
-  //         if (prevInfoWindow) prevInfoWindow.close();
-
-  //         // 마커 위에 인포윈도우를 표시합니다
-  //         infowindow.open(map, marker);
-  //         prevInfoWindow = infowindow;
-  //       });
-  //     }
-  //   }
-  // }, [lodgeData]);
-
-  /**
-   * author: jojo
-   */
-  // 해당 마커의 음식점 상호명'
-
-  const InfoWindow = (): JSX.Element => (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <div style={{ fontWeight: 'bold' }}>천복 순대국밥 궁동점</div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-around',
-        }}
-      >
-        <a
-          href="https://map.kakao.com/?q=천복 순대국밥 궁동점"
-          target={'_blank'}
-        >
-          카카오 지도로 보기
-        </a>
-        <a
-          href="https://map.naver.com/v5/search/천복 순대국밥 궁동점"
-          target={'_blank'}
-        >
-          네이버 지도로 보기
-        </a>
-      </div>
-    </div>
-  );
-
-  const EventMarkerContainer = ({ position }) => {
-    const [isVisible, setIsVisible] = useState(false);
-
-    return (
-      <MapMarker
-        position={{ lat: position.lat, lng: position.lng }}
-        onClick={() => setIsVisible(prev => !prev)}
-        // onMouseOver={() => setIsVisible(true)}
-        // onMouseOut={() => setIsVisible(false)}
-      >
-        {isVisible && <InfoWindow />}
-      </MapMarker>
-    );
-  };
 
   const bounds = useMemo(() => {
     const bounds = new kakao.maps.LatLngBounds();
@@ -410,6 +167,7 @@ const KakaoMap = ({ coord, restaurantData, lodgeData }: PropTypes) => {
   }, [restaurantData, lodgeData]);
 
   useEffect(() => {
+    //@ts-expect-error : react-kakao-maps-sdk type 체크 알 수 없음 -> (useRef 타입 설정 못함)
     if (mapRef.current) mapRef.current.setBounds(bounds);
   }, [restaurantData, lodgeData]);
 
@@ -418,6 +176,7 @@ const KakaoMap = ({ coord, restaurantData, lodgeData }: PropTypes) => {
       center={{ lat, lng }}
       style={{ width: '100%', height: '100%' }}
       level={3}
+      //@ts-expect-error : react-kakao-maps-sdk type 체크 알 수 없음 -> (useRef 타입 설정 못함)
       ref={mapRef}
     >
       <MapMarker
