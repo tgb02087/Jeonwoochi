@@ -1,6 +1,6 @@
 package com.ssafy.exception;
 
-public class NotFoundException extends RuntimeException{
+public class NotFoundException extends RuntimeException {
     public static final String FESTIVAL_NOT_FOUND = "존재하지 않는 축제입니다.";
     public static final String FESTIVAL_TYPE_NOT_FOUND = "존재하지 않느 축제 카테고리 입니다.";
     public static final String FESTIVAL_FORM_NOT_FOUND = "존재하지 않는 축제 요청 내역 입니다.";
@@ -10,7 +10,8 @@ public class NotFoundException extends RuntimeException{
     public static final String GAME_NOT_FOUND = "존재하지 않는 게임 정보입니다.";
     public static final String AUTH_NOT_FOUND = "존재하지 않는 토큰정보입니다.";
     public static final String REVIEW_NOT_FOUND = "존재하지 않는 리뷰입니다.";
-    public NotFoundException(String message){
+
+    public NotFoundException(String message) {
         super(message);
     }
 }

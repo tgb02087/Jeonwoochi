@@ -30,7 +30,7 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-      
+
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

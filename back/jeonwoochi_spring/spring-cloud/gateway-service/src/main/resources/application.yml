@@ -28,11 +28,18 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
+            - Path=/user-service/checkAT
+            - Method=GET,POST
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
             - Path=/api/user-service/**
             - Method=GET,POST,PUT,DELETE
-        #          filters:
-        #            - RemoveRequestHeader=Cookie
-        #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+          # filters:
+          #   - RemoveRequestHeader=Cookie
+          #   - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+          #   - AuthorizationFilter
 
         - id: festival-service
           uri: lb://FESTIVAL-SERVICE

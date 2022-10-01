@@ -6,6 +6,7 @@ import com.ssafy.Domain.Entity.Type.RoleType;
 import com.ssafy.Domain.Redis.AuthRedis;
 import com.ssafy.Domain.Repository.AuthRedisRepo;
 import com.ssafy.Dto.Request.TokenInfoRequest;
+import com.ssafy.Dto.Response.CheckUserResponse;
 import com.ssafy.Dto.Response.JwtTokenResponse;
 import com.ssafy.Dto.Response.ReJwtTokenResponse;
 import com.ssafy.exception.NotFoundException;
@@ -27,23 +28,25 @@ public class AuthService {
 
     private final AuthRedisRepo arp;
 
-    public boolean CheckAT(String token){
+    // 토큰 유효시간 체킹
+    public boolean CheckAT(String token) {
         return jp.validateToken(token);
     }
 
-    //AT, RT 생성 후, RT는 Redis저장
-    public JwtTokenResponse saveToken(TokenInfoRequest tokenInfoRequest){
+    // AT, RT 생성 후, RT는 Redis저장
+    public JwtTokenResponse saveToken(TokenInfoRequest tokenInfoRequest) {
         String AT = jp.makeJwtToken(tokenInfoRequest);
         String RT = jp.makeRefreshToken(tokenInfoRequest);
-        System.out.println("RT : "+RT);
-        System.out.println("id : "+ tokenInfoRequest.getId());
-        AuthRedis authRedis = AuthRedis.createAuth(tokenInfoRequest.getId(),RT,30L);
-        System.out.println("redis: "+authRedis);
+        System.out.println("RT : " + RT);
+        System.out.println("id : " + tokenInfoRequest.getId());
+        AuthRedis authRedis = AuthRedis.createAuth(tokenInfoRequest.getId(), RT, 30L);
+        System.out.println("redis: " + authRedis);
         System.out.println(arp);
         arp.save(authRedis);
-        return new JwtTokenResponse(AT,RT);
+        return new JwtTokenResponse(AT, RT);
     }
 
+    // AT, RT 재생성
     public ReJwtTokenResponse resave(String RT) {
         Claims claims = jp.getClaimsToken(RT);
         Long id = Long.valueOf(claims.get("id").toString());
@@ -52,22 +55,30 @@ public class AuthService {
         RoleType role = RoleType.valueOf(claims.get("role").toString());
         String kakaoToken = claims.get("kakaoToken").toString();
 
-        TokenInfoRequest tokenInfoRequest = new TokenInfoRequest(id,gender,age,role,kakaoToken);
+        TokenInfoRequest tokenInfoRequest = new TokenInfoRequest(id, gender, age, role, kakaoToken);
         AuthRedis findauthRedis = arp.findById(tokenInfoRequest.getId())
-                .orElseThrow(()-> new NotFoundException(AUTH_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(AUTH_NOT_FOUND));
 
-        if (!RT.equals(findauthRedis.getRefreshToken())){
+        if (!RT.equals(findauthRedis.getRefreshToken())) {
             throw new NotMatchException(RT_NOT_MATCH);
         }
         String AT = jp.makeJwtToken(tokenInfoRequest);
         String newRT = null;
         boolean RTchk = true;
-        if(findauthRedis.getExpiration() < 1){
+        if (findauthRedis.getExpiration() < 1) {
             newRT = jp.makeRefreshToken(tokenInfoRequest);
-            AuthRedis authRedis = AuthRedis.createAuth(tokenInfoRequest.getId(),newRT,30L);
+            AuthRedis authRedis = AuthRedis.createAuth(tokenInfoRequest.getId(), newRT, 30L);
             arp.save(authRedis);
-            RTchk=false;
+            RTchk = false;
         }
-        return new ReJwtTokenResponse(AT,newRT,RTchk);
+        return new ReJwtTokenResponse(AT, newRT, RTchk);
+    }
+
+    // Header 체크
+    public CheckUserResponse headerChk(String token, String type) {
+        System.out.println("token : " + token);
+        String newtoken = token.replace(type, "");
+        System.out.println("변환 후" + newtoken);
+        return jp.getUserId(newtoken);
     }
 }

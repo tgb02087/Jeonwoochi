@@ -31,20 +31,20 @@ public class KakaoService {
     @Value("${client.key}")
     private String clientkey;
 
+    // 인가코드로 토큰 받기
     public String getToken(String code) throws IOException {
-        //인가코드로 토큰 받기
         String host = "https://kauth.kakao.com/oauth/token";
         URL url = new URL(host);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         String token = "";
         try {
             urlConnection.setRequestMethod("POST");
-            urlConnection.setDoOutput(true);    // 데이터 기록 알려주기
+            urlConnection.setDoOutput(true); // 데이터 기록 알려주기
 
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-            sb.append("&client_id="+clientkey);
+            sb.append("&client_id=" + clientkey);
             sb.append("&redirect_uri=http://localhost:8000/user-service/login/kakao");
             sb.append("&code=" + code);
 
@@ -75,7 +75,7 @@ public class KakaoService {
 
             br.close();
             bw.close();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
@@ -83,6 +83,7 @@ public class KakaoService {
         return token;
     }
 
+    // 유저 정보 받기
     public UserReponse getUserInfo(String access_token) throws IOException {
         String host = "https://kapi.kakao.com/v2/user/me";
         UserReponse userReponse = null;
@@ -105,12 +106,10 @@ public class KakaoService {
 
             System.out.println("res = " + res);
 
-
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject) parser.parse(res);
             JSONObject kakao_account = (JSONObject) obj.get("kakao_account");
             JSONObject properties = (JSONObject) obj.get("properties");
-
 
             String id = obj.get("id").toString();
             String nickname = properties.get("nickname").toString();
@@ -122,53 +121,59 @@ public class KakaoService {
             int age = Integer.parseInt(agearry[0]);
 
             GenderType gender = GenderType.NULL;
-            if (kakao_account.get("gender")!=null && kakao_account.get("gender").toString()==("male")) {
+            if (kakao_account.get("gender") != null && kakao_account.get("gender").toString() == ("male")) {
                 gender = GenderType.M;
-            } else if (kakao_account.get("gender")!=null && kakao_account.get("gender").toString()==("female")) {
+            } else if (kakao_account.get("gender") != null && kakao_account.get("gender").toString() == ("female")) {
                 gender = GenderType.F;
             }
-            //String birthday = obj.get("birthday").toString();
-            //System.out.println("생일"+birthday);
-            userReponse = new UserReponse(id, nickname, gender, age,access_token);
+            // String birthday = obj.get("birthday").toString();
+            // System.out.println("생일"+birthday);
+            userReponse = new UserReponse(id, nickname, gender, age, access_token);
 
             br.close();
 
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-
         return userReponse;
     }
-    public void userchk(UserReponse userReponse) {
+
+    // 회원가입 유저인지 확인
+    public User userchk(UserReponse userReponse) {
         List<User> list = findById(userReponse.getId());
+        System.out.println("검새사이즈 : " + list.size());
+        // List<User> list = userrepo.findById(userReponse.getId());
         User user = null;
-        if(list.size()==0) {
+        if (list.size() == 0) {
             String kakaoid = userReponse.getId();
             String googleid = null;
             String name = userReponse.getName();
             GenderType gender = userReponse.getGender();
             int age = userReponse.getAge();
             RoleType role = RoleType.USER;
-            UserRequest userRequest = new UserRequest(kakaoid,googleid,name,gender,age,role,null,false);
-            user=User.create(userRequest);
+            UserRequest userRequest = new UserRequest(kakaoid, googleid, name, gender, age, role, null, false);
+            user = User.create(userRequest);
             save(user);
-        }
+        } else
+            user = list.get(0);
+        System.out.println(user.getId());
         // 토큰 재발급
-
+        return user;
     }
 
-    public void save(User user){
+    public void save(User user) {
         userrepo.save(user);
     }
-    public User findOne(Long id){
+
+    public User findOne(Long id) {
         return userrepo.findOne(id);
     }
 
-    public List<User> findById(String kakao_id){
+    public List<User> findById(String kakao_id) {
         return userrepo.findById(kakao_id);
     }
 
-    public String logout(String code) throws IOException{
+    public String logout(String code) throws IOException {
         String host = "https://kapi.kakao.com/v1/user/logout";
         UserReponse userReponse = null;
         String id = null;
@@ -193,9 +198,9 @@ public class KakaoService {
             JSONObject obj = (JSONObject) parser.parse(res);
             id = obj.get("id").toString();
 
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        } catch (ParseException e){
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return id;
