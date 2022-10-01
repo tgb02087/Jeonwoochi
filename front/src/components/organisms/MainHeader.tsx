@@ -28,14 +28,16 @@ const RightButton = styled.div``;
  */
 const MainHeader = ({ isAdmin, setState }: PropTypes) => {
   const clickHandler = (isAdmin: boolean) => {
+    // 로그인 안한 guest면 로그인이 필요한 서비스라고 alert
+    // alert("!!");
+
+    setState(prev => !prev);
     // admin이면 관리자 모달 열고
-    if (isAdmin) {
-    }
+    // if (isAdmin) {
+    // }
     // user면 축제 요청 모달 열기
-    else {
-      // 로그인 안한 guest면 로그인이 필요한 서비스라고 alert
-      setState(prev => !prev);
-    }
+    // else {
+    // }
   };
   return (
     <StyledMainHeader>
@@ -50,11 +52,11 @@ const MainHeader = ({ isAdmin, setState }: PropTypes) => {
       <RightButton>
         {isAdmin ? (
           <Button clickHandler={() => clickHandler(isAdmin)} isText={true}>
-            <Text message={'축제 요청 확인'} />
+            <Text message={'축제 요청 확인'} color="black" />
           </Button>
         ) : (
           <Button clickHandler={() => clickHandler(isAdmin)} isText={true}>
-            <Text message={'축제 요청'} />
+            <Text message={'축제 요청'} color="black" />
           </Button>
         )}
       </RightButton>

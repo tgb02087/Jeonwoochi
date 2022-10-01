@@ -74,9 +74,8 @@ const labelProps = [
   '축제 설명',
 ];
 /**
- * 축제 별 모달 컴포넌트
- * Sheet 안에 Header, Body로 나뉘고
- * LeftBody에는 포스터, RightBody에는 축제 정보
+ * 축제 요청 모달. 로그인한 유저만 요청 가능.
+ * Inputs들을 전부 채워야 요청 가능
  *
  * @author jojo
  */

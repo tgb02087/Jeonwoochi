@@ -5,6 +5,7 @@ import festival_recomm_dist from './handlers/festival_recomm_dist';
 import festival_item from './handlers/festival_item';
 import search_news from './handlers/search_news';
 import weather from './handlers/weather';
+import festival_request_list from './handlers/festival_request_list';
 
 export const handlers = [
   interest_question,
@@ -14,4 +15,5 @@ export const handlers = [
   festival_item,
   search_news,
   weather,
+  festival_request_list,
 ];
