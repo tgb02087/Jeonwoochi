@@ -7,6 +7,7 @@ interface PropTypes {
   title: string;
   color: string;
   setState?: Dispatch<SetStateAction<boolean>>;
+  setOpenedList?: Dispatch<SetStateAction<boolean>>;
 }
 const StyledTitleCancelHeader = styled.div`
   width: 100%;
@@ -20,9 +21,15 @@ const HiddenSpace = styled.div`
  *
  * @author jojo
  */
-const TitleCancelHeader = ({ title, color, setState }: PropTypes) => {
+const TitleCancelHeader = ({
+  title,
+  color,
+  setState,
+  setOpenedList,
+}: PropTypes) => {
   const clickHandler = () => {
     setState && setState(prev => !prev);
+    setOpenedList && setOpenedList(prev => !prev);
   };
   return (
     <StyledTitleCancelHeader>

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import tw from 'twin.macro';
 import Button from '../atoms/Button';
 import Input from '../atoms/Input';
@@ -9,7 +9,6 @@ import Text from '../atoms/Text';
 import Textarea from '../atoms/Textarea';
 import TitleCancelHeader from './TitleCancelHeader';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
-import Select from '../atoms/Select';
 import postFestivalRequest from '../../api/postFestivalRequest';
 
 interface PropTypes {
@@ -24,13 +23,13 @@ interface InputTypes {
 }
 const StyledRequestModal = styled.div`
   width: 40vw;
-  height: 60vh;
+  height: 70vh;
   z-index: 1;
 `;
 const InnerSheet = styled.div`
   ${tw`flex flex-col justify-between`}
   width: 100%;
-  height: 60vh;
+  height: 70vh;
   gap: 1rem;
 `;
 const SheetBody = styled.div`
@@ -55,22 +54,22 @@ const SubmitButton = styled.div`
   ${tw`flex justify-center`}
   width: 100%;
 `;
-const inputProps = [
+export const inputProps = [
   ['festivalName', 'text'],
   ['startDate', 'date'],
   ['endDate', 'date'],
+  ['fee', 'text'],
   ['address', 'text'],
-  ['posterSrc', 'file', 'image/*'],
-  ['select'],
+  ['image', 'file', 'image/*'],
   ['description', 'text'],
 ];
-const labelProps = [
+export const labelProps = [
   '축제 이름',
   '축제 시작일',
   '축제 종료일',
+  '이용 요금',
   '축제 주소',
   '포스터 이미지',
-  '카테고리',
   '축제 설명',
 ];
 /**
@@ -84,9 +83,9 @@ const RequestModal = ({ setState }: PropTypes) => {
     festivalName: '',
     startDate: '',
     endDate: '',
+    fee: '',
     address: '',
   });
-  const [select, setSelect] = useState(0);
   const [textarea, setTextarea] = useState('');
 
   const [isAllFilled, setIsAllFilled] = useState(true);
@@ -113,24 +112,28 @@ const RequestModal = ({ setState }: PropTypes) => {
       address: fullAddress,
     }));
   };
+
   const handleClick = () => {
     open({ onComplete: handleComplete });
   };
+
   const submitRequest = () => {
     // inputs에 빈 값이 있는지 확인
+    let hasBlank = false;
     Object.keys(inputs).forEach(key => {
       if (inputs[key].trim() === '') {
+        hasBlank = true;
         setIsAllFilled(false);
       }
     });
-    if (!isAllFilled) return;
+
+    if (hasBlank) return;
 
     // 포스터 이미지 element 가져오기
-    const inputEle: HTMLInputElement | null =
-      document.querySelector('#posterSrc');
+    const inputEle: HTMLInputElement | null = document.querySelector('#image');
 
     // file, select나 textarea에 빈 값이 있는지 확인
-    if (inputEle?.value === '' || select === 0 || textarea.trim() === '') {
+    if (inputEle?.value === '' || textarea.trim() === '') {
       setIsAllFilled(false);
       return;
     }
@@ -143,7 +146,6 @@ const RequestModal = ({ setState }: PropTypes) => {
     if (file) formData.append('img', file);
     const obj = {
       ...inputs,
-      festivalTypeId: select,
       description: textarea,
     };
     formData.append(
@@ -152,8 +154,6 @@ const RequestModal = ({ setState }: PropTypes) => {
         type: 'application/json',
       }),
     );
-    console.log(inputs);
-    console.log(select);
 
     postFestivalRequest(formData);
   };
@@ -168,7 +168,7 @@ const RequestModal = ({ setState }: PropTypes) => {
           />
           <SheetBody>
             {inputProps.map((arr, idx) => {
-              if (idx >= 4) return;
+              if (idx >= 5) return;
               return (
                 <InputLine>
                   <FlexLabel>
@@ -191,21 +191,21 @@ const RequestModal = ({ setState }: PropTypes) => {
             })}
             <InputLine>
               <FlexLabel>
-                <Label color="white" htmlFor={inputProps[4][0]}>
-                  {labelProps[4]}
+                <Label color="white" htmlFor={inputProps[5][0]}>
+                  {labelProps[5]}
                 </Label>
               </FlexLabel>
               <FlexInput>
                 <Input
-                  type={inputProps[4][1]}
-                  name={inputProps[4][0]}
-                  id={inputProps[4][0]}
-                  accept={inputProps[4][2]}
+                  type={inputProps[5][1]}
+                  name={inputProps[5][0]}
+                  id={inputProps[5][0]}
+                  accept={inputProps[5][2]}
                   className="file-uploader"
                 />
               </FlexInput>
             </InputLine>
-            <InputLine>
+            {/* <InputLine>
               <FlexLabel>
                 <Label color="white" htmlFor={inputProps[5][0]}>
                   {labelProps[5]}
@@ -219,7 +219,7 @@ const RequestModal = ({ setState }: PropTypes) => {
                   id={inputProps[6][0]}
                 />
               </FlexInput>
-            </InputLine>
+            </InputLine> */}
             <InputLine>
               <FlexLabel>
                 <Label color="white" htmlFor={inputProps[6][0]}>
@@ -240,7 +240,7 @@ const RequestModal = ({ setState }: PropTypes) => {
           </SheetBody>
           <SubmitButton>
             <Button isText clickHandler={submitRequest}>
-              <Text message="제출" />
+              <Text message="제출" color="black" />
             </Button>
           </SubmitButton>
         </InnerSheet>
