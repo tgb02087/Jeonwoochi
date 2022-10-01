@@ -10,6 +10,7 @@ import Textarea from '../atoms/Textarea';
 import TitleCancelHeader from './TitleCancelHeader';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import Select from '../atoms/Select';
+import postFestivalRequest from '../../api/postFestivalRequest';
 
 interface PropTypes {
   setState: Dispatch<SetStateAction<boolean>>;
@@ -20,7 +21,6 @@ interface InputTypes {
   startDate: string;
   endDate: string;
   address: string;
-  posterSrc: string;
 }
 const StyledRequestModal = styled.div`
   width: 40vw;
@@ -74,9 +74,8 @@ const labelProps = [
   '축제 설명',
 ];
 /**
- * 축제 별 모달 컴포넌트
- * Sheet 안에 Header, Body로 나뉘고
- * LeftBody에는 포스터, RightBody에는 축제 정보
+ * 축제 요청 모달. 로그인한 유저만 요청 가능.
+ * Inputs들을 전부 채워야 요청 가능
  *
  * @author jojo
  */
@@ -86,9 +85,8 @@ const RequestModal = ({ setState }: PropTypes) => {
     startDate: '',
     endDate: '',
     address: '',
-    posterSrc: '',
   });
-  const [select, setSelect] = useState('');
+  const [select, setSelect] = useState(0);
   const [textarea, setTextarea] = useState('');
 
   const [isAllFilled, setIsAllFilled] = useState(true);
@@ -123,16 +121,41 @@ const RequestModal = ({ setState }: PropTypes) => {
     Object.keys(inputs).forEach(key => {
       if (inputs[key].trim() === '') {
         setIsAllFilled(false);
-        return;
       }
     });
-    // select나 textarea에 빈 값이 있는지 확인
-    if (select.trim() === '' || textarea.trim() === '') {
+    if (!isAllFilled) return;
+
+    // 포스터 이미지 element 가져오기
+    const inputEle: HTMLInputElement | null =
+      document.querySelector('#posterSrc');
+
+    // file, select나 textarea에 빈 값이 있는지 확인
+    if (inputEle?.value === '' || select === 0 || textarea.trim() === '') {
       setIsAllFilled(false);
       return;
     }
+    // input 값들이 모두 입력되어 있음. 데이터 서버로 전송.
     setIsAllFilled(true);
-    // 서버로 데이터 전송
+
+    const formData = new FormData();
+    const file = inputEle?.files?.[0];
+
+    if (file) formData.append('img', file);
+    const obj = {
+      ...inputs,
+      festivalTypeId: select,
+      description: textarea,
+    };
+    formData.append(
+      'data',
+      new Blob([JSON.stringify(obj)], {
+        type: 'application/json',
+      }),
+    );
+    console.log(inputs);
+    console.log(select);
+
+    postFestivalRequest(formData);
   };
   return (
     <StyledRequestModal>
@@ -145,7 +168,7 @@ const RequestModal = ({ setState }: PropTypes) => {
           />
           <SheetBody>
             {inputProps.map((arr, idx) => {
-              if (idx === 5 || idx === 6) return;
+              if (idx >= 4) return;
               return (
                 <InputLine>
                   <FlexLabel>
@@ -153,31 +176,35 @@ const RequestModal = ({ setState }: PropTypes) => {
                       {labelProps[idx]}
                     </Label>
                   </FlexLabel>
-                  {/* input type이 file이면 이미지만 선택 가능하게 accept prop 추가 */}
                   <FlexInput>
-                    {arr[1] === 'file' ? (
-                      <Input
-                        type={arr[1]}
-                        name={arr[0]}
-                        id={arr[0]}
-                        value={inputs}
-                        setValue={setInputs}
-                        accept={arr[2]}
-                      />
-                    ) : (
-                      <Input
-                        type={arr[1]}
-                        name={arr[0]}
-                        id={arr[0]}
-                        value={inputs}
-                        setValue={setInputs}
-                        handleClick={handleClick}
-                      />
-                    )}
+                    <Input
+                      type={arr[1]}
+                      name={arr[0]}
+                      id={arr[0]}
+                      value={inputs}
+                      setValue={setInputs}
+                      handleClick={handleClick}
+                    />
                   </FlexInput>
                 </InputLine>
               );
             })}
+            <InputLine>
+              <FlexLabel>
+                <Label color="white" htmlFor={inputProps[4][0]}>
+                  {labelProps[4]}
+                </Label>
+              </FlexLabel>
+              <FlexInput>
+                <Input
+                  type={inputProps[4][1]}
+                  name={inputProps[4][0]}
+                  id={inputProps[4][0]}
+                  accept={inputProps[4][2]}
+                  className="file-uploader"
+                />
+              </FlexInput>
+            </InputLine>
             <InputLine>
               <FlexLabel>
                 <Label color="white" htmlFor={inputProps[5][0]}>
