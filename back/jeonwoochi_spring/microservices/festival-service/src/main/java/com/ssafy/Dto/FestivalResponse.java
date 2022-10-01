@@ -1,6 +1,5 @@
 package com.ssafy.Dto;
 
-import com.ssafy.Domain.Entity.Type.FestivalWayType;
 import com.ssafy.Domain.Entity.Festival;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,37 +14,34 @@ public class FestivalResponse {
 
     private Long id;
 
-    private String name;
+    private String festivalName;
 
     private String festivalType;
 
     private Date startDate;
 
-    private Date finishDate;
+    private Date endDate;
 
-    private String contents;
+    private String description;
 
-    private String locate;
+    private String address;
 
     private String image;
 
-    private FestivalWayType way;
+    private Double lat;
 
-    private Float lat;
-
-    private Float lng;
+    private Double lng;
 
     public static FestivalResponse response(Festival festival){
         return new FestivalResponse(
                 festival.getId(),
-                festival.getName(),
+                festival.getFestivalName(),
                 festival.getFestivalType().getName(),
                 festival.getStartDate(),
-                festival.getFinishDate(),
-                festival.getContents(),
-                festival.getLocate(),
+                festival.getEndDate(),
+                festival.getDescription(),
+                festival.getAddress(),
                 festival.getImage(),
-                festival.getWay(),
                 festival.getLat(),
                 festival.getLng()
         );

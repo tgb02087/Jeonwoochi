@@ -1,6 +1,5 @@
 package com.ssafy.Dto;
 
-import com.ssafy.Domain.Entity.Type.FestivalWayType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,23 +12,17 @@ import java.util.Date;
 public class FestivalFormUpdateRequest {
     private Long id;
 
-    private String name;
+    private String festivalName;
 
     private Date startDate;
 
-    private Date finishDate;
+    private Date endDate;
 
-    private String contents;
+    private String description;
 
-    private String locate;
+    private String address;
 
     private String image;
-
-    private FestivalWayType way;
-
-    private Float lat;
-
-    private Float lng;
 
     private Long festivalTypeId;
 }

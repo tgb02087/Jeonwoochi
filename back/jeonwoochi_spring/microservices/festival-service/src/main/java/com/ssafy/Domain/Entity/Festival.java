@@ -1,7 +1,5 @@
 package com.ssafy.Domain.Entity;
 
-import com.ssafy.Domain.Entity.Type.FestivalWayType;
-import com.ssafy.Dto.FestivalCreateRequest;
 import com.ssafy.Dto.FestivalUpdateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,52 +18,47 @@ public class Festival {
     @Column(name = "festival_id")
     private Long id;
 
-    private String name;
+    private String festivalName;
 
     private Date startDate;
 
-    private Date finishDate;
+    private Date endDate;
 
-    private String contents;
+    private String description;
 
-    private String locate;
+    private String address;
 
     private String image;
 
-    @Enumerated(EnumType.STRING)
-    private FestivalWayType way;
+    private Double lat;
 
-    private Float lat;
-
-    private Float lng;
+    private Double lng;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "festival_type_id")
     private FestivalType festivalType;
 
 
-    public static Festival create(FestivalCreateRequest request, FestivalType festivalType){
+    public static Festival create(FestivalForm festivalForm, Double lat, Double lng){
         Festival festival = new Festival();
-        festival.name = request.getName();
-        festival.startDate = request.getStartDate();
-        festival.finishDate = request.getFinishDate();
-        festival.contents = request.getContents();
-        festival.locate = request.getLocate();
-        festival.image = request.getImage();
-        festival.way = request.getWay();
-        festival.lat = request.getLat();
-        festival.lng = request.getLng();
-        festival.festivalType = festivalType;
+        festival.festivalName = festivalForm.getFestivalName();
+        festival.startDate = festivalForm.getStartDate();
+        festival.endDate = festivalForm.getEndDate();
+        festival.description = festivalForm.getDescription();
+        festival.address = festivalForm.getAddress();
+        festival.image = festivalForm.getImage();
+        festival.lat = lat;
+        festival.lng = lng;
+        festival.festivalType = festivalForm.getFestivalType();
         return festival;
     }
     public void update(FestivalUpdateRequest request, FestivalType festivalType){
-        this.name = request.getName();
+        this.festivalName = request.getFestivalName();
         this.startDate = request.getStartDate();
-        this.finishDate = request.getFinishDate();
-        this.contents = request.getContents();
-        this.locate = request.getLocate();
+        this.endDate = request.getEndDate();
+        this.description = request.getDescription();
+        this.address = request.getAddress();
         this.image = request.getImage();
-        this.way = request.getWay();
         this.lat = request.getLat();
         this.lng = request.getLng();
         this.festivalType = festivalType;

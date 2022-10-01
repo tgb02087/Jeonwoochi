@@ -9,7 +9,7 @@ import java.util.List;
 public interface FestivalService {
 
     //축제 추가 ( 승인 )
-    void createFestival(List<FestivalCreateRequest> requests);
+    void createFestival(FestivalCreateRequest request);
     // 축제 상세 조회
     FestivalResponse findFestivalDetail(Long festivalId);
     //축제 전체 리스트
