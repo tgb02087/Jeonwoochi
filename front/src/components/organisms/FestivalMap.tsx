@@ -42,6 +42,7 @@ const FestivalMap = ({
   restaurantData,
   lodgeData,
 }: PropTypes) => {
+  console.log(lodgeData, restaurantData);
   return (
     <>
       <PositionButton>
