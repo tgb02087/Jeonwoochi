@@ -4,6 +4,13 @@ import { Lodge } from '../../mocks/handlers/festival_recomm_lodge';
 
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
+// 마커 사이즈
+
+/**
+ * @descrition
+ * 인포윈도우 컴포넌트 prop 타입 지정
+ * @author bell
+ */
 interface PropTypesInfoWindow {
   title: string;
 }
@@ -47,10 +54,12 @@ interface PropTypesEventMarkerContainer {
     lat: number;
     lng: number;
   };
+  markerSrc: string;
 }
 
 const EventMarkerContainer = ({
   position,
+  markerSrc,
 }: PropTypesEventMarkerContainer): JSX.Element => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -58,6 +67,8 @@ const EventMarkerContainer = ({
     <MapMarker
       position={{ lat: position.lat, lng: position.lng }}
       onClick={() => setIsVisible(prev => !prev)}
+      // image={{ src: markerSrc }}
+      image={{ src: markerSrc, size: { width: 50, height: 50 } }}
       // onMouseOver={() => setIsVisible(true)}
       // onMouseOut={() => setIsVisible(false)}
     >
@@ -147,7 +158,11 @@ interface PropTypes {
 
 const KakaoMap = ({ coord, restaurantData, lodgeData }: PropTypes) => {
   const { lat, lng } = coord;
-  const src = '/images/map/mira.gif';
+  // 마커 이미지
+  const playerSrc = '/images/map/mira.gif';
+  const restaurantSrc = '/images/map/restaurant_marker.png';
+  const lodgeSrc = '/images/map/lodge_marker.png';
+
   const size = { width: 32, height: 45 };
   const mapRef = useRef(null);
 
@@ -181,7 +196,7 @@ const KakaoMap = ({ coord, restaurantData, lodgeData }: PropTypes) => {
     >
       <MapMarker
         position={{ lat, lng }}
-        image={{ src, size }}
+        image={{ src: playerSrc, size }}
         draggable={true}
       />
       {restaurantData &&
@@ -189,6 +204,7 @@ const KakaoMap = ({ coord, restaurantData, lodgeData }: PropTypes) => {
           <EventMarkerContainer
             key={index}
             position={{ lat: position.lat, lng: position.lng }}
+            markerSrc={restaurantSrc}
           />
         ))}
       {lodgeData &&
@@ -196,6 +212,7 @@ const KakaoMap = ({ coord, restaurantData, lodgeData }: PropTypes) => {
           <EventMarkerContainer
             key={index}
             position={{ lat: position.lat, lng: position.lng }}
+            markerSrc={lodgeSrc}
           />
         ))}
     </Map>
