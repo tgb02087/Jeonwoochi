@@ -14,7 +14,7 @@ spring:
     show-sql: true
     hibernate:
       format_sql: true
-      ddl-auto: update
+      ddl-auto: create
     generate-ddl: true
 
 token:
