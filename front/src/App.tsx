@@ -6,6 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import { theme } from './styles/theme';
 import Main from './components/pages/Main';
 import Login from './components/pages/Login';
+import LoginKakaoRedirect from './components/pages/LoginKakaoRedirect';
 import Interest from './components/pages/Interest';
 import MapAPI from './components/pages/MapAPI';
 
@@ -31,6 +32,10 @@ const App = () => {
                 ></Route>
               )}
               <Route path="/login" element={<Login />}></Route>
+              <Route
+                path="/login/kakao"
+                element={<LoginKakaoRedirect />}
+              ></Route>
               <Route path="/game" element={<Main />}></Route>
               <Route path="/interest" element={<Interest />}></Route>
               <Route path="/map/:id" element={<MapAPI />}></Route>
