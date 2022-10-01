@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import KakaoMap from '../atoms/KakaoMap';
 import tw from 'twin.macro';
 import styled from 'styled-components';
@@ -16,8 +16,8 @@ interface PropTypes {
   restaurantData?: Restaurant[] | undefined;
   lodgeData?: Lodge[] | undefined;
   // clickHandler?: Array<React.MouseEventHandler<HTMLButtonElement>> | undefined;
-  restaurantRecommClickHandler?: React.MouseEventHandler<HTMLButtonElement>;
-  lodgeRecommClickHandler?: React.MouseEventHandler<HTMLButtonElement>;
+  restaurantRecommClickHandler: React.MouseEventHandler<HTMLButtonElement>;
+  lodgeRecommClickHandler: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 // 맛집 추천 position 설정용 STMP
@@ -42,20 +42,47 @@ const FestivalMap = ({
   restaurantData,
   lodgeData,
 }: PropTypes) => {
-  console.log(lodgeData, restaurantData);
+  const [isVisibleMarkerRestaurant, setIsVisibleMarkerRestaurant] =
+    useState(false);
+  const [isVisibleMarkerLodge, setIsVisibleMarkerLodge] = useState(false);
+
+  const combineRecommMarkerRestaurant = () => {
+    //@ts-expect-error : 매개변수를 하나 달라는데... 뭘줘야 한다는 거니...
+    restaurantRecommClickHandler();
+    setIsVisibleMarkerRestaurant(prev => !prev);
+  };
+
+  const combineRecommMarkerLodge = () => {
+    //@ts-expect-error : 매개변수를 하나 달라는데... 뭘줘야 한다는 거니...
+    lodgeRecommClickHandler();
+    setIsVisibleMarkerLodge(prev => !prev);
+  };
+
+  console.log(isVisibleMarkerRestaurant, restaurantData);
+
   return (
     <>
       <PositionButton>
-        <Button isText={true} clickHandler={restaurantRecommClickHandler}>
+        <Button
+          color={isVisibleMarkerRestaurant ? '#DB4455' : undefined}
+          isText={true}
+          clickHandler={combineRecommMarkerRestaurant}
+        >
           <Text message={'맛집 추천'} />
         </Button>
-        <Button isText={true} clickHandler={lodgeRecommClickHandler}>
+        <Button
+          color={isVisibleMarkerLodge ? '#DB4455' : undefined}
+          isText={true}
+          clickHandler={combineRecommMarkerLodge}
+        >
           <Text message={'숙박 추천'} />
         </Button>
       </PositionButton>
       <KakaoMap
         lodgeData={lodgeData}
         restaurantData={restaurantData}
+        isVisibleMarkerRestaurant={isVisibleMarkerRestaurant}
+        isVisibleMarkerLodge={isVisibleMarkerLodge}
         coord={coord}
       />
     </>

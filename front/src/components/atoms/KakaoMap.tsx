@@ -90,6 +90,8 @@ interface PropTypes {
   };
   restaurantData?: Restaurant[] | undefined;
   lodgeData?: Lodge[] | undefined;
+  isVisibleMarkerRestaurant: boolean;
+  isVisibleMarkerLodge: boolean;
 }
 
 /**
@@ -99,7 +101,13 @@ interface PropTypes {
  * @author bell
  */
 
-const KakaoMap = ({ coord, restaurantData, lodgeData }: PropTypes) => {
+const KakaoMap = ({
+  coord,
+  restaurantData,
+  lodgeData,
+  isVisibleMarkerRestaurant,
+  isVisibleMarkerLodge,
+}: PropTypes) => {
   const { lat, lng } = coord;
   // 마커 이미지
   const playerSrc = '/images/map/mira.gif';
@@ -142,7 +150,8 @@ const KakaoMap = ({ coord, restaurantData, lodgeData }: PropTypes) => {
         image={{ src: playerSrc, size }}
         draggable={true}
       />
-      {restaurantData &&
+      {isVisibleMarkerRestaurant &&
+        restaurantData &&
         restaurantData.map((position, index) => (
           <EventMarkerContainer
             key={index}
@@ -150,7 +159,8 @@ const KakaoMap = ({ coord, restaurantData, lodgeData }: PropTypes) => {
             markerSrc={restaurantSrc}
           />
         ))}
-      {lodgeData &&
+      {isVisibleMarkerLodge &&
+        lodgeData &&
         lodgeData.map((position, index) => (
           <EventMarkerContainer
             key={index}
