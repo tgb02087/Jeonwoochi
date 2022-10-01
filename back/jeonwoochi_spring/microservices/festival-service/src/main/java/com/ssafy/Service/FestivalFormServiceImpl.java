@@ -1,6 +1,5 @@
 package com.ssafy.Service;
 
-import com.ssafy.Domain.Entity.Festival;
 import com.ssafy.Domain.Entity.FestivalForm;
 import com.ssafy.Domain.Entity.FestivalType;
 import com.ssafy.Domain.Repository.FestivalFormRepo;
@@ -8,9 +7,10 @@ import com.ssafy.Domain.Repository.FestivalTypeRepo;
 import com.ssafy.Dto.FestivalFormCreateRequest;
 import com.ssafy.Dto.FestivalFormResponse;
 import com.ssafy.Dto.FestivalFormUpdateRequest;
-import com.ssafy.Dto.FestivalUpdateRequest;
 import com.ssafy.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,21 +45,21 @@ public class FestivalFormServiceImpl implements FestivalFormService{
     // 축제 요청 전체 리스트 조회
     @Override
     @Transactional
-    public List<FestivalFormResponse> findFestivalFormListAll() {
-        List<FestivalFormResponse> festivalForms = festivalFormRepo.findAll().stream()
-                .map(FestivalFormResponse::response)
-                .collect(Collectors.toList());
+    public Page<FestivalFormResponse> findFestivalFormListAll(Pageable pageable) {
+        Page<FestivalFormResponse> festivalForms = festivalFormRepo.findAll(pageable)
+                .map(FestivalFormResponse::response);
+
         return festivalForms;
     }
     // 내가 요청한 축제 리스트 조회
     @Override
     @Transactional
-    public List<FestivalFormResponse> findFestivalFormListByMe(Long userId) {
-        List<FestivalFormResponse> festivalForms = festivalFormRepo.findByUserId(userId).stream()
-                .map(FestivalFormResponse::response)
-                .collect(Collectors.toList());
+    public Page<FestivalFormResponse> findFestivalFormListByMe(Long userId, Pageable pageable) {
+        Page<FestivalFormResponse> festivalForms = festivalFormRepo.findByUserId(userId, pageable)
+                .map(FestivalFormResponse::response);
         return festivalForms;
     }
+    
     // 축제 요청 수정
     @Override
     @Transactional

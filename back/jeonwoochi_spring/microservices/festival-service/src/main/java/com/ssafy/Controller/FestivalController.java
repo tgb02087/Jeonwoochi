@@ -8,6 +8,7 @@ import com.ssafy.config.AwsS3Service;
 import com.ssafy.config.LoginUser.LoginUser;
 import com.ssafy.config.LoginUser.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -87,8 +88,10 @@ public class FestivalController {
     }
     // 축제 요청 전체 리스트 조회
     @GetMapping("/festival-form")
-    public ResponseEntity<?> findFestivalFormListAll(){
-        return ResponseEntity.ok(festivalFormService.findFestivalFormListAll());
+    public ResponseEntity<?> findFestivalFormListAll(
+            Pageable pageable
+    ){
+        return ResponseEntity.ok(festivalFormService.findFestivalFormListAll(pageable));
     }
     // 축제 요청 수정
     @PutMapping("/festival-form")
