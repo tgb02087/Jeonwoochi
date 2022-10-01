@@ -5,6 +5,7 @@ import { Shopping } from '../../mocks/handlers/festival_recomm_shopping';
 import { Culture } from '../../mocks/handlers/festival_recomm_culture';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { Leisure } from '../../mocks/handlers/festival_recomm_leisure';
+import { Landmark } from '../../mocks/handlers/festival_recomm_landmark';
 
 // 마커 사이즈
 
@@ -95,11 +96,13 @@ interface PropTypes {
   shoppingData?: Shopping[] | undefined;
   cultureData?: Culture[] | undefined;
   leisureData?: Leisure[] | undefined;
+  landmarkData?: Landmark[] | undefined;
   isVisibleMarkerRestaurant: boolean;
   isVisibleMarkerLodge: boolean;
   isVisibleMarkerShopping: boolean;
   isVisibleMarkerCulture: boolean;
   isVisibleMarkerLeisure: boolean;
+  isVisibleMarkerLandmark: boolean;
 }
 
 /**
@@ -116,11 +119,13 @@ const KakaoMap = ({
   shoppingData,
   cultureData,
   leisureData,
+  landmarkData,
   isVisibleMarkerRestaurant,
   isVisibleMarkerLodge,
   isVisibleMarkerShopping,
   isVisibleMarkerCulture,
   isVisibleMarkerLeisure,
+  isVisibleMarkerLandmark,
 }: PropTypes) => {
   const { lat, lng } = coord;
   // 마커 이미지
@@ -130,6 +135,7 @@ const KakaoMap = ({
   const shoppingSrc = '/images/map/shopping_marker.png';
   const cultureSrc = '/images/map/culture_marker.png';
   const leisureSrc = '/images/map/leisure_marker.png';
+  const landmarkSrc = '/images/map/landmark_marker.png';
 
   const size = { width: 32, height: 45 };
   const mapRef = useRef(null);
@@ -210,6 +216,15 @@ const KakaoMap = ({
             key={index}
             position={{ lat: position.lat, lng: position.lng }}
             markerSrc={leisureSrc}
+          />
+        ))}
+      {isVisibleMarkerLandmark &&
+        landmarkData &&
+        landmarkData.map((position, index) => (
+          <EventMarkerContainer
+            key={index}
+            position={{ lat: position.lat, lng: position.lng }}
+            markerSrc={landmarkSrc}
           />
         ))}
     </Map>

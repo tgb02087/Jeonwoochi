@@ -5,6 +5,7 @@ import { useGetLodgeDataAfterClick } from '../../hooks/useGetLodgeDataAfterClick
 import { useGetShoppingDataAfterClick } from '../../hooks/useGetShoppingDataAfterClick';
 import { useGetCultureDataAfterClick } from '../../hooks/useGetCultureDataAfterClick';
 import { useGetLeisureDataAfterClick } from '../../hooks/useGetLeisureDataAfterClick';
+import { useGetLandmarkDataAfterClick } from '../../hooks/useGetLandmarkDataAfterClick';
 
 import { MapData } from '../../mocks/handlers/festival_list';
 import { AxiosError } from 'axios';
@@ -75,9 +76,13 @@ const MapAPI = () => {
   const cultureData = useGetCultureDataAfterClick();
   const clickCultureButtonHandler = () => cultureData.refetch();
 
-  //  데이터 불러오기
+  // 레저 데이터 불러오기
   const leisureData = useGetLeisureDataAfterClick();
   const clickLeisureButtonHandler = () => leisureData.refetch();
+
+  // 관광명소 데이터 불러오기
+  const landmarkData = useGetLandmarkDataAfterClick();
+  const clickLandmarkButtonHandler = () => landmarkData.refetch();
 
   const getCoordHandler = (idx: number) => {
     const result = mapData.data!.filter(d => d.festivalId === idx);
@@ -129,11 +134,13 @@ const MapAPI = () => {
               shoppingData={shoppingData.data}
               cultureData={cultureData.data}
               leisureData={leisureData.data}
+              landmarkData={landmarkData.data}
               restaurantRecommClickHandler={clickFoodButtonHandler}
               lodgeRecommClickHandler={clickLodgeButtonhandler}
               shoppingRecommClickHandler={clickShopingButtonHandler}
               cultureRecommClickHandler={clickCultureButtonHandler}
               leisureRecommClickHandler={clickLeisureButtonHandler}
+              landmarkRecommClickHandler={clickLandmarkButtonHandler}
               coord={getCoordHandler(MAPIDX)}
             />
           </>
