@@ -46,7 +46,7 @@ public class FestivalFormServiceImpl implements FestivalFormService{
     @Override
     @Transactional
     public Page<FestivalFormResponse> findFestivalFormListAll(Pageable pageable) {
-        Page<FestivalFormResponse> festivalForms = festivalFormRepo.findAll(pageable)
+        Page<FestivalFormResponse> festivalForms = festivalFormRepo.findAllOrderByIdDesc(pageable)
                 .map(FestivalFormResponse::response);
 
         return festivalForms;
@@ -55,11 +55,11 @@ public class FestivalFormServiceImpl implements FestivalFormService{
     @Override
     @Transactional
     public Page<FestivalFormResponse> findFestivalFormListByMe(Long userId, Pageable pageable) {
-        Page<FestivalFormResponse> festivalForms = festivalFormRepo.findByUserId(userId, pageable)
+        Page<FestivalFormResponse> festivalForms = festivalFormRepo.findByUserIdOrderByIdDesc(userId, pageable)
                 .map(FestivalFormResponse::response);
         return festivalForms;
     }
-    
+
     // 축제 요청 수정
     @Override
     @Transactional
