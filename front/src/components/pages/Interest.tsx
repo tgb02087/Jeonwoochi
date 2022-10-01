@@ -2,13 +2,13 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import { useQuery } from '@tanstack/react-query';
-import getInterestAnswers from '../../../api/getInterestAnswers';
-import InterestCards from '../../organisms/InterestCards';
-import PageButtons from '../../organisms/PageButtons';
-import Button from '../../atoms/Button';
-import Text from '../../atoms/Text';
-import CharacterQuestion from '../../organisms/CharacterQuestion';
-import getInterestQuestions from '../../../api/getInterestQuestions';
+import getInterestAnswers from '../../api/getInterestAnswers';
+import InterestCards from '../organisms/InterestCards';
+import PageButtons from '../organisms/PageButtons';
+import Button from '../atoms/Button';
+import Text from '../atoms/Text';
+import CharacterQuestion from '../organisms/CharacterQuestion';
+import getInterestQuestions from '../../api/getInterestQuestions';
 
 const WholePage = styled.div`
   ${tw`flex justify-center`}
@@ -69,12 +69,17 @@ const Interest = () => {
                 <Text message="skip" />
               </Button>
             </InvisibleButton>
-            <PageButtons totalPage={5} page={page} setPage={setPage} />
+            <PageButtons
+              totalPage={5}
+              page={page}
+              setPage={setPage}
+              pagingColor="black"
+            />
             <Button isText>
-              <Text message="skip" />
+              <Text message="skip" color="black" />
             </Button>
           </ButtonsArea>
-          <CharacterQuestion question={result.data?.[page + 1].content} />
+          <CharacterQuestion question={result.data?.[page].content} />
         </StyledInterest>
       )}
     </WholePage>

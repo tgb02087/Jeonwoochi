@@ -11,6 +11,7 @@ import FestivalSideBar from '../organisms/FestivalSideBar';
 import GameView from '../organisms/GameView';
 import MainFooter from '../organisms/MainFooter';
 import MainHeader from '../organisms/MainHeader';
+import RequestConfirmModal from '../organisms/RequestConfirmModal';
 import RequestModal from '../organisms/RequestModal';
 
 const StyledMain = styled.div`
@@ -56,7 +57,7 @@ const Main = () => {
   return (
     <StyledMain>
       <MainFrame>
-        <MainHeader isAdmin={false} setState={setOpenedRequestModal} />
+        <MainHeader isAdmin={true} setState={setOpenedRequestModal} />
         <MainFooter />
       </MainFrame>
 
@@ -68,8 +69,12 @@ const Main = () => {
         <FestivalModal setState={setOpenedFestivalModal} info={itemData} />
       ) : null}
       <RequestModalWrapper>
-        {openedRequestModal ? (
+        {/* 나중에 관리자 유무 받아서 여기 false에 넣기 */}
+        {openedRequestModal && false ? (
           <RequestModal setState={setOpenedRequestModal} />
+        ) : null}
+        {openedRequestModal && true ? (
+          <RequestConfirmModal setState={setOpenedRequestModal} />
         ) : null}
       </RequestModalWrapper>
 

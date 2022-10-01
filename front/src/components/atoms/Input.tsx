@@ -8,16 +8,18 @@ interface PropTypes {
   name: string;
   id?: string;
   accept?: string;
-  value: any;
+  className?: string;
+  value?: any;
   setValue?: Dispatch<
     SetStateAction<{
       festivalName: string;
       startDate: string;
       endDate: string;
       address: string;
-      posterSrc: string;
+      // posterSrc: string;
     }>
   >;
+  // | Dispatch<SetStateAction<string>>;
   handleClick?: () => void;
 }
 
@@ -37,11 +39,16 @@ const Input = ({
   name,
   id,
   accept,
+  className,
   value,
   setValue,
   handleClick,
 }: PropTypes) => {
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // if (typeof value === 'string') {
+    //   setValue && setValue(e.target.value);
+    //   return;
+    // }
     setValue &&
       setValue(prev => ({
         ...prev,
@@ -59,7 +66,8 @@ const Input = ({
       name={name}
       id={id}
       accept={accept}
-      value={value[name]}
+      className={className}
+      value={value?.[name]}
       onChange={changeHandler}
       onClick={clickHandler}
     ></StyledInput>
