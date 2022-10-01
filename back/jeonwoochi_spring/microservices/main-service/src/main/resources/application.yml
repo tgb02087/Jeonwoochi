@@ -45,7 +45,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: busrefresh
+        include: health, info, metrics, prometheus, busrefresh
 api:
   weather: 6crqeditoQPghZsX7BYErvouXNeb5Nxqc5%2B04NvSIoe%2FsCwbe1c2sMYj6fY5qIfLfwtedHUUaABbLx%2FRrWT9Yw%3D%3D
   search:

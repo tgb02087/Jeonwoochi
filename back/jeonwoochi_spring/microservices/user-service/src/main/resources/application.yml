@@ -44,7 +44,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: busrefresh
+        include: health, info, metrics, prometheus, busrefresh
 client:
   key: 653c5c4f76acf44b796a7c0e107d3d6f
 google:
