@@ -8,8 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface FestivalFormRepo extends JpaRepository<FestivalForm, Long> {
-    Page<FestivalForm> findByUserId(Long userId, Pageable pageable);
+    Page<FestivalForm> findByUserIdOrderByIdDesc(Long userId, Pageable pageable);
 
-    @Override
-    Page<FestivalForm> findAll(Pageable pageable);
+    Page<FestivalForm> findAllOrderByIdDesc(Pageable pageable);
 }
