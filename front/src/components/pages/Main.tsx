@@ -56,7 +56,7 @@ const Main = () => {
   return (
     <StyledMain>
       <MainFrame>
-        <MainHeader isAdmin={!true} setState={setOpenedRequestFirstModal} />
+        <MainHeader isAdmin={true} setState={setOpenedRequestFirstModal} />
         <MainFooter />
       </MainFrame>
 
@@ -69,16 +69,16 @@ const Main = () => {
       ) : null}
       <RequestModalWrapper>
         {/* 나중에 관리자 유무 받아서 여기 false에 넣기 */}
-        {openedRequestFirstModal && !false ? (
+        {openedRequestFirstModal && false ? (
           <RequestModal setState={setOpenedRequestFirstModal} />
         ) : null}
-        {openedRequestFirstModal && !openedRequestSecondModal && !true ? (
+        {openedRequestFirstModal && !openedRequestSecondModal && true ? (
           <RequestListModal
             setState={setOpenedRequestFirstModal}
             setOpenedDetail={setOpenedRequestSecondModal}
           />
         ) : null}
-        {!openedRequestFirstModal && openedRequestSecondModal && !true ? (
+        {!openedRequestFirstModal && openedRequestSecondModal && true ? (
           <RequestConfirmModal
             setState={setOpenedRequestSecondModal}
             setOpenedList={setOpenedRequestFirstModal}

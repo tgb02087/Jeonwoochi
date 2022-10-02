@@ -8,7 +8,6 @@ import weather from './handlers/weather';
 import festival_recomm_lodge from './handlers/festival_recomm_lodge';
 import festival_request_list from './handlers/festival_request_list';
 
-
 export const handlers = [
   interest_question,
   interest_answer,
