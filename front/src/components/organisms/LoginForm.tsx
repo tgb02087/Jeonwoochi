@@ -71,7 +71,7 @@ const LoginForm = () => {
                   alt="Kakao logo"
                 />
               </IconImageContainer>
-              <Text message="카카오로 로그인하기" color="#000000d9" />
+              <Text message="카카오로 로그인하기" color="black" />
             </>
           </Button>
         </ButtonContainer>
@@ -84,14 +84,14 @@ const LoginForm = () => {
                   alt="Google logo"
                 />
               </IconImageContainer>
-              <Text message="구글로 로그인하기" />
+              <Text message="구글로 로그인하기" color="black" />
             </>
           </Button>
         </ButtonContainer>
         <ButtonContainer>
           <Button isText clickHandler={guestLoginHandler}>
             <GuestButtonContainer>
-              <Text message="비회원으로 시작하기" />
+              <Text message="비회원으로 시작하기" color="black" />
             </GuestButtonContainer>
           </Button>
         </ButtonContainer>
