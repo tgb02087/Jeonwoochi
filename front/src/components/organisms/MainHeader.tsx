@@ -1,16 +1,19 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
-import Alert from '../../icons/Alert';
-import Profile from '../../icons/Profile';
-// import SoundOn from '../../icons/SoundOn';
-// import SoundOff from '../../icons/SoundOff';
+
+import SoundOn from '../../icons/SoundOn';
+import SoundOff from '../../icons/SoundOff';
 import Button from '../atoms/Button';
 import Text from '../atoms/Text';
 
+import eventEmitter from '../../utils/eventEmitter';
+
 interface PropTypes {
   isAdmin: boolean;
+  isSound: boolean;
   setState: Dispatch<SetStateAction<boolean>>;
+  soundBtnClickHandler: React.MouseEventHandler<HTMLButtonElement>;
 }
 const StyledMainHeader = styled.div`
   ${tw`flex justify-between`}
@@ -28,7 +31,12 @@ const RightButton = styled.div``;
  *
  * @author: jojo
  */
-const MainHeader = ({ isAdmin, setState }: PropTypes) => {
+const MainHeader = ({
+  isAdmin,
+  isSound,
+  setState,
+  soundBtnClickHandler,
+}: PropTypes) => {
   const clickHandler = (isAdmin: boolean) => {
     // 로그인 안한 guest면 로그인이 필요한 서비스라고 alert
     // alert("!!");
@@ -41,15 +49,17 @@ const MainHeader = ({ isAdmin, setState }: PropTypes) => {
     // else {
     // }
   };
-  const [isSound, setIsSound] = useState(true);
 
   return (
     <StyledMainHeader>
       <LeftButtons>
-        {/* <Button isText={false}>{isSound ? <SoundOn /> : <SoundOff />}</Button> */}
-        {/* <Button isText={false}>
-          <Alert />
-        </Button> */}
+        <Button
+          isText={false}
+          clickHandler={soundBtnClickHandler}
+          color={!isSound ? '#DB4455' : undefined}
+        >
+          {isSound ? <SoundOn /> : <SoundOff />}
+        </Button>
       </LeftButtons>
       <RightButton>
         {isAdmin ? (
