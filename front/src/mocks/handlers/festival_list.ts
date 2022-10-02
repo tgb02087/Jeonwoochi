@@ -51,8 +51,8 @@ const mapData: MapData[] = [
     festivalTypeId: 1,
     // x:
     // y:
-    lng: 126.89094137623249,
-    lat: 35.799173454870235,
+    lat: 126.89094137623249,
+    lng: 35.799173454870235,
   },
   {
     festivalId: 2,
@@ -66,8 +66,8 @@ const mapData: MapData[] = [
     festivalTypeId: 2,
     // x:
     // y:
-    lng: 127.126143385886,
-    lat: 35.8489873847612,
+    lat: 127.126143385886,
+    lng: 35.8489873847612,
   },
 ];
 
