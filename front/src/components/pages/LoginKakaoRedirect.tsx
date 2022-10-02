@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
-import getAccessToken from '../../api/getAccessToken';
+import getKakaoAccessToken from '../../api/getKakaoAccessToken';
+import getJwtAccessToken from '../../api/getJwtAccessToken';
 
 /**
  * 카카오 로그인 리다이렉트 페이지 컴포넌트
@@ -14,16 +15,28 @@ import getAccessToken from '../../api/getAccessToken';
 const LoginKakaoRedirect = () => {
   const navigate = useNavigate();
 
-  const { code }: { code?: string } = qs.parse(new URL(location.href).search, {
+  const { code } = qs.parse(new URL(location.href).search, {
     ignoreQueryPrefix: true,
-  });
+  }) as { code: string };
 
-  const accessToken = useQuery(['accessToken'], () =>
-    getAccessToken(code ?? ''),
+  const { data: kakaoAccessToken } = useQuery<string>(
+    ['kakaoAccessToken'],
+    () => getKakaoAccessToken(code),
+  ) as { data: string };
+
+  const { data: jwtAccessToken } = useQuery<string>(
+    ['jwtAccessToken'],
+    () => getJwtAccessToken(kakaoAccessToken),
+    {
+      enabled: true,
+      refetchInterval: 1000,
+      retry: false,
+    },
   );
+
   useEffect(() => {
-    navigate('/game');
-  }, [accessToken]);
+    if (jwtAccessToken) navigate('/game');
+  }, [jwtAccessToken]);
 
   return null;
 };

@@ -14,8 +14,10 @@ interface TokenCheckResponse {
 const checkAuth = async () => {
   const { data }: { data: TokenCheckResponse } = await axios({
     method: 'get',
-    url: '/user-service/chectAT',
+    url: 'http://localhost:8000/user-service/checkAT',
   });
+
+  console.log('checkAuth', data);
 
   return data;
 };
