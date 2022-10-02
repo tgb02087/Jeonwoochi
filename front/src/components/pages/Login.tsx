@@ -3,8 +3,11 @@ import styled from 'styled-components';
 import LoginForm from '../organisms/LoginForm';
 
 // TODO: 배경 이미지 변경 (현재는 임시로 흑백 그라데이션 적용)
+// ${tw`flex justify-center items-center h-screen bg-gradient-to-r from-gray-900 to-gray-500`}
 const LoginBackground = styled.div`
-  ${tw`flex justify-center items-center h-screen bg-gradient-to-r from-gray-900 to-gray-500`}
+  ${tw`flex justify-center items-center h-screen`}
+  background-image: url(/images/login/background.PNG);
+  background-size: cover;
 `;
 
 /**
