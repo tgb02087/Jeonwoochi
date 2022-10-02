@@ -1,8 +1,10 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import Alert from '../../icons/Alert';
 import Profile from '../../icons/Profile';
+// import SoundOn from '../../icons/SoundOn';
+// import SoundOff from '../../icons/SoundOff';
 import Button from '../atoms/Button';
 import Text from '../atoms/Text';
 
@@ -39,15 +41,15 @@ const MainHeader = ({ isAdmin, setState }: PropTypes) => {
     // else {
     // }
   };
+  const [isSound, setIsSound] = useState(true);
+
   return (
     <StyledMainHeader>
       <LeftButtons>
-        <Button isText={false}>
-          <Profile />
-        </Button>
-        <Button isText={false}>
+        {/* <Button isText={false}>{isSound ? <SoundOn /> : <SoundOff />}</Button> */}
+        {/* <Button isText={false}>
           <Alert />
-        </Button>
+        </Button> */}
       </LeftButtons>
       <RightButton>
         {isAdmin ? (

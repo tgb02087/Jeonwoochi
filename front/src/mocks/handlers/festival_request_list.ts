@@ -4,9 +4,6 @@ export default rest.get(
   '/api/festival-service/festival-form',
   (req, res, ctx) => {
     const page = req.url.searchParams.get('page');
-
-    if (page) console.log(parseInt(page));
-
     if (page && parseInt(page) === 0) {
       return res(
         ctx.status(200),
@@ -15,7 +12,7 @@ export default rest.get(
             {
               id: 1,
               festivalName: '테스트 축제 이름1',
-              festivalType: '테스트 카테고리1',
+              fee: '무료',
               startDate: '2022-08-31T15:00:00.000+00:00',
               endDate: '2022-09-29T15:00:00.000+00:00',
               description: '테스트 축제 설명1',
@@ -26,7 +23,7 @@ export default rest.get(
             {
               id: 2,
               festivalName: '테스트 축제 이름2',
-              festivalType: '테스트 카테고리1',
+              fee: '2000원',
               startDate: '2022-08-31T15:00:00.000+00:00',
               endDate: '2022-09-29T15:00:00.000+00:00',
               description: '테스트 축제 설명2',
@@ -37,7 +34,7 @@ export default rest.get(
             {
               id: 3,
               festivalName: '테스트 축제 이름3',
-              festivalType: '테스트 카테고리1',
+              fee: '없음',
               startDate: '2022-08-31T15:00:00.000+00:00',
               endDate: '2022-09-29T15:00:00.000+00:00',
               description: '테스트 축제 설명3',
@@ -48,7 +45,7 @@ export default rest.get(
             {
               id: 4,
               festivalName: '테스트 축제 이름4',
-              festivalType: '테스트 카테고리1',
+              fee: '성인 5000원. 어린이 3000원',
               startDate: '2022-08-31T15:00:00.000+00:00',
               endDate: '2022-09-29T15:00:00.000+00:00',
               description: '테스트 축제 설명4',
@@ -59,7 +56,7 @@ export default rest.get(
             {
               id: 5,
               festivalName: '테스트 축제 이름5',
-              festivalType: '테스트 카테고리1',
+              fee: '무료',
               startDate: '2022-08-31T15:00:00.000+00:00',
               endDate: '2022-09-29T15:00:00.000+00:00',
               description: '테스트 축제 설명5',
@@ -103,7 +100,7 @@ export default rest.get(
             {
               id: 6,
               festivalName: '테스트 축제 이름6',
-              festivalType: '테스트 카테고리1',
+              fee: '무료',
               startDate: '2022-08-31T15:00:00.000+00:00',
               endDate: '2022-09-29T15:00:00.000+00:00',
               description: '테스트 축제 설명6',
@@ -114,7 +111,7 @@ export default rest.get(
             {
               id: 7,
               festivalName: '테스트 축제 이름7',
-              festivalType: '테스트 카테고리1',
+              fee: '싯가',
               startDate: '2022-08-31T15:00:00.000+00:00',
               endDate: '2022-09-29T15:00:00.000+00:00',
               description: '테스트 축제 설명2',
@@ -125,7 +122,7 @@ export default rest.get(
             {
               id: 8,
               festivalName: '테스트 축제 이름8',
-              festivalType: '테스트 카테고리1',
+              fee: '무료',
               startDate: '2022-08-31T15:00:00.000+00:00',
               endDate: '2022-09-29T15:00:00.000+00:00',
               description: '테스트 축제 설명3',
@@ -136,7 +133,7 @@ export default rest.get(
             {
               id: 9,
               festivalName: '테스트 축제 이름9',
-              festivalType: '테스트 카테고리1',
+              fee: '10억',
               startDate: '2022-08-31T15:00:00.000+00:00',
               endDate: '2022-09-29T15:00:00.000+00:00',
               description: '테스트 축제 설명4',
@@ -147,7 +144,7 @@ export default rest.get(
             {
               id: 10,
               festivalName: '테스트 축제 이름10',
-              festivalType: '테스트 카테고리1',
+              fee: '20원',
               startDate: '2022-08-31T15:00:00.000+00:00',
               endDate: '2022-09-29T15:00:00.000+00:00',
               description: '테스트 축제 설명5',
