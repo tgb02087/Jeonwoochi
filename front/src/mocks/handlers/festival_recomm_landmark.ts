@@ -37,8 +37,8 @@ const landmarkData: Landmark[] = [
   },
   {
     id: 4,
-    lat: 35.779372,
-    lng: 126.851231,
+    lat: 35.789372,
+    lng: 126.881231,
   },
 ];
 

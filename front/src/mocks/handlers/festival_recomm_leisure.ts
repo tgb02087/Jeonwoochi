@@ -37,8 +37,8 @@ const leisureData: Leisure[] = [
   },
   {
     id: 4,
-    lat: 35.772222,
-    lng: 126.854565,
+    lat: 35.792222,
+    lng: 126.894565,
   },
 ];
 

@@ -37,8 +37,8 @@ const cultureData: Culture[] = [
   },
   {
     id: 4,
-    lat: 35.774832,
-    lng: 126.855555,
+    lat: 35.794832,
+    lng: 126.895555,
   },
 ];
 
