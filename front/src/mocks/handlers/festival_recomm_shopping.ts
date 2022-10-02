@@ -37,8 +37,8 @@ const shoppingData: Shopping[] = [
   },
   {
     id: 4,
-    lat: 35.773922,
-    lng: 126.853271,
+    lat: 35.793922,
+    lng: 126.883271,
   },
 ];
 

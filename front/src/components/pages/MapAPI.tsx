@@ -87,8 +87,11 @@ const MapAPI = () => {
   const getCoordHandler = (idx: number) => {
     const result = mapData.data!.filter(d => d.festivalId === idx);
     return {
-      lat: result[0].lat,
-      lng: result[0].lng,
+      // 임시 lat, lng 바꿔서 설정
+      // lat: result[0].lat,
+      // lng: result[0].lng,
+      lat: result[0].lng,
+      lng: result[0].lat,
     };
   };
 

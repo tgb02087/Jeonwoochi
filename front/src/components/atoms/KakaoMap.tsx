@@ -3,7 +3,7 @@ import { Restaurant } from '../../mocks/handlers/festival_recomm_restaurant';
 import { Lodge } from '../../mocks/handlers/festival_recomm_lodge';
 import { Shopping } from '../../mocks/handlers/festival_recomm_shopping';
 import { Culture } from '../../mocks/handlers/festival_recomm_culture';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, useMap } from 'react-kakao-maps-sdk';
 import { Leisure } from '../../mocks/handlers/festival_recomm_leisure';
 import { Landmark } from '../../mocks/handlers/festival_recomm_landmark';
 
@@ -73,12 +73,21 @@ const EventMarkerContainer = ({
   position,
   markerSrc,
 }: PropTypesEventMarkerContainer): JSX.Element => {
+  const map = useMap();
   const [isVisible, setIsVisible] = useState(false);
+
+  const focusInfoWindowHandler = () => {
+    setIsVisible(prev => !prev);
+    if (!isVisible) {
+      map.setCenter(new kakao.maps.LatLng(position.lat, position.lng));
+      // map.panTo(new kakao.maps.LatLng(position.lat, position.lng));
+    }
+  };
 
   return (
     <MapMarker
       position={{ lat: position.lat, lng: position.lng }}
-      onClick={() => setIsVisible(prev => !prev)}
+      onClick={focusInfoWindowHandler}
       image={{ src: markerSrc, size: { width: 50, height: 50 } }}
     >
       {isVisible && <InfoWindow title={'천복 순대국밥 궁동점'} />}
@@ -142,29 +151,73 @@ const KakaoMap = ({
 
   const bounds = useMemo(() => {
     const bounds = new kakao.maps.LatLngBounds();
-    if (restaurantData) {
+    bounds.extend(new kakao.maps.LatLng(lat, lng));
+    if (isVisibleMarkerRestaurant && restaurantData) {
       restaurantData.forEach(rd => {
         bounds.extend(new kakao.maps.LatLng(rd.lat, rd.lng));
       });
     }
-    if (lodgeData) {
+    if (isVisibleMarkerLodge && lodgeData) {
       lodgeData.forEach(ld => {
         bounds.extend(new kakao.maps.LatLng(ld.lat, ld.lng));
       });
     }
+    if (isVisibleMarkerShopping && shoppingData) {
+      shoppingData.forEach(sp => {
+        bounds.extend(new kakao.maps.LatLng(sp.lat, sp.lng));
+      });
+    }
+    if (isVisibleMarkerCulture && cultureData) {
+      cultureData.forEach(cd => {
+        bounds.extend(new kakao.maps.LatLng(cd.lat, cd.lng));
+      });
+    }
+    if (isVisibleMarkerLeisure && leisureData) {
+      leisureData.forEach(ld => {
+        bounds.extend(new kakao.maps.LatLng(ld.lat, ld.lng));
+      });
+    }
+    if (isVisibleMarkerLandmark && landmarkData) {
+      landmarkData.forEach(ld => {
+        bounds.extend(new kakao.maps.LatLng(ld.lat, ld.lng));
+      });
+    }
     return bounds;
-  }, [restaurantData, lodgeData]);
+  }, [
+    restaurantData,
+    lodgeData,
+    shoppingData,
+    cultureData,
+    leisureData,
+    landmarkData,
+    isVisibleMarkerRestaurant,
+    isVisibleMarkerLodge,
+    isVisibleMarkerShopping,
+    isVisibleMarkerCulture,
+    isVisibleMarkerLeisure,
+    isVisibleMarkerLandmark,
+  ]);
 
   useEffect(() => {
-    //@ts-expect-error : react-kakao-maps-sdk type 체크 알 수 없음 -> (useRef 타입 설정 못함)
-    if (mapRef.current) mapRef.current.setBounds(bounds);
-  }, [restaurantData, lodgeData]);
+    if (mapRef.current) {
+      //@ts-expect-error : react-kakao-maps-sdk type 체크 알 수 없음 -> (useRef 타입 설정 못함)
+      mapRef.current.setBounds(bounds);
+    }
+  }, [
+    isVisibleMarkerRestaurant,
+    isVisibleMarkerLodge,
+    isVisibleMarkerShopping,
+    isVisibleMarkerCulture,
+    isVisibleMarkerLeisure,
+    isVisibleMarkerLandmark,
+  ]);
 
   return (
     <Map
       center={{ lat, lng }}
       style={{ width: '100%', height: '100%' }}
       level={3}
+      isPanto={true}
       //@ts-expect-error : react-kakao-maps-sdk type 체크 알 수 없음 -> (useRef 타입 설정 못함)
       ref={mapRef}
     >
