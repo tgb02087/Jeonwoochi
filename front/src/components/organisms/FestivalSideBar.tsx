@@ -12,11 +12,9 @@ interface FestivalInfosPropTypes {
   openedSideBar: boolean;
 }
 const StyledFestivalSideBar = styled.div<FestivalInfosPropTypes>`
-  ${tw`flex justify-evenly absolute`}
+  ${tw`flex justify-between`}
   width: 17rem;
   height: 35rem;
-  top: 20%;
-  right: 1rem;
   ${({ openedSideBar }) => !openedSideBar && tw`justify-end`}
 `;
 const ButtonArea = styled.div`

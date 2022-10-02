@@ -1,11 +1,13 @@
+import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import Question from '../../icons/Question';
 import Button from '../atoms/Button';
 
-// interface PropTypes {
-//   isAdmin: boolean;
-// }
+interface PropTypes {
+  // isAdmin: boolean;
+  setOpenedHelpModal: Dispatch<SetStateAction<boolean>>;
+}
 const StyledMainFooter = styled.div`
   ${tw`flex justify-between`}
   width: 100%;
@@ -23,9 +25,10 @@ const Right = styled.div``;
  *
  * @author: jojo
  */
-const MainFooter = () => {
+const MainFooter = ({ setOpenedHelpModal }: PropTypes) => {
   const clickHandler = () => {
     // 도움말 모달 활성화
+    setOpenedHelpModal(prev => !prev);
   };
   return (
     <StyledMainFooter>
