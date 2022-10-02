@@ -394,7 +394,7 @@
 
 ## 220929
 + 종현
-  + 미니맵 디데일 추가
+  + `MapAPI` 페이지 디데일 추가
     + 마킹 캐릭터 변경 sample -> mira
     + `react` 내의 효과음 관리를 위한, `src/effect` 생성
     + audio 파일 import 를 위한 환경설정 : Audio.d.ts
@@ -530,8 +530,15 @@
   + 만들어둔 API는 추후에 서버를 테스트하면서 수정사항 반영 예정
 
 
+
 ## 221002
 + 종현
+  + `bgm` on/off 기능 추가
+    + 기존 쓰이지 않는 버튼 제거 
+    + `bgm` 버튼 추가
+    + `isSound` state 값 추가 `boolean`
+    + `isSound` 상태에 따라 버튼 아이콘과, 현상태를 담은 `eventEmitter.once()` 실행
+    + `emit` 값에 따라 사운드 재생, 혹은 정지
   + 에러 고치기 : `setBounds`   
     + `shopping`, `culture`, `leisure`, `landmark` `setBounds()` 기능 누락
     + 추가 및 정상 작동 
@@ -540,4 +547,3 @@
   + map API 기능 추가
     + 가지고 있는 좌표값 마다, 자동 확대, 자동 축소 기능 적용
     + 인포윈도우 생성 시, 해당 마커가 center의 지도가 되도록 적용
-    
