@@ -8,9 +8,9 @@ from rest_framework.decorators import api_view
 import pandas as pd
 import numpy as np
 from .algorithm import user_based_cf
-
+from django.http import JsonResponse
 
 # Create your views here.
 @api_view(['GET'])
 def get_snbr(request, user_id):
-    return Response(user_based_cf(user_id), status=status.HTTP_200_OK)
+    return JsonResponse(user_based_cf(user_id), status=status.HTTP_200_OK, safe=False)

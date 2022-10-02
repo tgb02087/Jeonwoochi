@@ -28,7 +28,6 @@ def user_based_cf(user_id):
     # user 평가 경향성 고려
     rating_mean = ratings_matrix.mean(axis=1)
     rating_bias = (ratings_matrix.T - rating_mean).T
-
     rating_binary_1 = np.array(ratings_matrix>0).astype(float)
     rating_binary_2 = rating_binary_1.T
 
@@ -45,5 +44,5 @@ def user_based_cf(user_id):
         recommendation = ratings_matrix.loc[u].sort_values(ascending=False).apply(lambda x:x > 3.0)
         recommendation = recommendation.index[recommendation == True].tolist()
         store_ids.extend(recommendation)
-    return recomm_stores(store_ids).to_dict()
+    return recomm_stores(store_ids).to_dict('records')
 

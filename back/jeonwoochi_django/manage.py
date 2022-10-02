@@ -16,7 +16,6 @@ def find_free_port():
     
 free_port = find_free_port()
 
-# client_sock=socket(AF_INET, SOCK_STREAM)
 try:
     runserver.default_port = free_port
 
@@ -32,7 +31,7 @@ def eureka_init():
     eureka_client.init(
         # Eureka Server 所在的地址
         eureka_server="http://j7b305.p.ssafy.io:8761/",
-        app_name="jeonwoochi",
+        app_name="RECOMM-SERVICE",
         instance_host="http://j7b305.p.ssafy.io",
         instance_port= free_port,
     )
@@ -53,7 +52,6 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
-
 
 
 if __name__ == '__main__':
