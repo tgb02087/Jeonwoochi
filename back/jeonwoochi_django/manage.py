@@ -2,6 +2,43 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import py_eureka_client.eureka_client as eureka_client
+import socket
+from django.core.management.commands.runserver import Command as runserver
+from contextlib import closing
+
+
+def find_free_port():
+    with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
+        s.bind(('', 0))
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        return s.getsockname()[1]
+    
+free_port = find_free_port()
+
+# client_sock=socket(AF_INET, SOCK_STREAM)
+try:
+    runserver.default_port = free_port
+
+except ConnectionRefusedError:
+    print('서버에 연결할 수 없습니다.')
+    print('1. 서버의 ip주소와 포트번호가 올바른지 확인하십시오.')
+    print('2. 서버 실행 여부를 확인하십시오.')
+    os._exit(1)
+
+
+def eureka_init():
+    # The flowing code will register your server to eureka server and also start to send heartbeat every 30 seconds
+    eureka_client.init(
+        # Eureka Server 所在的地址
+        eureka_server="http://j7b305.p.ssafy.io:8761/",
+        app_name="jeonwoochi",
+        instance_host="http://j7b305.p.ssafy.io",
+        instance_port= free_port,
+    )
+    
+    print(eureka_client)
+    
 
 
 def main():
@@ -18,5 +55,7 @@ def main():
     execute_from_command_line(sys.argv)
 
 
+
 if __name__ == '__main__':
+    eureka_init()
     main()
