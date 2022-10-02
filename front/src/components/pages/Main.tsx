@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import getFestivalItem from '../../api/getFestivalItem';
@@ -44,6 +44,10 @@ const Main = () => {
   const [openedRequestFirstModal, setOpenedRequestFirstModal] = useState(false);
   const [openedRequestSecondModal, setOpenedRequestSecondModal] =
     useState(false);
+
+  // sound 음소거 유무 확인용 state
+  const [isSound, setIsSound] = useState(true);
+
   const clickHandler = () => {
     setOpenedSideBar(prev => !prev);
   };
@@ -53,10 +57,25 @@ const Main = () => {
     setOpenedFestivalModal(true);
   });
 
+  const soundBtnClickHandler = () => {
+    setIsSound(prev => !prev);
+  };
+
+  useEffect(() => {
+    isSound
+      ? eventEmitter.once('bgmOn', () => isSound)
+      : eventEmitter.once('bgmOff', () => isSound);
+  }, [isSound]);
+
   return (
     <StyledMain>
       <MainFrame>
-        <MainHeader isAdmin={true} setState={setOpenedRequestFirstModal} />
+        <MainHeader
+          isAdmin={!true}
+          isSound={isSound}
+          soundBtnClickHandler={soundBtnClickHandler}
+          setState={setOpenedRequestFirstModal}
+        />
         <MainFooter />
       </MainFrame>
 

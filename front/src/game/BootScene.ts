@@ -30,6 +30,7 @@ class BootScene extends Scene {
   private popupOpened = false;
   private popupEnabledTime = 0;
   private enterKey!: Input.Keyboard.Key;
+  private bgm!: any;
 
   preload() {
     // 타일맵 불러오기
@@ -71,7 +72,7 @@ class BootScene extends Scene {
 
     // bgm 설정
     // 시끄러워서 주석처리합니다
-    const music = this.sound.add('bgm', {
+    this.bgm = this.sound.add('bgm', {
       mute: false,
       volume: 0.09,
       rate: 1,
@@ -80,8 +81,7 @@ class BootScene extends Scene {
       loop: false,
       delay: 1,
     });
-    console.log(this.sound);
-    music.play();
+    this.bgm.play();
 
     // 타일에 충돌(Collision) 적용
     worldLayer.setCollisionByProperty({ collides: true });
@@ -135,6 +135,18 @@ class BootScene extends Scene {
 
   update(time: number) {
     this.player.update();
+
+    // 사운드 상태 체크
+
+    // console.log(eventEmitter.emit('soundCheck'));
+    if (eventEmitter.emit('bgmOn')) {
+      console.log('play');
+      this.bgm.play();
+    }
+    if (eventEmitter.emit('bgmOff')) {
+      console.log('stop');
+      this.bgm.stop();
+    }
 
     // festivalListFetched 상태로 축제 리스트 업데이트 여부 확인
     if (this.festivalListFetched) {
