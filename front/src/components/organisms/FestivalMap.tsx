@@ -104,7 +104,7 @@ const FestivalMap = ({
     landmarkRecommClickHandler();
     setIsVisibleMarkerLandmark(prev => !prev);
   };
-
+  const BLACK = 'black';
   return (
     <>
       <PositionButton>
@@ -113,42 +113,60 @@ const FestivalMap = ({
           isText={true}
           clickHandler={combineRecommMarkerRestaurant}
         >
-          <Text message={'맛집 추천'} />
+          <Text
+            message={'맛집 추천'}
+            color={isVisibleMarkerRestaurant ? undefined : BLACK}
+          />
         </Button>
         <Button
           color={isVisibleMarkerLodge ? '#DB4455' : undefined}
           isText={true}
           clickHandler={combineRecommMarkerLodge}
         >
-          <Text message={'숙박 추천'} />
+          <Text
+            message={'숙박 추천'}
+            color={isVisibleMarkerLodge ? undefined : BLACK}
+          />
         </Button>
         <Button
           color={isVisibleMarkerShopping ? '#DB4455' : undefined}
           isText={true}
           clickHandler={combineRecommMarkerShopping}
         >
-          <Text message={'쇼핑 추천'} />
+          <Text
+            message={'쇼핑 추천'}
+            color={isVisibleMarkerShopping ? undefined : BLACK}
+          />
         </Button>
         <Button
           color={isVisibleMarkerCulture ? '#DB4455' : undefined}
           isText={true}
           clickHandler={combineRecommMarkerCulture}
         >
-          <Text message={'문화시설 추천'} />
+          <Text
+            message={'문화시설 추천'}
+            color={isVisibleMarkerCulture ? undefined : BLACK}
+          />
         </Button>
         <Button
           color={isVisibleMarkerLeisure ? '#DB4455' : undefined}
           isText={true}
           clickHandler={combineRecommMarkerLeisure}
         >
-          <Text message={'레포츠 추천'} />
+          <Text
+            message={'레포츠 추천'}
+            color={isVisibleMarkerLeisure ? undefined : BLACK}
+          />
         </Button>
         <Button
           color={isVisibleMarkerLandmark ? '#DB4455' : undefined}
           isText={true}
           clickHandler={combineRecommMarkerLandmark}
         >
-          <Text message={'관광명소 추천'} />
+          <Text
+            message={'관광명소 추천'}
+            color={isVisibleMarkerLandmark ? undefined : BLACK}
+          />
         </Button>
       </PositionButton>
       <KakaoMap
