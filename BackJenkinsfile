@@ -104,7 +104,7 @@ pipeline{
                         sh "docker build -t ${MAIN_NAME} ./back/jeonwoochi_spring/microservices/main-service/."
 
                                             // Django service 빌드
-                        //sh "docker build -t ${FRONT_NAME} ./back/microservices/-service/."
+                        sh "docker build -t ${RECOMM_NAME} ./back/jeonwoochi_django/."
                         mattermostSend (
                             color: "good", 
                             message: "Back Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Link to build>)"
@@ -167,7 +167,7 @@ pipeline{
                         sh "docker run -d --name=${USER_CONTAINER_NAME} --net msa ${USER_NAME}"
                         sh "docker run -d --name=${FESTIVAL_CONTAINER_NAME} --net msa ${FESTIVAL_NAME}"
                         sh "docker run -d --name=${MAIN_CONTAINER_NAME} --net msa ${MAIN_NAME}"
-                        //sh "docker run -d --name=${RECOMM_CONTAINER_NAME} --net msa ${RECOMM_NAME}"
+                        sh "docker run -d --name=${RECOMM_CONTAINER_NAME} --net msa ${RECOMM_NAME}"
                         //sh "docker run -d --name=${LOG_CONTAINER_NAME} --net msa ${LOG_NAME}"
                         mattermostSend (
                             color: "good", 
