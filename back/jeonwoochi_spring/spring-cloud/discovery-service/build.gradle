@@ -1,3 +1,6 @@
+group = 'com.ssafy'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
 
 ext {
     set('springCloudVersion', "2021.0.3")

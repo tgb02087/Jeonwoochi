@@ -12,10 +12,25 @@ dependencyManagement {
     }
 }
 dependencies {
+    //맥os 에러
+    implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
+    // javax
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+
+    //Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    //JWT
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    // servlet
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
+
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     implementation 'org.springframework.cloud:spring-cloud-starter'
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+    implementation 'org.springframework.cloud:spring-cloud-starter-zipkin:2.2.3.RELEASE'
 
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
