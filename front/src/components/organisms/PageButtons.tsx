@@ -17,7 +17,7 @@ const CenterAlign = styled.div`
 `;
 const StyledPageButtons = styled.div`
   ${tw`flex justify-evenly items-center`}
-  width: 30%;
+  width: 40%;
 `;
 
 /**
