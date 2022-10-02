@@ -1,9 +1,5 @@
 import axios from 'axios';
-
-interface TokenCheckResponse {
-  id: string;
-  isAdmin: boolean;
-}
+import { UserInfo } from './../recoil/atoms/userInfo';
 
 /**
  * 로그인 여부를 확인한 후 id와 관리자 여부를 반환하는 API
@@ -12,12 +8,10 @@ interface TokenCheckResponse {
  * @author Sckroll
  */
 const checkAuth = async () => {
-  const { data }: { data: TokenCheckResponse } = await axios({
+  const { data }: { data: UserInfo } = await axios({
     method: 'get',
     url: 'http://localhost:8000/user-service/checkAT',
   });
-
-  console.log('checkAuth', data);
 
   return data;
 };
