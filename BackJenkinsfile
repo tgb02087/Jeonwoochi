@@ -46,7 +46,7 @@ pipeline{
                         sh "docker stop ${USER_CONTAINER_NAME}"
                         sh "docker stop ${FESTIVAL_CONTAINER_NAME}"
                         sh "docker stop ${MAIN_CONTAINER_NAME}"
-                        //sh "docker stop ${RECOMM_CONTAINER_NAME}"
+                        sh "docker stop ${RECOMM_CONTAINER_NAME}"
                         //sh "docker stop ${LOG_CONTAINER_NAME}"
                         sleep 1
                         sh "docker rm ${DISCOVERY_CONTAINER_NAME}"
@@ -56,7 +56,7 @@ pipeline{
                         sh "docker rm ${USER_CONTAINER_NAME}"
                         sh "docker rm ${FESTIVAL_CONTAINER_NAME}"
                         sh "docker rm ${MAIN_CONTAINER_NAME}"
-                        //sh "docker rm ${RECOMM_CONTAINER_NAME}"
+                        sh "docker rm ${RECOMM_CONTAINER_NAME}"
                         //sh "docker rm ${LOG_CONTAINER_NAME}"
                     }catch(e){
                         sh 'exit 0'
