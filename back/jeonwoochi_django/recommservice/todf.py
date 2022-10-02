@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from .models import Review, Restaurant
 from django.db import connection
 
@@ -21,6 +22,8 @@ def recomm_stores(store_ids):
         cursor.execute(raw_query)
         row = cursor.fetchall()
     recomm_stores = pd.DataFrame.from_records(row)
+    recomm_stores.columns = ["restaurant_id", "name", "branch", "tel", "address", "lat", "lng", "category"]
+    # print(recomm_stores)
     return recomm_stores
 
 def local_reviews(x, y): # lat, lng

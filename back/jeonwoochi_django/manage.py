@@ -16,7 +16,6 @@ def find_free_port():
     
 free_port = find_free_port()
 
-# client_sock=socket(AF_INET, SOCK_STREAM)
 try:
     runserver.default_port = free_port
 
@@ -52,7 +51,6 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
-
 
 
 if __name__ == '__main__':
