@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useMemo, useState } from 'react';
 import { Restaurant } from '../../mocks/handlers/festival_recomm_restaurant';
 import { Lodge } from '../../mocks/handlers/festival_recomm_lodge';
-
+import { Shopping } from '../../mocks/handlers/festival_recomm_shopping';
+import { Culture } from '../../mocks/handlers/festival_recomm_culture';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Leisure } from '../../mocks/handlers/festival_recomm_leisure';
+import { Landmark } from '../../mocks/handlers/festival_recomm_landmark';
 
 // 마커 사이즈
 
@@ -90,8 +93,16 @@ interface PropTypes {
   };
   restaurantData?: Restaurant[] | undefined;
   lodgeData?: Lodge[] | undefined;
+  shoppingData?: Shopping[] | undefined;
+  cultureData?: Culture[] | undefined;
+  leisureData?: Leisure[] | undefined;
+  landmarkData?: Landmark[] | undefined;
   isVisibleMarkerRestaurant: boolean;
   isVisibleMarkerLodge: boolean;
+  isVisibleMarkerShopping: boolean;
+  isVisibleMarkerCulture: boolean;
+  isVisibleMarkerLeisure: boolean;
+  isVisibleMarkerLandmark: boolean;
 }
 
 /**
@@ -105,14 +116,26 @@ const KakaoMap = ({
   coord,
   restaurantData,
   lodgeData,
+  shoppingData,
+  cultureData,
+  leisureData,
+  landmarkData,
   isVisibleMarkerRestaurant,
   isVisibleMarkerLodge,
+  isVisibleMarkerShopping,
+  isVisibleMarkerCulture,
+  isVisibleMarkerLeisure,
+  isVisibleMarkerLandmark,
 }: PropTypes) => {
   const { lat, lng } = coord;
   // 마커 이미지
   const playerSrc = '/images/map/mira.gif';
   const restaurantSrc = '/images/map/restaurant_marker.png';
   const lodgeSrc = '/images/map/lodge_marker.png';
+  const shoppingSrc = '/images/map/shopping_marker.png';
+  const cultureSrc = '/images/map/culture_marker.png';
+  const leisureSrc = '/images/map/leisure_marker.png';
+  const landmarkSrc = '/images/map/landmark_marker.png';
 
   const size = { width: 32, height: 45 };
   const mapRef = useRef(null);
@@ -166,6 +189,42 @@ const KakaoMap = ({
             key={index}
             position={{ lat: position.lat, lng: position.lng }}
             markerSrc={lodgeSrc}
+          />
+        ))}
+      {isVisibleMarkerShopping &&
+        shoppingData &&
+        shoppingData.map((position, index) => (
+          <EventMarkerContainer
+            key={index}
+            position={{ lat: position.lat, lng: position.lng }}
+            markerSrc={shoppingSrc}
+          />
+        ))}
+      {isVisibleMarkerCulture &&
+        cultureData &&
+        cultureData.map((position, index) => (
+          <EventMarkerContainer
+            key={index}
+            position={{ lat: position.lat, lng: position.lng }}
+            markerSrc={cultureSrc}
+          />
+        ))}
+      {isVisibleMarkerLeisure &&
+        leisureData &&
+        leisureData.map((position, index) => (
+          <EventMarkerContainer
+            key={index}
+            position={{ lat: position.lat, lng: position.lng }}
+            markerSrc={leisureSrc}
+          />
+        ))}
+      {isVisibleMarkerLandmark &&
+        landmarkData &&
+        landmarkData.map((position, index) => (
+          <EventMarkerContainer
+            key={index}
+            position={{ lat: position.lat, lng: position.lng }}
+            markerSrc={landmarkSrc}
           />
         ))}
     </Map>

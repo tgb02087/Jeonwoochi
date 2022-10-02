@@ -2,6 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 
 import { useGetFoodDataAfterClick } from '../../hooks/useGetFoodDataAfterClick';
 import { useGetLodgeDataAfterClick } from '../../hooks/useGetLodgeDataAfterClick';
+import { useGetShoppingDataAfterClick } from '../../hooks/useGetShoppingDataAfterClick';
+import { useGetCultureDataAfterClick } from '../../hooks/useGetCultureDataAfterClick';
+import { useGetLeisureDataAfterClick } from '../../hooks/useGetLeisureDataAfterClick';
+import { useGetLandmarkDataAfterClick } from '../../hooks/useGetLandmarkDataAfterClick';
 
 import { MapData } from '../../mocks/handlers/festival_list';
 import { AxiosError } from 'axios';
@@ -58,12 +62,27 @@ const MapAPI = () => {
 
   // 맛집 데이터 불러오기
   const restaurantData = useGetFoodDataAfterClick();
+  const clickFoodButtonHandler = () => restaurantData.refetch();
 
   // 숙박 데이터 불러오기
   const lodgingData = useGetLodgeDataAfterClick();
-
-  const clickFoodButtonHandler = () => restaurantData.refetch();
   const clickLodgeButtonhandler = () => lodgingData.refetch();
+
+  // 쇼핑 데이터 불러오기
+  const shoppingData = useGetShoppingDataAfterClick();
+  const clickShopingButtonHandler = () => shoppingData.refetch();
+
+  // 문화 데이터 불러오기
+  const cultureData = useGetCultureDataAfterClick();
+  const clickCultureButtonHandler = () => cultureData.refetch();
+
+  // 레저 데이터 불러오기
+  const leisureData = useGetLeisureDataAfterClick();
+  const clickLeisureButtonHandler = () => leisureData.refetch();
+
+  // 관광명소 데이터 불러오기
+  const landmarkData = useGetLandmarkDataAfterClick();
+  const clickLandmarkButtonHandler = () => landmarkData.refetch();
 
   const getCoordHandler = (idx: number) => {
     const result = mapData.data!.filter(d => d.festivalId === idx);
@@ -112,8 +131,16 @@ const MapAPI = () => {
             <FestivalMap
               restaurantData={restaurantData.data}
               lodgeData={lodgingData.data}
+              shoppingData={shoppingData.data}
+              cultureData={cultureData.data}
+              leisureData={leisureData.data}
+              landmarkData={landmarkData.data}
               restaurantRecommClickHandler={clickFoodButtonHandler}
               lodgeRecommClickHandler={clickLodgeButtonhandler}
+              shoppingRecommClickHandler={clickShopingButtonHandler}
+              cultureRecommClickHandler={clickCultureButtonHandler}
+              leisureRecommClickHandler={clickLeisureButtonHandler}
+              landmarkRecommClickHandler={clickLandmarkButtonHandler}
               coord={getCoordHandler(MAPIDX)}
             />
           </>
