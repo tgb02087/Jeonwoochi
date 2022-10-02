@@ -45,6 +45,5 @@ def user_based_cf(user_id):
         recommendation = ratings_matrix.loc[u].sort_values(ascending=False).apply(lambda x:x > 3.0)
         recommendation = recommendation.index[recommendation == True].tolist()
         store_ids.extend(recommendation)
-    print(store_ids)
     return recomm_stores(store_ids).to_dict()
 
