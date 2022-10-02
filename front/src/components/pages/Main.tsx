@@ -9,6 +9,7 @@ import eventEmitter from '../../utils/eventEmitter';
 import FestivalModal from '../organisms/FestivalModal';
 import FestivalSideBar from '../organisms/FestivalSideBar';
 import GameView from '../organisms/GameView';
+import HelpModal from '../organisms/HelpModal';
 import MainFooter from '../organisms/MainFooter';
 import MainHeader from '../organisms/MainHeader';
 import RequestConfirmModal from '../organisms/RequestConfirmModal';
@@ -24,6 +25,9 @@ const MainFrame = styled.div`
   height: 100vh;
   padding: 1rem;
   ${tw`flex flex-col justify-between absolute`}
+`;
+const MainBody = styled.div`
+  ${tw`flex justify-end`}
 `;
 const RequestModalWrapper = styled.div`
   width: 100%;
@@ -44,6 +48,7 @@ const Main = () => {
   const [openedRequestFirstModal, setOpenedRequestFirstModal] = useState(false);
   const [openedRequestSecondModal, setOpenedRequestSecondModal] =
     useState(false);
+  const [openedHelpModal, setOpenedHelpModal] = useState(false);
   const clickHandler = () => {
     setOpenedSideBar(prev => !prev);
   };
@@ -57,13 +62,15 @@ const Main = () => {
     <StyledMain>
       <MainFrame>
         <MainHeader isAdmin={true} setState={setOpenedRequestFirstModal} />
-        <MainFooter />
+        <MainBody>
+          <FestivalSideBar
+            openedSideBar={openedSideBar}
+            clickHandler={clickHandler}
+          />
+        </MainBody>
+        <MainFooter setOpenedHelpModal={setOpenedHelpModal} />
       </MainFrame>
 
-      <FestivalSideBar
-        openedSideBar={openedSideBar}
-        clickHandler={clickHandler}
-      />
       {openedFestivalModal ? (
         <FestivalModal setState={setOpenedFestivalModal} info={itemData} />
       ) : null}
@@ -84,6 +91,7 @@ const Main = () => {
             setOpenedList={setOpenedRequestFirstModal}
           />
         ) : null}
+        {openedHelpModal ? <HelpModal setState={setOpenedHelpModal} /> : null}
       </RequestModalWrapper>
 
       <GameView festivalList={listData} />
