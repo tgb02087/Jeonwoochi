@@ -42,7 +42,7 @@ spring:
           #   - AuthorizationFilter
 
         - id: festival-service
-          uri: lb://FESTIVAL-SERVICE
+          uri: lb://FESTIVAL2-SERVICE
           predicates:
             - Path=/api/festival-service/**
             - Method=GET,POST,PUT,DELETE
