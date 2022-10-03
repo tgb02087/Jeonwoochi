@@ -4,7 +4,7 @@ plugins {
     id 'java'
 }
 
-group = 'com.example'
+group = 'com.ssafy'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
@@ -79,5 +79,14 @@ project(':microservices') {
 project(':spring-cloud') {
     bootJar {
         enabled = false
+    }
+}
+
+project(':common'){
+    bootJar {
+        enabled = false
+    }
+    jar {
+        enabled = true
     }
 }
