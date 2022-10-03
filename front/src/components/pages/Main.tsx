@@ -12,6 +12,7 @@ import GameView from '../organisms/GameView';
 import HelpModal from '../organisms/HelpModal';
 import MainFooter from '../organisms/MainFooter';
 import MainHeader from '../organisms/MainHeader';
+import Minimap from '../organisms/Minimap';
 import RequestConfirmModal from '../organisms/RequestConfirmModal';
 import RequestListModal from '../organisms/RequestListModal';
 import RequestModal from '../organisms/RequestModal';
@@ -72,6 +73,22 @@ const Main = () => {
       : eventEmitter.once('bgmOff', () => isSound);
   }, [isSound]);
 
+  // 플레이어의 현재 x, y 좌표값
+  const [location, setLocation] = useState({
+    x: 0,
+    y: 0,
+  });
+  // BootScene에서 3초마다 플레이어 현재 좌표를 가져와 location을 update한다.
+  eventEmitter.on('playerLocation', ({ x, y }) =>
+    setLocation(prev => {
+      return {
+        ...prev,
+        x,
+        y,
+      };
+    }),
+  );
+
   return (
     <StyledMain>
       <MainFrame>
@@ -86,6 +103,7 @@ const Main = () => {
             openedSideBar={openedSideBar}
             clickHandler={clickHandler}
           />
+          <Minimap x={location.x} y={location.y} festivalList={listData} />
         </MainBody>
         <MainFooter setOpenedHelpModal={setOpenedHelpModal} />
       </MainFrame>
