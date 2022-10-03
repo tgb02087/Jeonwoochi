@@ -85,13 +85,15 @@ class BootScene extends Scene {
     const landLayer = map.createLayer('land', lands, 0, 0);
     // bgm 설정
     // 시끄러워서 주석처리합니다
+    // bgm 설정 초기화
+
     this.bgm = this.sound.add('bgm', {
       mute: false,
       volume: 0.09,
       rate: 1,
       detune: 0,
       seek: 0,
-      loop: false,
+      loop: true,
       delay: 1,
     });
     this.bgm.play();
@@ -112,7 +114,7 @@ class BootScene extends Scene {
       spawnPoint.x || 0,
       spawnPoint.y || 0,
       'atlas',
-      'misa-front',
+      'player-front',
       worldLayer,
     );
 
@@ -130,21 +132,34 @@ class BootScene extends Scene {
     // 미니맵 생성
     // 위치 선정
     // 줌 크기
-    this.minimap = this.cameras
-      .add(30, window.innerHeight - 430, 400, 400)
-      .setZoom(0.2)
-      .setName('mini');
 
-    // 미니맵 스크롤 설정
-    this.minimap.scrollX = this.player.x;
-    this.minimap.scrollY = this.player.y;
+    // 미니맵 주석 처리
+    // this.minimap = this.cameras
+    //   .add(30, window.innerHeight - 430, 400, 400)
+    //   .setZoom(0.2)
+    //   .setName('mini');
 
-    // 미니맵도 캐릭터에 포커싱 되도록
-    const minimapCamera = this.cameras.cameras.find(el => el.name === 'mini');
-    minimapCamera?.startFollow(this.player.me);
+    // // 미니맵 스크롤 설정
+    // this.minimap.scrollX = this.player.x;
+    // this.minimap.scrollY = this.player.y;
+
+    // // 미니맵도 캐릭터에 포커싱 되도록
+    // const minimapCamera = this.cameras.cameras.find(el => el.name === 'mini');
+    // minimapCamera?.startFollow(this.player.me);
 
     // Enter 키 입력 초기화
     this.enterKey = this.input.keyboard.addKey('ENTER');
+
+    // 이미 존재하는 게 있다면 삭제
+    clearInterval(1);
+    setInterval(
+      () =>
+        eventEmitter.emit('playerLocation', {
+          x: this.player.body.x,
+          y: this.player.body.y,
+        }),
+      1000,
+    );
   }
 
   update(time: number) {
@@ -213,7 +228,7 @@ class BootScene extends Scene {
    */
   createFestivalObjects() {
     this.festivalList?.forEach(festival => {
-      const { x, y } = this.convertLatLngToXY(festival);
+      const { x, y } = BootScene.convertLatLngToXY(festival);
       console.log(festival.name, x, y);
 
       // 오브젝트 생성
@@ -239,7 +254,7 @@ class BootScene extends Scene {
    * @returns 게임 상의 `x`, `y` 좌표가 들어있는 객체
    * @author Sckroll
    */
-  convertLatLngToXY(festival: MapData) {
+  static convertLatLngToXY(festival: MapData) {
     const { lat, lng } = festival;
 
     // 남한 국토 극동, 극서의 경도와 극북, 극남의 위도

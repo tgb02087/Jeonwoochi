@@ -8,19 +8,22 @@ interface HeaderWithAuthorization extends HeadersDefaults {
 }
 
 /**
- * 액세스 토큰이 만료되었는지 확인 후 리프레시 토큰을 통해 토큰을 재생성 & 업데이트하는 API
+ * 카카오 로그인 액세스 코드를 서버로 전송 후 JWT 액세스 토큰을 받아 헤더에 추가하는 API
  *
- * 리프레시 토큰도 만료된 경우 로그인을 유도하도록 예외 처리
- *
- * @returns 업데이트된 액세스 토큰
+ * @param token 카카오 로그인 액세스 토큰
+ * @returns JWT 액세스 토큰
  * @author Sckroll
  */
-const refreshAccessToken = async () => {
+const getJwtAccessToken = async (token: string) => {
   const {
     data: { accessToken },
   } = await axios({
     method: 'get',
-    url: 'http://localhost:8000/user-service/recreatejwt',
+    url: 'http://localhost:8000/user-service/login/kakao',
+    params: {
+      token,
+    },
+    withCredentials: true,
   });
 
   // Axios 헤더에 액세스 토큰 추가
@@ -31,4 +34,4 @@ const refreshAccessToken = async () => {
   return accessToken;
 };
 
-export default refreshAccessToken;
+export default getJwtAccessToken;

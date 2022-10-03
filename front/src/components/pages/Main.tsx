@@ -12,6 +12,7 @@ import GameView from '../organisms/GameView';
 import HelpModal from '../organisms/HelpModal';
 import MainFooter from '../organisms/MainFooter';
 import MainHeader from '../organisms/MainHeader';
+import Minimap from '../organisms/Minimap';
 import RequestConfirmModal from '../organisms/RequestConfirmModal';
 import RequestListModal from '../organisms/RequestListModal';
 import RequestModal from '../organisms/RequestModal';
@@ -54,6 +55,7 @@ const Main = () => {
   const [isSound, setIsSound] = useState(true);
 
   const clickHandler = () => {
+    setFocusedIdx(-1);
     setOpenedSideBar(prev => !prev);
   };
 
@@ -72,11 +74,31 @@ const Main = () => {
       : eventEmitter.once('bgmOff', () => isSound);
   }, [isSound]);
 
+  // FestivalSideBar 세개 중 focus된 것의 idx 값 저장
+  // MiniMap에 상태를 넘겨 해당 idx 강조 표시
+  const [focusedIdx, setFocusedIdx] = useState(-1);
+
+  // 플레이어의 현재 x, y 좌표값
+  const [location, setLocation] = useState({
+    x: 0,
+    y: 0,
+  });
+  // BootScene에서 3초마다 플레이어 현재 좌표를 가져와 location을 update한다.
+  eventEmitter.on('playerLocation', ({ x, y }) =>
+    setLocation(prev => {
+      return {
+        ...prev,
+        x,
+        y,
+      };
+    }),
+  );
+
   return (
     <StyledMain>
       <MainFrame>
         <MainHeader
-          isAdmin={!true}
+          isAdmin={true}
           isSound={isSound}
           soundBtnClickHandler={soundBtnClickHandler}
           setState={setOpenedRequestFirstModal}
@@ -84,7 +106,14 @@ const Main = () => {
         <MainBody>
           <FestivalSideBar
             openedSideBar={openedSideBar}
-            clickHandler={clickHandler}
+            setOpenedSideBar={setOpenedSideBar}
+            setFocusedIdx={setFocusedIdx}
+          />
+          <Minimap
+            x={location.x}
+            y={location.y}
+            festivalList={listData}
+            focusedIdx={focusedIdx}
           />
         </MainBody>
         <MainFooter setOpenedHelpModal={setOpenedHelpModal} />

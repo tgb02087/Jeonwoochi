@@ -75,45 +75,41 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // 애니메이션 설정
     const anims = this.me.anims;
     anims.create({
-      key: 'misa-left-walk',
+      key: 'player-left-walk',
       frames: anims.generateFrameNames('atlas', {
-        prefix: 'misa-left-walk.',
+        prefix: 'player-left-walk.',
         start: 0,
         end: 3,
-        zeroPad: 3,
       }),
       frameRate: 10,
       repeat: -1,
     });
     anims.create({
-      key: 'misa-right-walk',
+      key: 'player-right-walk',
       frames: anims.generateFrameNames('atlas', {
-        prefix: 'misa-right-walk.',
+        prefix: 'player-right-walk.',
         start: 0,
         end: 3,
-        zeroPad: 3,
       }),
       frameRate: 10,
       repeat: -1,
     });
     anims.create({
-      key: 'misa-front-walk',
+      key: 'player-front-walk',
       frames: anims.generateFrameNames('atlas', {
-        prefix: 'misa-front-walk.',
+        prefix: 'player-front-walk.',
         start: 0,
         end: 3,
-        zeroPad: 3,
       }),
       frameRate: 10,
       repeat: -1,
     });
     anims.create({
-      key: 'misa-back-walk',
+      key: 'player-back-walk',
       frames: anims.generateFrameNames('atlas', {
-        prefix: 'misa-back-walk.',
+        prefix: 'player-back-walk.',
         start: 0,
         end: 3,
-        zeroPad: 3,
       }),
       frameRate: 10,
       repeat: -1,
@@ -140,8 +136,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   static preload(scene: Phaser.Scene): void {
     scene.load.atlas(
       'atlas',
-      'https://mikewesthad.github.io/phaser-3-tilemap-blog-posts/post-1/assets/atlas/atlas.png',
-      'https://mikewesthad.github.io/phaser-3-tilemap-blog-posts/post-1/assets/atlas/atlas.json',
+      '/images/map/player-sprite.png',
+      '/images/map/player-atlas.json',
     );
     scene.load.spritesheet('items', '/images/items/items.png', {
       frameWidth: 32,
@@ -229,25 +225,25 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // 일반 걷기의 경우 일반 걷기 사운드
     // 헤이스트의 경우, 바람을 가르는 사운드
     if (this.inputKeys.left.isDown) {
-      this.me.anims.play('misa-left-walk', true);
+      this.me.anims.play('player-left-walk', true);
       this.isHasteSound();
     } else if (this.inputKeys.right.isDown) {
-      this.me.anims.play('misa-right-walk', true);
+      this.me.anims.play('player-right-walk', true);
       this.isHasteSound();
     } else if (this.inputKeys.up.isDown) {
-      this.me.anims.play('misa-back-walk', true);
+      this.me.anims.play('player-back-walk', true);
       this.isHasteSound();
     } else if (this.inputKeys.down.isDown) {
-      this.me.anims.play('misa-front-walk', true);
+      this.me.anims.play('player-front-walk', true);
       this.isHasteSound();
     } else {
       this.me.anims.stop();
 
       // 이동 중이라면, 사용할 프레임 선택 & 유휴(idle) 상태로 전환\
-      if (prevVelocity.x < 0) this.me.setTexture('atlas', 'misa-left');
-      else if (prevVelocity.x > 0) this.me.setTexture('atlas', 'misa-right');
-      else if (prevVelocity.y < 0) this.me.setTexture('atlas', 'misa-back');
-      else if (prevVelocity.y > 0) this.me.setTexture('atlas', 'misa-front');
+      if (prevVelocity.x < 0) this.me.setTexture('atlas', 'player-left');
+      else if (prevVelocity.x > 0) this.me.setTexture('atlas', 'player-right');
+      else if (prevVelocity.y < 0) this.me.setTexture('atlas', 'player-back');
+      else if (prevVelocity.y > 0) this.me.setTexture('atlas', 'player-front');
     }
   }
 
