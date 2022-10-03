@@ -23,7 +23,7 @@ def recomm_stores(store_ids):
         row = cursor.fetchall()
     recomm_stores = pd.DataFrame.from_records(row)
     recomm_stores.columns = ["restaurant_id", "name", "branch", "tel", "address", "lat", "lng", "category"]
-    # print(recomm_stores)
+    print(recomm_stores)
     return recomm_stores
 
 def local_reviews(x, y): # lat, lng
@@ -32,6 +32,8 @@ def local_reviews(x, y): # lat, lng
         raw_query = f"select * from review where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 20) limit 5000;"
     except:
         raw_query = f"select * from review where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 50) limit 5000;"
+    else:
+        raw_query = f"select * from review where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 100) limit 5000;"
     
     with connection.cursor() as cursor:
         cursor.execute(raw_query)

@@ -33,6 +33,7 @@ def eureka_init():
         eureka_server="http://j7b305.p.ssafy.io:8761/eureka",
         app_name="RECOMM-SERVICE",
         instance_port= free_port,
+
     )
     
     print(eureka_client)
@@ -54,5 +55,5 @@ def main():
 
 
 if __name__ == '__main__':
-    eureka_init()
+    # eureka_init()
     main()
