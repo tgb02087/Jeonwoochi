@@ -10,18 +10,10 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
-
-    @Override
-    public void addResourceHandlers(final ResourceHandlerRegistry registry){
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/templates/", "classpath:/static/")
-                .setCacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES));
-    }
-
     //cors error
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
+        registry.addMapping("/api/**")
                 .allowedOrigins("http://localhost:3000", "https://j7b305.p.ssafy.io", "http://j7b305.p.ssafy.io")
                 .allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS")
                 .allowedHeaders("Authorization","Content-Type","accept","access-control-allow-origin")
