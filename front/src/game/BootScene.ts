@@ -98,7 +98,7 @@ class BootScene extends Scene {
       spawnPoint.x || 0,
       spawnPoint.y || 0,
       'atlas',
-      'misa-front',
+      'player-front',
       worldLayer,
     );
 
