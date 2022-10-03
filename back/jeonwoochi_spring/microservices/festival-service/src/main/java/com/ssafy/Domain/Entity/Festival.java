@@ -35,6 +35,8 @@ public class Festival {
     private Double lng;
 
     private String fee;
+
+    private String homepage;
     public static Festival create(FestivalForm festivalForm, Double lat, Double lng){
         Festival festival = new Festival();
         festival.festivalName = festivalForm.getFestivalName();
@@ -45,7 +47,7 @@ public class Festival {
         festival.image = festivalForm.getImage();
         festival.lat = lat;
         festival.lng = lng;
-
+        festival.homepage = festivalForm.getHomepage();
         return festival;
     }
     public void update(FestivalUpdateRequest request){
@@ -58,5 +60,6 @@ public class Festival {
         this.lat = request.getLat();
         this.lng = request.getLng();
         this.fee = request.getFee();
+        this.homepage = request.getHomepage();
     }
 }

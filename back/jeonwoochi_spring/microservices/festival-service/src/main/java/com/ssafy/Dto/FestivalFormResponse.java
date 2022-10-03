@@ -28,6 +28,7 @@ public class FestivalFormResponse {
 
     private String fee;
 
+    private String homepage;
     public static FestivalFormResponse response(FestivalForm festivalForm){
         return new FestivalFormResponse(
                 festivalForm.getId(),
@@ -37,7 +38,8 @@ public class FestivalFormResponse {
                 festivalForm.getDescription(),
                 festivalForm.getAddress(),
                 festivalForm.getImage(),
-                festivalForm.getFee()
+                festivalForm.getFee(),
+                festivalForm.getHomepage()
         );
     }
 }

@@ -114,6 +114,15 @@ public class FestivalServiceImpl implements FestivalService {
         return festivals;
     }
 
+    @Override
+    public List<FestivalResponse> findFestivalListTop3() {
+        Date now = new Date();
+        List<FestivalResponse> festivals = festivalRepo.findTop3ByEndDateAfterOrderByEndDate(now).stream()
+                .map(FestivalResponse::response)
+                .collect(Collectors.toList());
+        return festivals;
+    }
+
     //축제 수정
     @Override
     @Transactional

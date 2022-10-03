@@ -20,6 +20,8 @@ public interface FestivalService {
     List<FestivalResponse> findFestivalListIng();
     // 예정인 축제 리스트
     List<FestivalResponse> findFestivalListWill();
+    // 마감날짜 기반 상위 3개 리스트
+    List<FestivalResponse> findFestivalListTop3();
     //축제 수정
     FestivalResponse updateFestival(FestivalUpdateRequest request);
     //축제 삭제

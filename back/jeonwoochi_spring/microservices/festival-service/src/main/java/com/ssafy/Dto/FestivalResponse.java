@@ -32,6 +32,7 @@ public class FestivalResponse {
 
     private String fee;
 
+    private String homepage;
     public static FestivalResponse response(Festival festival){
         return new FestivalResponse(
                 festival.getId(),
@@ -43,7 +44,8 @@ public class FestivalResponse {
                 festival.getImage(),
                 festival.getLat(),
                 festival.getLng(),
-                festival.getFee()
+                festival.getFee(),
+                festival.getHomepage()
         );
     }
 }

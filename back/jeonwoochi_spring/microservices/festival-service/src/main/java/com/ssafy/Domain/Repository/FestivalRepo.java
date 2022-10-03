@@ -12,4 +12,6 @@ public interface FestivalRepo extends JpaRepository<Festival, Long> {
     List<Festival> findByEndDateBefore(Date now);
     List<Festival> findByStartDateBeforeAndEndDateAfter(Date now, Date now2);
     List<Festival> findByStartDateAfter(Date now);
+
+    List<Festival> findTop3ByEndDateAfterOrderByEndDate(Date now);
 }

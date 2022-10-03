@@ -30,4 +30,6 @@ public class FestivalUpdateRequest {
     private Double lng;
 
     private String fee;
+
+    private String homepage;
 }

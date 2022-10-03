@@ -69,6 +69,12 @@ public class FestivalController {
     ){
         return ResponseEntity.ok(festivalService.findFestivalListWill());
     }
+    @GetMapping("/festival/top3")
+    public ResponseEntity<?> findFestivalListTop3(
+
+    ){
+        return ResponseEntity.ok(festivalService.findFestivalListTop3());
+    }
     // 축제 수정
     @PutMapping("/festival")
     public ResponseEntity<?> updateFestival(

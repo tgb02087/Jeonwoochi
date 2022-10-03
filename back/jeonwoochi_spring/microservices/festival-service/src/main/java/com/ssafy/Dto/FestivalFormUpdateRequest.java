@@ -25,4 +25,6 @@ public class FestivalFormUpdateRequest {
     private String image;
 
     private String fee;
+
+    private String homepage;
 }

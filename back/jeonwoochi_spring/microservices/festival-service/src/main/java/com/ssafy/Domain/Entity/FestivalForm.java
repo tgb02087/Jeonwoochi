@@ -33,6 +33,7 @@ public class FestivalForm {
 
     private String fee;
 
+    private String homepage;
     private Long userId;
 
     public static FestivalForm create(FestivalFormCreateRequest request, Long userId, String imgUrl){
@@ -44,6 +45,7 @@ public class FestivalForm {
         festival.address = request.getAddress();
         festival.image = imgUrl;
         festival.fee = request.getFee();
+        festival.homepage =  request.getHomepage();
         festival.userId = userId;
         return festival;
     }
@@ -55,5 +57,6 @@ public class FestivalForm {
         this.address = request.getAddress();
         this.image = request.getImage();
         this.fee = request.getFee();
+        this.homepage = request.getHomepage();
     }
 }
