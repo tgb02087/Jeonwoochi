@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from .models import Review, Restaurant
 from django.db import connection
+import time
 
 s = Restaurant.objects.values()
 s = pd.DataFrame.from_records(s)
@@ -16,25 +17,28 @@ def review(region):
     reviews = reviews[reviews['restaurant_id'].apply(lambda x: x in ls_ids)]
     return reviews
 
-def recomm_stores(store_ids):
-    raw_query = "select * from restaurant where restaurant_id in (select distinct restaurant_id from review );"
-    with connection.cursor() as cursor:
-        cursor.execute(raw_query)
-        row = cursor.fetchall()
-    recomm_stores = pd.DataFrame.from_records(row)
-    recomm_stores.columns = ["restaurant_id", "name", "branch", "tel", "address", "lat", "lng", "category"]
-    print(recomm_stores)
+def recomm_stores(store):
+    store = store[0:25]
+    recomm_stores = s[s['restaurant_id'].apply(lambda x : x in store)]
     return recomm_stores
 
 def local_reviews(x, y): # lat, lng
     # 기본값 x, y = 37.4097995, 127.128697
+    
+    # print("====================== \n into get_local_store")
+    
     try: 
         raw_query = f"select * from review where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 20) limit 5000;"
     except:
-        raw_query = f"select * from review where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 50) limit 5000;"
-    else:
-        raw_query = f"select * from review where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 100) limit 5000;"
-    
+        try:
+            raw_query = f"select * from review where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 50) limit 5000;"
+        except:
+            
+            print("====================== \n into final")
+            
+            raw_query = f"select * from review where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 100);"
+
+        
     with connection.cursor() as cursor:
         cursor.execute(raw_query)
         row = cursor.fetchall()
