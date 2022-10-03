@@ -37,17 +37,9 @@ public class AuthService {
     public JwtTokenResponse saveToken(TokenInfoRequest tokenInfoRequest) {
         String AT = jp.makeJwtToken(tokenInfoRequest);
         String RT = jp.makeRefreshToken(tokenInfoRequest);
-<<<<<<< HEAD
-        System.out.println("RT : " + RT);
-        System.out.println("id : " + tokenInfoRequest.getId());
+        // System.out.println("RT : " + RT);
+        // System.out.println("id : " + tokenInfoRequest.getId());
         AuthRedis authRedis = AuthRedis.createAuth(tokenInfoRequest.getId(), RT, 30L);
-        System.out.println("redis: " + authRedis);
-        System.out.println(arp);
-=======
-        //System.out.println("RT : " + RT);
-        //System.out.println("id : " + tokenInfoRequest.getId());
-        AuthRedis authRedis = AuthRedis.createAuth(tokenInfoRequest.getId(), RT, 30L);
->>>>>>> 614090b31ba95fae6fc9adee4fc77b7a2b9bd553
         arp.save(authRedis);
         return new JwtTokenResponse(AT, RT);
     }
