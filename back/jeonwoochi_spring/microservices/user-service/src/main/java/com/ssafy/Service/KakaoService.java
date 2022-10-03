@@ -150,16 +150,10 @@ public class KakaoService {
             GenderType gender = userReponse.getGender();
             int age = userReponse.getAge();
             RoleType role = RoleType.USER;
-<<<<<<< HEAD
-            UserRequest userRequest = new UserRequest(kakaoid, googleid, name, gender, age, role, null, false);
-            user = User.create(userRequest);
-            save(user);
-=======
             StateType stateType = StateType.활성;
             UserRequest userRequest = new UserRequest(kakaoid, googleid, name, gender, age, role, stateType, false);
             user = User.create(userRequest);
             usersave(user);
->>>>>>> 614090b31ba95fae6fc9adee4fc77b7a2b9bd553
         } else
             user = list.get(0);
         System.out.println(user.getId());
@@ -167,13 +161,7 @@ public class KakaoService {
         return user;
     }
 
-    <<<<<<<HEAD
-
-    public void save(User user) {
-=======
-
     public void usersave(User user) {
->>>>>>> 614090b31ba95fae6fc9adee4fc77b7a2b9bd553
         userrepo.save(user);
     }
 
