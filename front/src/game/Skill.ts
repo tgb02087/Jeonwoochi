@@ -82,11 +82,10 @@ class Skill extends Phaser.GameObjects.Sprite {
       // 만약 world 라는 이름이 collider가 존재하지 않는 경우에만
       // world collider 생성
       if (!temp.getActive().find(el => el.name == 'world'))
-        player.createColliderForWorldLayer();
+        player.createColliderForLayer();
     } else {
       // 레비테이션 아이콘 생성
       // 스프라이트로 생성하여 x,y 설정 가능하도록
-      console.log(player.x);
       this.levitationIcon = new Phaser.GameObjects.Sprite(
         this.scene,
         player.x,

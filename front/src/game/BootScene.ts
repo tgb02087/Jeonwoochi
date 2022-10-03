@@ -34,8 +34,12 @@ class BootScene extends Scene {
 
   preload() {
     // 타일맵 불러오기
-    // this.load.image('tiles', '/images/map/jeonwoochi-tileset.png');
+    this.load.image('tiles', '/images/map/jeonwoochi-tileset.png');
     this.load.image('sea', '/images/map/Animated water tiles (full tile).png');
+    this.load.image(
+      'land',
+      '/images/map/Animated water tiles(edges) - flat style.png',
+    );
 
     this.load.tilemapTiledJSON('map', map);
 
@@ -69,10 +73,16 @@ class BootScene extends Scene {
 
     // 앱, 타일, 레이어 설정
     const map = this.make.tilemap({ key: 'map' });
-    // const tileset = map.addTilesetImage('jeonwoochi-tileset', 'tiles');
+    const tileset = map.addTilesetImage('jeonwoochi-tileset', 'tiles');
     const seas = map.addTilesetImage('Animated water tiles (full tile)', 'sea');
-    const worldLayer = map.createLayer('sea', seas, 0, 0);
+    const lands = map.addTilesetImage(
+      'Animated water tiles(edges) - flat style',
+      'land',
+    );
 
+    const worldLayer = map.createLayer('tiles1', tileset, 0, 0);
+    const seaLayer = map.createLayer('sea', seas, 0, 0);
+    const landLayer = map.createLayer('land', lands, 0, 0);
     // bgm 설정
     // 시끄러워서 주석처리합니다
     this.bgm = this.sound.add('bgm', {
@@ -87,7 +97,8 @@ class BootScene extends Scene {
     this.bgm.play();
 
     // 타일에 충돌(Collision) 적용
-    // worldLayer.setCollisionByProperty({ collides: true });
+    seaLayer.setCollisionByProperty({ collides: true });
+    worldLayer.setCollisionByProperty({ collides: true });
 
     // 스폰 지점 설정
     const spawnPoint = map.findObject(
@@ -138,8 +149,6 @@ class BootScene extends Scene {
 
   update(time: number) {
     this.player.update();
-
-    console.log(this.player.body.x);
 
     // 사운드 상태 체크
 
