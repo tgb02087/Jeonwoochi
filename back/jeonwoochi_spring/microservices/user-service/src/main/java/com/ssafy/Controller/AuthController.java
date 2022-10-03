@@ -1,8 +1,5 @@
 package com.ssafy.Controller;
 
-import com.ssafy.Domain.Entity.Type.GenderType;
-import com.ssafy.Domain.Entity.Type.RoleType;
-import com.ssafy.Domain.Entity.User;
 import com.ssafy.Dto.Request.TokenInfoRequest;
 import com.ssafy.Dto.Response.AccessTokenResponse;
 import com.ssafy.Dto.Response.CheckUserResponse;
@@ -18,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +45,6 @@ public class AuthController {
     }
 
     // AT, RT 생성, 쿠키 전송
-
     @PostMapping("/createjwt")
     public ResponseEntity<AccessTokenResponse> createjwt(@RequestBody TokenInfoRequest tokenInfoRequest,
             HttpServletResponse resp) {
