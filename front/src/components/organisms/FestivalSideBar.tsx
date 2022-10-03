@@ -8,7 +8,7 @@ import Text from '../atoms/Text';
 
 interface PropTypes {
   openedSideBar: boolean;
-  clickHandler: () => void;
+  setOpenedSideBar: Dispatch<SetStateAction<boolean>>;
   setFocusedIdx: Dispatch<SetStateAction<number>>;
 }
 interface FestivalInfosPropTypes {
@@ -65,12 +65,22 @@ const OpenButton = styled.div`
  */
 const FestivalSideBar = ({
   openedSideBar,
-  clickHandler,
+  setOpenedSideBar,
   setFocusedIdx,
 }: PropTypes) => {
   // 현재 3개 info들의 클릭 상태를 배열로 나타냄
   const [isClicked, setIsClicked] = useState([false, false, false]);
-  const toggleHandler = (idx: number) => {
+  const toggleSideBarHandler = () => {
+    // < 버튼이나  > 버튼을 클릭하면 focus, isClicked는 초기화. openedSideBar는 토글함
+    setFocusedIdx(-1);
+    setIsClicked(prev => {
+      return prev.map(_ => {
+        return false;
+      });
+    });
+    setOpenedSideBar(prev => !prev);
+  };
+  const toggleFocusHandler = (idx: number) => {
     // 클릭되어 있는 info를 클릭하면 focus를 -1로 리셋. isClicked는 전부 false 배열로 변경
     if (isClicked[idx]) {
       setFocusedIdx(-1);
@@ -94,7 +104,7 @@ const FestivalSideBar = ({
   return (
     <StyledFestivalSideBar openedSideBar={openedSideBar}>
       <ButtonArea>
-        <Button clickHandler={clickHandler} isText={false}>
+        <Button clickHandler={toggleSideBarHandler} isText={false}>
           {openedSideBar ? (
             <RightV />
           ) : (
@@ -109,17 +119,17 @@ const FestivalSideBar = ({
         <FestivalInfo
           openedSideBar={openedSideBar}
           isClicked={isClicked[0]}
-          onClick={() => toggleHandler(0)}
+          onClick={() => toggleFocusHandler(0)}
         />
         <FestivalInfo
           openedSideBar={openedSideBar}
           isClicked={isClicked[1]}
-          onClick={() => toggleHandler(1)}
+          onClick={() => toggleFocusHandler(1)}
         />
         <FestivalInfo
           openedSideBar={openedSideBar}
           isClicked={isClicked[2]}
-          onClick={() => toggleHandler(2)}
+          onClick={() => toggleFocusHandler(2)}
         />
       </FestivalInfos>
     </StyledFestivalSideBar>

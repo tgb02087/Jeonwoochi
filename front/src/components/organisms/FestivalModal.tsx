@@ -71,7 +71,7 @@ const FestivalModal = ({ info, setState }: PropTypes) => {
               <RightBody>
                 <FestivalInfos info={info} size={1.3} />
                 <Button isText>
-                  <Text message={'상세보기'} />
+                  <Text message={'상세보기'} color="black" />
                 </Button>
               </RightBody>
             </SheetBody>

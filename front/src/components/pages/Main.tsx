@@ -55,6 +55,7 @@ const Main = () => {
   const [isSound, setIsSound] = useState(true);
 
   const clickHandler = () => {
+    setFocusedIdx(-1);
     setOpenedSideBar(prev => !prev);
   };
 
@@ -105,7 +106,7 @@ const Main = () => {
         <MainBody>
           <FestivalSideBar
             openedSideBar={openedSideBar}
-            clickHandler={clickHandler}
+            setOpenedSideBar={setOpenedSideBar}
             setFocusedIdx={setFocusedIdx}
           />
           <Minimap
