@@ -20,6 +20,7 @@ def review(region):
 def recomm_stores(store):
     store = store[0:25]
     recomm_stores = s[s['restaurant_id'].apply(lambda x : x in store)]
+    recomm_stores.drop_duplicates(['restaurant_id'])
     return recomm_stores
 
 def local_reviews(x, y): # lat, lng
