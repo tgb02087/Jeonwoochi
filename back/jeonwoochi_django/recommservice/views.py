@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 from .algorithm import user_based_cf
 from django.http import JsonResponse
+import time
 
 # Create your views here.
 @api_view(['GET'])
