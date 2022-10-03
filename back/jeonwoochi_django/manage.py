@@ -32,7 +32,7 @@ def eureka_init():
         # Eureka Server 所在的地址
         eureka_server="http://j7b305.p.ssafy.io:8761/eureka",
         app_name="RECOMM-SERVICE",
-        instance_port= free_port,
+        instance_port= 8989,
 
     )
     
