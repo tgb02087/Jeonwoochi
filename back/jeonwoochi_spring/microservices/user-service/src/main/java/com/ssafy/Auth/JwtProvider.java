@@ -26,7 +26,6 @@ public class JwtProvider {
     private String SECRET_KEY;
 
     // 리프레쉬 토큰 생성 키
-
     @Value("${token.refresh}")
     private String REFRESH_KEY;
 
@@ -109,8 +108,8 @@ public class JwtProvider {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(SECRET_KEY)
                     .parseClaimsJws(AT);
-            //System.out.println("현재시간 : " + new Date());
-            //System.out.println("만료시간 : " + claims.getBody().getExpiration());
+            // System.out.println("현재시간 : " + new Date());
+            // System.out.println("만료시간 : " + claims.getBody().getExpiration());
             return !claims.getBody().getExpiration().before(new Date());
 
         } catch (Exception e) {

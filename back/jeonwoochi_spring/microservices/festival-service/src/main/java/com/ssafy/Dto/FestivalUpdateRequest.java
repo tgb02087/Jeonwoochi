@@ -29,5 +29,7 @@ public class FestivalUpdateRequest {
 
     private Double lng;
 
-    private Long festivalTypeId;
+    private String fee;
+
+    private String homepage;
 }

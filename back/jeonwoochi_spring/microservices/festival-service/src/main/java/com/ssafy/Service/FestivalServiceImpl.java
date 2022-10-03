@@ -4,10 +4,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.Domain.Entity.Festival;
 import com.ssafy.Domain.Entity.FestivalForm;
-import com.ssafy.Domain.Entity.FestivalType;
 import com.ssafy.Domain.Repository.FestivalFormRepo;
 import com.ssafy.Domain.Repository.FestivalRepo;
-import com.ssafy.Domain.Repository.FestivalTypeRepo;
 import com.ssafy.Dto.FestivalCreateRequest;
 import com.ssafy.Dto.FestivalResponse;
 import com.ssafy.Dto.FestivalUpdateRequest;
@@ -22,6 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URLEncoder;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +37,6 @@ public class FestivalServiceImpl implements FestivalService {
     @Value("${api.kakaoKey}")
     public String key;
     private final FestivalRepo festivalRepo;
-    private final FestivalTypeRepo festivalTypeRepo;
     private final FestivalFormRepo festivalFormRepo;
     //축제 추가 (승인) [어드민]
     @Override
@@ -87,16 +87,50 @@ public class FestivalServiceImpl implements FestivalService {
         return festivals;
     }
 
+    @Override
+    public List<FestivalResponse> findFestivalListEd() {
+        Date now = new Date();
+        List<FestivalResponse> festivals = festivalRepo.findByEndDateBefore(now).stream()
+                .map(FestivalResponse::response)
+                .collect(Collectors.toList());
+        return festivals;
+    }
+
+    @Override
+    public List<FestivalResponse> findFestivalListIng() {
+        Date now = new Date();
+        List<FestivalResponse> festivals = festivalRepo.findByStartDateBeforeAndEndDateAfter(now, now).stream()
+                .map(FestivalResponse::response)
+                .collect(Collectors.toList());
+        return festivals;
+    }
+
+    @Override
+    public List<FestivalResponse> findFestivalListWill() {
+        Date now = new Date();
+        List<FestivalResponse> festivals = festivalRepo.findByStartDateAfter(now).stream()
+                .map(FestivalResponse::response)
+                .collect(Collectors.toList());
+        return festivals;
+    }
+
+    @Override
+    public List<FestivalResponse> findFestivalListTop3() {
+        Date now = new Date();
+        List<FestivalResponse> festivals = festivalRepo.findTop3ByEndDateAfterOrderByEndDate(now).stream()
+                .map(FestivalResponse::response)
+                .collect(Collectors.toList());
+        return festivals;
+    }
+
     //축제 수정
     @Override
     @Transactional
     public FestivalResponse updateFestival(FestivalUpdateRequest request) {
-        FestivalType festivalType = festivalTypeRepo.findById(request.getFestivalTypeId())
-                .orElseThrow(()-> new NotFoundException(FESTIVAL_TYPE_NOT_FOUND));
         Festival festival = festivalRepo.findById(request.getId())
                 .orElseThrow(()->new NotFoundException(FESTIVAL_NOT_FOUND));
 
-        festival.update(request, festivalType);
+        festival.update(request);
         return FestivalResponse.response(festival);
     }
 

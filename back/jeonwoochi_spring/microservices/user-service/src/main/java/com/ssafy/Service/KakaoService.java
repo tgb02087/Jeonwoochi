@@ -204,9 +204,11 @@ public class KakaoService {
         }
         return id;
     }
-    public String userDisable(Long id){
+
+    public String userDisable(Long id) {
         User user = userrepo.findOne(id);
-        if(user==null) return "회원 탈퇴 실패";
+        if (user == null)
+            return "회원 탈퇴 실패";
         user.disable(StateType.비활성);
         return "회원 탈퇴 성공";
     }

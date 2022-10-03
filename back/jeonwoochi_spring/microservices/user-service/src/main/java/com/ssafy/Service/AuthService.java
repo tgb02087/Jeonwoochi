@@ -37,8 +37,8 @@ public class AuthService {
     public JwtTokenResponse saveToken(TokenInfoRequest tokenInfoRequest) {
         String AT = jp.makeJwtToken(tokenInfoRequest);
         String RT = jp.makeRefreshToken(tokenInfoRequest);
-        //System.out.println("RT : " + RT);
-        //System.out.println("id : " + tokenInfoRequest.getId());
+        // System.out.println("RT : " + RT);
+        // System.out.println("id : " + tokenInfoRequest.getId());
         AuthRedis authRedis = AuthRedis.createAuth(tokenInfoRequest.getId(), RT, 30L);
         arp.save(authRedis);
         return new JwtTokenResponse(AT, RT);

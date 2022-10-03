@@ -31,13 +31,12 @@ public class FestivalForm {
 
     private String image;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "festival_type_id")
-    private FestivalType festivalType;
+    private String fee;
 
+    private String homepage;
     private Long userId;
 
-    public static FestivalForm create(FestivalFormCreateRequest request, FestivalType festivalType, Long userId, String imgUrl){
+    public static FestivalForm create(FestivalFormCreateRequest request, Long userId, String imgUrl){
         FestivalForm festival = new FestivalForm();
         festival.festivalName = request.getFestivalName();
         festival.startDate = request.getStartDate();
@@ -45,17 +44,19 @@ public class FestivalForm {
         festival.description = request.getDescription();
         festival.address = request.getAddress();
         festival.image = imgUrl;
-        festival.festivalType = festivalType;
+        festival.fee = request.getFee();
+        festival.homepage =  request.getHomepage();
         festival.userId = userId;
         return festival;
     }
-    public void update(FestivalFormUpdateRequest request, FestivalType festivalType){
+    public void update(FestivalFormUpdateRequest request){
         this.festivalName = request.getFestivalName();
         this.startDate = request.getStartDate();
         this.endDate = request.getEndDate();
         this.description = request.getDescription();
         this.address = request.getAddress();
         this.image = request.getImage();
-        this.festivalType = festivalType;
+        this.fee = request.getFee();
+        this.homepage = request.getHomepage();
     }
 }

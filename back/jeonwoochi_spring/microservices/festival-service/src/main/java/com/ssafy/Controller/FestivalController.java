@@ -3,17 +3,16 @@ package com.ssafy.Controller;
 import com.ssafy.Dto.*;
 import com.ssafy.Service.FestivalFormService;
 import com.ssafy.Service.FestivalService;
-import com.ssafy.Service.FestivalTypeService;
 import com.ssafy.config.AwsS3Service;
 import com.ssafy.config.LoginUser.LoginUser;
 import com.ssafy.config.LoginUser.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +24,6 @@ public class FestivalController {
 
     private final FestivalService festivalService;
     private final FestivalFormService festivalFormService;
-    private final FestivalTypeService festivalTypeService;
 
 
     // 축제 추가 ( 승인 ) [ 어드민 ]
@@ -49,6 +47,33 @@ public class FestivalController {
 
     ){
         return ResponseEntity.ok(festivalService.findFestivalListAll());
+    }
+    // 마감된 축제 리스트
+    @GetMapping("/festival/ed")
+    public ResponseEntity<?> findFestivalListEd(
+
+    ){
+        return ResponseEntity.ok(festivalService.findFestivalListEd());
+    }
+    // 진행중인 축제 리스트
+    @GetMapping("/festival/ing")
+    public ResponseEntity<?> findFestivalListIng(
+
+    ){
+        return ResponseEntity.ok(festivalService.findFestivalListIng());
+    }
+    // 시작 예정인 축제 리스트
+    @GetMapping("/festival/will")
+    public ResponseEntity<?> findFestivalListWill(
+
+    ){
+        return ResponseEntity.ok(festivalService.findFestivalListWill());
+    }
+    @GetMapping("/festival/top3")
+    public ResponseEntity<?> findFestivalListTop3(
+
+    ){
+        return ResponseEntity.ok(festivalService.findFestivalListTop3());
     }
     // 축제 수정
     @PutMapping("/festival")
@@ -87,8 +112,10 @@ public class FestivalController {
     }
     // 축제 요청 전체 리스트 조회
     @GetMapping("/festival-form")
-    public ResponseEntity<?> findFestivalFormListAll(){
-        return ResponseEntity.ok(festivalFormService.findFestivalFormListAll());
+    public ResponseEntity<?> findFestivalFormListAll(
+            Pageable pageable
+    ){
+        return ResponseEntity.ok(festivalFormService.findFestivalFormListAll(pageable));
     }
     // 축제 요청 수정
     @PutMapping("/festival-form")
@@ -103,35 +130,6 @@ public class FestivalController {
             @PathVariable Long festivalFormId
     ){
         festivalFormService.deleteFestivalForm(festivalFormId);
-        return ResponseEntity.ok().build();
-    }
-
-    // 축제 유형 추가
-    @PostMapping("/festival-type")
-    public ResponseEntity<?> createFestivalType(
-            @Valid @RequestBody List<FestivalTypeCreateRequest> requests
-    ){
-        festivalTypeService.createFestivalType(requests);
-        return ResponseEntity.ok().build();
-    }
-    // 축제 유형 전체 목록 조회
-    @GetMapping("/festival-type")
-    public ResponseEntity<?> findFestivalTypeListAll(){
-        return ResponseEntity.ok(festivalTypeService.findFestivalTypeListAll());
-    }
-    // 축제 유형 수정
-    @PutMapping("/festival-type")
-    public ResponseEntity<?> updateFestivalType(
-            @Valid @RequestBody FestivalTypeUpdateRequest request
-    ){
-        return ResponseEntity.ok(festivalTypeService.updateFestivalType(request));
-    }
-    // 축제 유형 삭제
-    @DeleteMapping("/festival-type/{festivalTypeId}")
-    public ResponseEntity<?> deleteFestivalType(
-            @PathVariable Long festivalTypeId
-    ){
-        festivalTypeService.deleteFestivalType(festivalTypeId);
         return ResponseEntity.ok().build();
     }
 

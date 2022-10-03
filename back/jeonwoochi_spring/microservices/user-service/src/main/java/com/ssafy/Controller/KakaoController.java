@@ -47,9 +47,10 @@ public class KakaoController {
         return "index.html";
     }
 
-    //카카오 로그인
+    // 카카오 로그인
     @GetMapping("/login/kakao")
-    public ResponseEntity<?> kakaoLogin(@RequestParam(value = "token")String token, HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> kakaoLogin(@RequestParam(value = "token") String token, HttpServletResponse response)
+            throws IOException {
         UserReponse userInfo = ks.getUserInfo(token);
         User user = ks.userchk(userInfo);
         TokenInfoRequest tokenInfoRequest = new TokenInfoRequest(
@@ -76,17 +77,16 @@ public class KakaoController {
         return new ResponseEntity<>(list.get(0), HttpStatus.OK);
     }
 
-    //로그아웃
+    // 로그아웃
     @GetMapping("/logout")
     public ResponseEntity<?> logout(@CookieValue("refresh-token") Cookie cookie) throws IOException {
         return new ResponseEntity<>(ks.logout(cookie.getValue()), HttpStatus.OK);
     }
 
-    //회원 탈퇴
+    // 회원 탈퇴
     @GetMapping("/disable")
-    public ResponseEntity<?> disable(@RequestParam(value = "id")Long id){
-        return new ResponseEntity<>(ks.userDisable(id),HttpStatus.OK);
+    public ResponseEntity<?> disable(@RequestParam(value = "id") Long id) {
+        return new ResponseEntity<>(ks.userDisable(id), HttpStatus.OK);
     }
-
 
 }

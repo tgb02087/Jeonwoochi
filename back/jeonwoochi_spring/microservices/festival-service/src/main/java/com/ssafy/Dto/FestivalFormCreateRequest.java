@@ -21,5 +21,7 @@ public class FestivalFormCreateRequest {
 
     private String address;
 
-    private Long festivalTypeId;
+    private String fee;
+
+    private String homepage;
 }
