@@ -2,33 +2,24 @@ package com.ssafy.Controller;
 
 import com.ssafy.Domain.Entity.User;
 import com.ssafy.Dto.Request.TokenInfoRequest;
-import com.ssafy.Dto.Request.UserRequest;
 import com.ssafy.Dto.Response.AccessTokenResponse;
 import com.ssafy.Dto.Response.JwtTokenResponse;
 import com.ssafy.Dto.Response.UserReponse;
 import com.ssafy.Service.AuthService;
 import com.ssafy.Service.KakaoService;
-import com.ssafy.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.FlashMap;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Controller
@@ -37,15 +28,7 @@ public class KakaoController {
 
     private final KakaoService ks;
 
-    private final UserService us;
-
     private final AuthService as;
-
-    // test 페이지
-    @GetMapping("/")
-    public String indexPage() {
-        return "index.html";
-    }
 
     // 카카오 로그인
     @GetMapping("/login/kakao")
