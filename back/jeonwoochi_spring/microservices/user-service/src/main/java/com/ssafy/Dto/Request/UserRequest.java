@@ -1,8 +1,8 @@
 package com.ssafy.Dto.Request;
 
-import com.ssafy.Domain.Entity.StatusType;
 import com.ssafy.Domain.Entity.Type.GenderType;
 import com.ssafy.Domain.Entity.Type.RoleType;
+import com.ssafy.Domain.Entity.Type.StateType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public class UserRequest {
 
     private RoleType role;
 
-    private StatusType state_type_id;
+    private StateType stateType;
 
     private Boolean is_dummy;
 }

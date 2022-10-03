@@ -83,7 +83,6 @@ public class JwtProvider {
     // 해당 key로 암호화
     private Key createSigningKey(String key) {
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(key);
-        System.out.println("암호화성공");
         return new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());
     }
 
@@ -105,14 +104,12 @@ public class JwtProvider {
 
     // 토큰 유효시간체킹
     public boolean validateToken(String AT) {
-        System.out.println("검증");
-        System.out.println(AT);
         try {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(SECRET_KEY)
                     .parseClaimsJws(AT);
-            System.out.println("현재시간 : " + new Date());
-            System.out.println("만료시간 : " + claims.getBody().getExpiration());
+            // System.out.println("현재시간 : " + new Date());
+            // System.out.println("만료시간 : " + claims.getBody().getExpiration());
             return !claims.getBody().getExpiration().before(new Date());
 
         } catch (Exception e) {
@@ -121,7 +118,7 @@ public class JwtProvider {
     }
 
     // 토큰에서 userID 조회
-    public CheckUserResponse getUserId(String AT){
+    public CheckUserResponse getUserId(String AT) {
         CheckUserResponse checkUserResponse = null;
         try {
             Jws<Claims> claims = Jwts.parser()
@@ -130,14 +127,14 @@ public class JwtProvider {
 
             Long id = Long.parseLong(claims.getBody().get("id").toString());
             boolean isAdmin = true;
-            if(claims.getBody().get("role").toString().equals("USER")){
+            if (claims.getBody().get("role").toString().equals("USER")) {
                 isAdmin = false;
             }
-            checkUserResponse = new CheckUserResponse(id,isAdmin);
-            System.out.println("id : "+id);
+            checkUserResponse = new CheckUserResponse(id, isAdmin);
+            System.out.println("id : " + id);
         } catch (Exception e) {
             e.printStackTrace();
-            return new CheckUserResponse(null,null);
+            return new CheckUserResponse(null, null);
         }
         return checkUserResponse;
     }

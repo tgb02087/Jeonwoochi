@@ -10,6 +10,7 @@ import com.ssafy.Dto.Response.JwtTokenResponse;
 import com.ssafy.Dto.Response.ReJwtTokenResponse;
 import com.ssafy.Service.AuthService;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -49,10 +50,10 @@ public class AuthController {
     }
 
     // AT, RT 생성, 쿠키 전송
-    @RequestMapping("/createjwt")
-    public ResponseEntity<AccessTokenResponse> createjwt(Model model, HttpServletResponse resp) {
-        TokenInfoRequest tokenInfoRequest = (TokenInfoRequest) model.getAttribute("token");
-        System.out.println(tokenInfoRequest);
+
+    @PostMapping("/createjwt")
+    public ResponseEntity<AccessTokenResponse> createjwt(@RequestBody TokenInfoRequest tokenInfoRequest,
+            HttpServletResponse resp) {
         JwtTokenResponse jwtTokenResponse = as.saveToken(tokenInfoRequest);
         ResponseCookie cookie = ResponseCookie.from("refresh-token", jwtTokenResponse.getRefreshtoken())
                 .maxAge(60 * 60 * 24 * 15)
@@ -66,10 +67,10 @@ public class AuthController {
         return new ResponseEntity<>(AccessTokenResponse.create(jwtTokenResponse.getAccesstoken()), HttpStatus.OK);
     }
 
+    // AT, RT 재생성
     @GetMapping("/recreatejwt")
     public ResponseEntity<?> recreatejwt(@CookieValue(value = "refresh-token", required = false) Cookie cookie,
             HttpServletResponse resp) {
-        System.out.println("Cookie : " + cookie.getValue());
         ReJwtTokenResponse reJwtTokenResponse = as.resave(cookie.getValue());
         if (reJwtTokenResponse.getIsRT()) {
             ResponseCookie newcookie = ResponseCookie.from("refresh-token", reJwtTokenResponse.getRefreshtoken())

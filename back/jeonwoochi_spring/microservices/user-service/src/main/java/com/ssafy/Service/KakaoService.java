@@ -2,6 +2,7 @@ package com.ssafy.Service;
 
 import com.ssafy.Domain.Entity.Type.GenderType;
 import com.ssafy.Domain.Entity.Type.RoleType;
+import com.ssafy.Domain.Entity.Type.StateType;
 import com.ssafy.Domain.Entity.User;
 import com.ssafy.Domain.Repository.UserRepo;
 import com.ssafy.Dto.Request.UserRequest;
@@ -17,9 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -151,9 +150,16 @@ public class KakaoService {
             GenderType gender = userReponse.getGender();
             int age = userReponse.getAge();
             RoleType role = RoleType.USER;
+<<<<<<< HEAD
             UserRequest userRequest = new UserRequest(kakaoid, googleid, name, gender, age, role, null, false);
             user = User.create(userRequest);
             save(user);
+=======
+            StateType stateType = StateType.활성;
+            UserRequest userRequest = new UserRequest(kakaoid, googleid, name, gender, age, role, stateType, false);
+            user = User.create(userRequest);
+            usersave(user);
+>>>>>>> 614090b31ba95fae6fc9adee4fc77b7a2b9bd553
         } else
             user = list.get(0);
         System.out.println(user.getId());
@@ -161,7 +167,13 @@ public class KakaoService {
         return user;
     }
 
+    <<<<<<<HEAD
+
     public void save(User user) {
+=======
+
+    public void usersave(User user) {
+>>>>>>> 614090b31ba95fae6fc9adee4fc77b7a2b9bd553
         userrepo.save(user);
     }
 
@@ -198,11 +210,18 @@ public class KakaoService {
             JSONObject obj = (JSONObject) parser.parse(res);
             id = obj.get("id").toString();
 
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
+            return "로그아웃실패";
         }
         return id;
+    }
+
+    public String userDisable(Long id) {
+        User user = userrepo.findOne(id);
+        if (user == null)
+            return "회원 탈퇴 실패";
+        user.disable(StateType.비활성);
+        return "회원 탈퇴 성공";
     }
 }
