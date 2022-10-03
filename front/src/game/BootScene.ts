@@ -70,15 +70,14 @@ class BootScene extends Scene {
     const tileset = map.addTilesetImage('jeonwoochi-tileset', 'tiles');
     const worldLayer = map.createLayer('tiles1', tileset, 0, 0);
 
-    // bgm 설정
-    // 시끄러워서 주석처리합니다
+    // bgm 설정 초기화
     this.bgm = this.sound.add('bgm', {
       mute: false,
       volume: 0.09,
       rate: 1,
       detune: 0,
       seek: 0,
-      loop: false,
+      loop: true,
       delay: 1,
     });
     this.bgm.play();
@@ -98,7 +97,7 @@ class BootScene extends Scene {
       spawnPoint.x || 0,
       spawnPoint.y || 0,
       'atlas',
-      'misa-front',
+      'player-front',
       worldLayer,
     );
 
