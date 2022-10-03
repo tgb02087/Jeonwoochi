@@ -25,7 +25,9 @@ const SheetBody = styled.div`
   ${tw`flex flex-col justify-around items-center`}
   height: 55vh;
 `;
-const BodyLine = styled.div``;
+const BodyLine = styled.div`
+  ${tw`flex flex-col items-center`}
+`;
 
 /**
  * 축제 요청 리스트를 확인하는 모달. 관리자만 접근 가능.
@@ -46,16 +48,19 @@ const HelpModal = ({ setState }: PropTypes) => {
           </SheetHeader>
           <SheetBody>
             <BodyLine>
-              <Text message="방향키를 이용해 캐릭터를 움직여 보세요!" />
+              <Text message="방향키로 캐릭터를 움직여 축제에 가보세요!" />
             </BodyLine>
             <BodyLine>
               <Text message="Z 키를 눌러 축지법을 사용할 수 있습니다" />
+              <Text message="더 빨리 이동해보세요" />
             </BodyLine>
             <BodyLine>
               <Text message="X 키를 눌러 허공 답보를 할 수 있습니다" />
+              <Text message="바다를 넘어 섬에도 가보세요" />
             </BodyLine>
             <BodyLine>
-              <Text message="두 스킬을 같이 사용할 수도 있습니다" />
+              <Text message="현재 진행 중 축제를 클릭해보세요" />
+              <Text message="미니맵에 해당 축제의 좌표가 노란색으로 표시됩니다!" />
             </BodyLine>
           </SheetBody>
         </InnerSheet>
