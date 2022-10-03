@@ -20,15 +20,22 @@ const LoginKakaoRedirect = () => {
     ignoreQueryPrefix: true,
   }) as { code: string };
 
-  useQuery(['accessToken'], async () => {
-    const kakaoAccessToken = await getKakaoAccessToken(code);
-    await getJwtAccessToken(kakaoAccessToken);
-    const data = await checkAuth();
+  useQuery(
+    ['accessToken'],
+    async () => {
+      const kakaoAccessToken = await getKakaoAccessToken(code);
+      await getJwtAccessToken(kakaoAccessToken);
+      const data = await checkAuth();
 
-    // 관리자 여부와 같은 사용자 정보 객체를 리코일에 저장
-    // 그러면 RouteWrapper에서 정한 것과 같이 자동으로 게임 페이지로 리다이렉트됨
-    setUser(data);
-  });
+      // 관리자 여부와 같은 사용자 정보 객체를 리코일에 저장
+      // 그러면 RouteWrapper에서 정한 것과 같이 자동으로 게임 페이지로 리다이렉트됨
+      setUser(data);
+    },
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  );
 
   return null;
 };
