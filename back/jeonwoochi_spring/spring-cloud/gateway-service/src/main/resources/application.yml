@@ -18,7 +18,8 @@ spring:
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/checkAT
-            - Method=GET,POST
+            - Path=/user-service/**
+            - Method=GET,POST,PUT
 #          filters:
 #            - RemoveRequestHeader=Cookie
 #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
@@ -28,11 +29,11 @@ spring:
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/**
-            - Method=GET,POST
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
-            - AuthorizationFilter
+            - Method=GET,POST,PUT
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+            #- AuthorizationFilter
 
         - id: festival-service
           uri: lb://FESTIVAL-SERVICE
