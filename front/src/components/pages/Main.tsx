@@ -73,6 +73,10 @@ const Main = () => {
       : eventEmitter.once('bgmOff', () => isSound);
   }, [isSound]);
 
+  // FestivalSideBar 세개 중 focus된 것의 idx 값 저장
+  // MiniMap에 상태를 넘겨 해당 idx 강조 표시
+  const [focusedIdx, setFocusedIdx] = useState(-1);
+
   // 플레이어의 현재 x, y 좌표값
   const [location, setLocation] = useState({
     x: 0,
@@ -93,7 +97,7 @@ const Main = () => {
     <StyledMain>
       <MainFrame>
         <MainHeader
-          isAdmin={!true}
+          isAdmin={true}
           isSound={isSound}
           soundBtnClickHandler={soundBtnClickHandler}
           setState={setOpenedRequestFirstModal}
@@ -102,8 +106,14 @@ const Main = () => {
           <FestivalSideBar
             openedSideBar={openedSideBar}
             clickHandler={clickHandler}
+            setFocusedIdx={setFocusedIdx}
           />
-          <Minimap x={location.x} y={location.y} festivalList={listData} />
+          <Minimap
+            x={location.x}
+            y={location.y}
+            festivalList={listData}
+            focusedIdx={focusedIdx}
+          />
         </MainBody>
         <MainFooter setOpenedHelpModal={setOpenedHelpModal} />
       </MainFrame>

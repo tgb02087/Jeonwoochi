@@ -7,8 +7,6 @@ import SoundOff from '../../icons/SoundOff';
 import Button from '../atoms/Button';
 import Text from '../atoms/Text';
 
-import eventEmitter from '../../utils/eventEmitter';
-
 interface PropTypes {
   isAdmin: boolean;
   isSound: boolean;

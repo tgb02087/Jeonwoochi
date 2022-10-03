@@ -9,9 +9,11 @@ interface StyledObjectTypes {
   x: number;
   y: number;
   isPlayer?: boolean;
+  focused?: boolean;
 }
 interface PropTypes extends StyledObjectTypes {
   festivalList: any;
+  focusedIdx: number;
 }
 const StyledMinimap = styled.div`
   ${tw`absolute`}
@@ -26,7 +28,8 @@ const StyledObject = styled.div<StyledObjectTypes>`
     left: ${x - 5}px;
     top: ${y - 3}px;
   `}
-  background-color: ${({ isPlayer }) => (isPlayer ? 'red' : 'blue')};
+  background-color: ${({ isPlayer, focused }) =>
+    isPlayer ? 'red' : focused ? 'gold' : 'blue'};
   ${({ isPlayer }) =>
     isPlayer &&
     css`
@@ -41,11 +44,12 @@ const StyledObject = styled.div<StyledObjectTypes>`
  * 현재 player의 좌표와 미니맵에 띄울 festivalList를 받아와 렌더링합니다.
  * StyledObject에는 isPlayer라는 boolean타입 변수를 주면 z-index:1, color:red로 렌더링됩니다.
  * isPlayer가 없으면 축제 오브젝트로 color:blue만 렌더링됩니다.
+ * focusedIdx와 축제 오브젝트의 idx가 같으면 color:gold로 강조 표시 렌더링이 됩니다.
  * React.memo로 컴포넌트를 래핑해 캐릭터 좌표(props)가 변하지 않을 때는 리렌더링하지 않습니다.
  *
  * author: jojo
  */
-const Minimap = ({ x, y, festivalList }: PropTypes) => {
+const Minimap = ({ x, y, festivalList, focusedIdx }: PropTypes) => {
   const playerLocation = convertXYGameToMinimap(x, y);
   return (
     <StyledMinimap>
@@ -54,14 +58,18 @@ const Minimap = ({ x, y, festivalList }: PropTypes) => {
         <StyledObject x={playerLocation.x} y={playerLocation.y} isPlayer />
       )}
       {festivalList &&
-        festivalList.map((festival: any) => {
+        festivalList.map((festival: any, idx: number) => {
           const locationInGame = BootScene.convertLatLngToXY(festival);
           const locationInMinimap = convertXYGameToMinimap(
             locationInGame.x,
             locationInGame.y,
           );
           return (
-            <StyledObject x={locationInMinimap.x} y={locationInMinimap.y} />
+            <StyledObject
+              x={locationInMinimap.x}
+              y={locationInMinimap.y}
+              focused={focusedIdx === idx ? true : false}
+            />
           );
         })}
     </StyledMinimap>
