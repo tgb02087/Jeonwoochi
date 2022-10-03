@@ -21,7 +21,7 @@ def user_based_cf(user_id):
     df_rating = r
     
     if len(df_rating) == 0:
-        raise ParseError(detail='평점을 입력해주세요')
+        raise ParseError(detail='리뷰 쓰실래요? ㅎㅅㅎ')
     
     ratings_matrix = df_rating.pivot(index='user_id', columns='restaurant_id', values='score')
 
@@ -44,5 +44,6 @@ def user_based_cf(user_id):
         recommendation = ratings_matrix.loc[u].sort_values(ascending=False).apply(lambda x:x > 3.0)
         recommendation = recommendation.index[recommendation == True].tolist()
         store_ids.extend(recommendation)
+    # print(store_ids)
     return recomm_stores(store_ids).to_dict('records')
 
