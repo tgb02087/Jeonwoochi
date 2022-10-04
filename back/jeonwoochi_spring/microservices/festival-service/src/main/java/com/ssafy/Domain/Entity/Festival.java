@@ -24,6 +24,7 @@ public class Festival {
 
     private Date endDate;
 
+    @Column(length = 10000)
     private String description;
 
     private String address;
