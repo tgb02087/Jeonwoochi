@@ -158,7 +158,26 @@ public class FestivalServiceImpl implements FestivalService {
         for(int i=festivals.size()-1; i>=0;i--){
             double lat = festivals.get(i).getLat();
             double lng = festivals.get(i).getLng();
-            if(Math.abs(lat-cur_lat)<=0.01 && Math.abs(lng-cur_lng)<=0.01){
+            if(Math.abs(lat-cur_lat)<=0.02 && Math.abs(lng-cur_lng)<=0.02){
+                festivals.remove(i);
+            }
+            else {
+                cur_lat = lat;
+                cur_lng = lng;
+            }
+        }
+        Collections.sort(festivals, new Comparator<FestivalResponse>() {
+            @Override
+            public int compare(FestivalResponse f1, FestivalResponse f2) {
+                return Double.compare(f1.getLng(), f2.getLng());
+            }
+        });
+        cur_lat = 0.0;
+        cur_lng = 0.0;
+        for(int i=festivals.size()-1; i>=0;i--){
+            double lat = festivals.get(i).getLat();
+            double lng = festivals.get(i).getLng();
+            if(Math.abs(lat-cur_lat)<=0.02 && Math.abs(lng-cur_lng)<=0.02){
                 festivals.remove(i);
             }
             else {
