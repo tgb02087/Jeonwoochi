@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
@@ -16,9 +17,9 @@ public class FestivalResponse {
 
     private String festivalName;
 
-    private Date startDate;
+    private String startDate;
 
-    private Date endDate;
+    private String endDate;
 
     private String description;
 
@@ -37,8 +38,8 @@ public class FestivalResponse {
         return new FestivalResponse(
                 festival.getId(),
                 festival.getFestivalName(),
-                festival.getStartDate(),
-                festival.getEndDate(),
+                new SimpleDateFormat("yyyy-MM-dd").format(festival.getStartDate()),
+                new SimpleDateFormat("yyyy-MM-dd").format(festival.getEndDate()),
                 festival.getDescription(),
                 festival.getAddress(),
                 festival.getImage(),
