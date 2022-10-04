@@ -38,7 +38,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   private skill: Skill;
 
   /** @description 스킬 레비테이션 한정 - collider 해제 할 레이어 */
-  private worldLayer!: Phaser.Tilemaps.TilemapLayer;
+  private layer!: Phaser.Tilemaps.TilemapLayer;
 
   /** @description 캐릭터 마나 창 */
   private mana!: Mana;
@@ -49,11 +49,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     y: number,
     texture: string,
     frame: string,
-    worldLayer: Phaser.Tilemaps.TilemapLayer,
+    layer: Phaser.Tilemaps.TilemapLayer,
   ) {
     super(scene, x, y, texture, frame);
     this.scene = scene;
-    this.worldLayer = worldLayer;
+    this.layer = layer;
 
     // sprite 생성 및 설정
     this.me = this.scene.physics.add
@@ -64,7 +64,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.body = this.me.body;
 
     // 기본 collider 생성
-    this.createColliderForWorldLayer();
+    this.createColliderForLayer();
 
     // 스킬 생성
     this.skill = new Skill(scene, x, y, frame, texture);
@@ -186,7 +186,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
       const temp = this.scene.physics.world.colliders;
       if (!temp.getActive().find(el => el.name == 'world'))
-        this.createColliderForWorldLayer();
+        this.createColliderForLayer();
 
       Effect.effectSound(this.scene, 'skill_off');
 
@@ -307,7 +307,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   //     // 만약 world 라는 이름이 collider가 존재하지 않는 경우에만
   //     // world collider 생성
   //     if (!temp.getActive().find(el => el.name == 'world'))
-  //       this.createColliderForWorldLayer();
+  //       this.createColliderForLayer();
   //   } else {
   //     // 레비테이션 아이콘 생성
   //     // 스프라이트로 생성하여 x,y 설정 가능하도록
@@ -339,12 +339,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
    *
    * @author bell
    */
-  createColliderForWorldLayer(): void {
-    this.scene.physics.add.collider(this, this.worldLayer, player => {
-      if (!player.body.checkCollision.none) {
-        console.log('바다와 부딪힘');
-      }
-    }).name = 'world';
+  createColliderForLayer(): void {
+    this.scene.physics.add.collider(this, this.layer).name = 'world';
   }
 
   // /**
