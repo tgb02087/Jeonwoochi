@@ -7,8 +7,10 @@ import Image from '../atoms/Image';
 import { useNavigate } from 'react-router-dom';
 
 const KAKAO_KEY = process.env.REACT_APP_KAKAO_KEY ?? '';
-const REDIRECT_URL = 'http://localhost:3000/login/kakao';
-// const REDIRECT_URL = 'https://j7b305.p.ssafy.io/login/kakao';
+const REDIRECT_URL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000/login/kakao'
+    : 'https://j7b305.p.ssafy.io/login/kakao';
 
 const SheetWrapper = styled.section`
   ${tw`flex flex-col gap-2`}
