@@ -10,7 +10,6 @@ const getWeather = async (x: number, y: number) => {
         y,
       },
     });
-
     return data;
   } catch (e) {
     console.log(e);
