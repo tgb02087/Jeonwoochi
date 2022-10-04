@@ -13,6 +13,7 @@ interface StyledObjectTypes {
 }
 interface PropTypes extends StyledObjectTypes {
   festivalList: any;
+  openedSideBar: boolean;
   focusedIdx: number;
 }
 const StyledMinimap = styled.div`
@@ -49,7 +50,13 @@ const StyledObject = styled.div<StyledObjectTypes>`
  *
  * author: jojo
  */
-const Minimap = ({ x, y, festivalList, focusedIdx }: PropTypes) => {
+const Minimap = ({
+  x,
+  y,
+  openedSideBar,
+  festivalList,
+  focusedIdx,
+}: PropTypes) => {
   const playerLocation = convertXYGameToMinimap(x, y);
   return (
     <StyledMinimap>
@@ -57,7 +64,8 @@ const Minimap = ({ x, y, festivalList, focusedIdx }: PropTypes) => {
       {x === 0 && y === 0 ? null : (
         <StyledObject x={playerLocation.x} y={playerLocation.y} isPlayer />
       )}
-      {festivalList &&
+      {openedSideBar &&
+        festivalList &&
         festivalList.map((festival: any, idx: number) => {
           const locationInGame = BootScene.convertLatLngToXY(festival);
           const locationInMinimap = convertXYGameToMinimap(
