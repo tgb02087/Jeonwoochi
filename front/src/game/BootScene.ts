@@ -40,6 +40,7 @@ class BootScene extends Scene {
       'land',
       '/images/map/Animated water tiles(edges) - flat style.png',
     );
+    this.load.image('props', '/images/map/Tileset-Props.png');
 
     this.load.tilemapTiledJSON('map', map);
 
@@ -79,10 +80,12 @@ class BootScene extends Scene {
       'Animated water tiles(edges) - flat style',
       'land',
     );
+    const etcs = map.addTilesetImage('Tileset-Props', 'props');
 
     const worldLayer = map.createLayer('tiles1', tileset, 0, 0);
     const seaLayer = map.createLayer('sea', seas, 0, 0);
     const landLayer = map.createLayer('land', lands, 0, 0);
+    const etcLayer = map.createLayer('etc', etcs, 0, 0);
     // bgm 설정
     // 시끄러워서 주석처리합니다
     // bgm 설정 초기화
@@ -101,6 +104,7 @@ class BootScene extends Scene {
     // 타일에 충돌(Collision) 적용
     seaLayer.setCollisionByProperty({ collides: true });
     worldLayer.setCollisionByProperty({ collides: true });
+    etcLayer.setCollisionByProperty({ collides: true });
 
     // 스폰 지점 설정
     const spawnPoint = map.findObject(
@@ -118,6 +122,8 @@ class BootScene extends Scene {
       worldLayer,
     );
 
+    this.physics.add.collider(this.player, etcLayer);
+
     // 카메라 설정
     const camera = this.cameras.main;
 
@@ -126,7 +132,7 @@ class BootScene extends Scene {
     // 경계 밖으로 카메라가 나가지 않도록 설정
     camera
       .setBounds(0, 0, map.widthInPixels, map.heightInPixels)
-      .setZoom(1.2)
+      .setZoom(1.0)
       .setName('main');
 
     // Enter 키 입력 초기화
