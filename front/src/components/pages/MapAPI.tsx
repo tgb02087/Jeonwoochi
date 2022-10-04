@@ -85,7 +85,7 @@ const MapAPI = () => {
   const clickLandmarkButtonHandler = () => landmarkData.refetch();
 
   const getCoordHandler = (idx: number) => {
-    const result = mapData.data!.filter(d => d.festivalId === idx);
+    const result = mapData.data!.filter(d => d.id === idx);
     return {
       // 임시 lat, lng 바꿔서 설정
       // lat: result[0].lat,
@@ -96,7 +96,7 @@ const MapAPI = () => {
   };
 
   // 축제 상세 정보 불러오기
-  const { data } = useQuery(['info'], getFestivalItem, {
+  const { data } = useQuery(['info'], () => getFestivalItem(1), {
     refetchOnWindowFocus: false,
   });
 

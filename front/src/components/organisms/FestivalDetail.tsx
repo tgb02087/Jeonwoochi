@@ -1,6 +1,7 @@
 import { NavigateFunction } from 'react-router-dom';
 import styled from 'styled-components';
 import tw from 'twin.macro';
+import { MapData } from '../../mocks/handlers/festival_list';
 import Image from '../atoms/Image';
 import Link from '../atoms/Link';
 import Sheet from '../atoms/Sheet';
@@ -9,13 +10,7 @@ import Weather from '../atoms/Weather';
 import FestivalInfos from './FestivalInfos';
 
 interface PropTypes {
-  info: {
-    title: string;
-    period: string;
-    festivalUrl: string;
-    posterUrl: string;
-    description: string;
-  };
+  info: MapData | null;
   weatherInfo: any;
   newsInfo: any;
   navigate: NavigateFunction;
@@ -39,9 +34,6 @@ const StyledFestivalInfo = styled.div`
   ${tw`flex flex-col`}
   height: 30vh;
   gap: 1rem;
-`;
-const StyledPoster = styled.div`
-  width: 50%;
 `;
 const WeatherInfo = styled.div`
   gap: 1rem;
@@ -87,7 +79,7 @@ const FestivalDetail = ({
           {info ? (
             <>
               <StyledFestivalInfo>
-                <Text color="white" message={info.title} size={1.5} />
+                <Text color="white" message={info.festivalName} size={1.5} />
                 <FestivalInfos info={info} size={1.2} />
               </StyledFestivalInfo>
               {/* 나중에 title mouseover 시 나타나게 구현 */}

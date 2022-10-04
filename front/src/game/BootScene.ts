@@ -129,24 +129,6 @@ class BootScene extends Scene {
       .setZoom(1.5)
       .setName('main');
 
-    // 미니맵 생성
-    // 위치 선정
-    // 줌 크기
-
-    // 미니맵 주석 처리
-    // this.minimap = this.cameras
-    //   .add(30, window.innerHeight - 430, 400, 400)
-    //   .setZoom(0.2)
-    //   .setName('mini');
-
-    // // 미니맵 스크롤 설정
-    // this.minimap.scrollX = this.player.x;
-    // this.minimap.scrollY = this.player.y;
-
-    // // 미니맵도 캐릭터에 포커싱 되도록
-    // const minimapCamera = this.cameras.cameras.find(el => el.name === 'mini');
-    // minimapCamera?.startFollow(this.player.me);
-
     // Enter 키 입력 초기화
     this.enterKey = this.input.keyboard.addKey('ENTER');
 
@@ -199,7 +181,7 @@ class BootScene extends Scene {
       if (this.enterKey.isDown) {
         // event 사운드 추가
         Effect.effectSound(this, 'event', 300, 0.2);
-        eventEmitter.emit('visit', this.collidedFestivalObject);
+        eventEmitter.emit('visit', this.collidedFestivalObject?.festival);
       }
 
       // 3초가 지나면 축제 이름 아래의 텍스트 없애기
@@ -229,7 +211,7 @@ class BootScene extends Scene {
   createFestivalObjects() {
     this.festivalList?.forEach(festival => {
       const { x, y } = BootScene.convertLatLngToXY(festival);
-      console.log(festival.name, x, y);
+      // console.log(festival.festivalName, x, y);
 
       // 오브젝트 생성
       const { me } = new Resource(this, x, y, 'festival', 'festival2');
@@ -268,17 +250,17 @@ class BootScene extends Scene {
 
     // 국토 타일맵과 전체 타일맵 간 동서남북 여백
     const padding = {
-      east: 72,
-      west: 83,
+      east: 112,
+      west: 133,
       north: 52,
       south: 40,
     };
 
     // 국토 타일맵 가로 & 세로 길이
-    // const latLength = 800 - padding.east - padding.west;
-    // const lngLength = 700 - padding.north - padding.south;
-    const latLength = 800;
-    const lngLength = 700;
+    const latLength = 800 - padding.east - padding.west;
+    const lngLength = 700 - padding.north - padding.south;
+    // const latLength = 800;
+    // const lngLength = 700;
 
     // 1칸 당 좌우 거리 = (극동 - 극서) / 국토 타일맵 가로 길이
     // 1칸 당 상하 거리 = (극북 - 극남) / 국토 타일맵 세로 길이
@@ -317,7 +299,7 @@ class BootScene extends Scene {
 
     const nameTag = this.add.group();
     const background = this.add.sprite(0, 0, 'nameTag');
-    const text = this.add.text(0, 0, festival.name, {
+    const text = this.add.text(0, 0, festival.festivalName, {
       fontFamily: 'DungGeunMo',
       fixedWidth: background.width,
       align: 'center',

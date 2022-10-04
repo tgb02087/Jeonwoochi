@@ -36,12 +36,14 @@ const RequestModalWrapper = styled.div`
   ${tw`flex justify-center items-center`}
 `;
 const Main = () => {
-  // 데이터를 초기 렌더링 시 fetch해 가지고 있다가
-  // 다른 축제 오브젝트에 접근하면 key만 다르게 해서 다시 fetch 해오기
-  // isLoading, isError는 당장 사용하지 않아서 우선 제거했으며,
-  // data 이름이 중복되므로 itemData와 listData로 이름을 구분했음
-  const { data: itemData } = useQuery(['info'], getFestivalItem);
+  // festivalInfo null로 초기화.
+  // 축제 오브젝트에 접근하면 eventEmitter로 해당 오브젝트를 받아 festivalInfo에 저장
+  // festivalInfo를 props로 넘겨 FestivalModal 렌더링
+  // isLoading, isError는 당장 사용하지 않아서 우선 제거
+  const [festivalInfo, setFestivalInfo] = useState<MapData | null>(null);
+
   const { data: listData } = useQuery(['festivalList'], getFestivalList);
+  // console.log(listData);
 
   // opened 여부에 따라 화살표 방향, display none 바꿔주기
   const [openedSideBar, setOpenedSideBar] = useState(true);
@@ -54,13 +56,9 @@ const Main = () => {
   // sound 음소거 유무 확인용 state
   const [isSound, setIsSound] = useState(true);
 
-  const clickHandler = () => {
-    setFocusedIdx(-1);
-    setOpenedSideBar(prev => !prev);
-  };
-
   // 축제 오브젝트에서 Enter 키를 눌렀을 때 축제 페이지가 뜨도록 이벤트 수신
   eventEmitter.on('visit', (festival: MapData) => {
+    setFestivalInfo(festival);
     setOpenedFestivalModal(true);
   });
 
@@ -120,7 +118,7 @@ const Main = () => {
       </MainFrame>
 
       {openedFestivalModal ? (
-        <FestivalModal setState={setOpenedFestivalModal} info={itemData} />
+        <FestivalModal setState={setOpenedFestivalModal} info={festivalInfo} />
       ) : null}
       <RequestModalWrapper>
         {/* 나중에 관리자 유무 받아서 여기 false에 넣기 */}

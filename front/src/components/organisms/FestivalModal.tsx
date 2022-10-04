@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import styled, { css } from 'styled-components';
 import tw from 'twin.macro';
+import { MapData } from '../../mocks/handlers/festival_list';
 import Button from '../atoms/Button';
 import Image from '../atoms/Image';
 import Sheet from '../atoms/Sheet';
@@ -9,15 +10,7 @@ import FestivalInfos from './FestivalInfos';
 import TitleCancelHeader from './TitleCancelHeader';
 
 interface PropTypes {
-  info:
-    | {
-        title: string;
-        period: string;
-        festivalUrl: string;
-        posterUrl: string;
-        description: string;
-      }
-    | undefined;
+  info: MapData | null;
   setState: Dispatch<SetStateAction<boolean>>;
 }
 const StyledFestivalModal = styled.div`
@@ -54,6 +47,8 @@ const RightBody = styled.div`
  * @author jojo
  */
 const FestivalModal = ({ info, setState }: PropTypes) => {
+  console.log(info);
+
   return (
     <StyledFestivalModal>
       <Sheet transparent>
@@ -61,12 +56,12 @@ const FestivalModal = ({ info, setState }: PropTypes) => {
           <InnerSheet>
             <TitleCancelHeader
               setState={setState}
-              title={info.title}
+              title={info.festivalName}
               color="white"
             />
             <SheetBody>
               <LeftBody>
-                <Image src={info.posterUrl} alt="poster" />
+                <Image src={info.image} alt="poster" />
               </LeftBody>
               <RightBody>
                 <FestivalInfos info={info} size={1.3} />
