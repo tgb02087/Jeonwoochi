@@ -10,7 +10,7 @@ import { UserInfo } from './../recoil/atoms/userInfo';
 const checkAuth = async () => {
   const { data }: { data: UserInfo } = await axios({
     method: 'get',
-    url: 'https://j7b305.p.ssafy.io/api/user-service/checkAT',
+    url: '/user-service/checkAT',
   });
 
   return data;
