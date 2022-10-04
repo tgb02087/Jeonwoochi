@@ -126,7 +126,7 @@ class BootScene extends Scene {
     // 경계 밖으로 카메라가 나가지 않도록 설정
     camera
       .setBounds(0, 0, map.widthInPixels, map.heightInPixels)
-      .setZoom(1.5)
+      .setZoom(1.2)
       .setName('main');
 
     // Enter 키 입력 초기화
@@ -250,9 +250,9 @@ class BootScene extends Scene {
 
     // 국토 타일맵과 전체 타일맵 간 동서남북 여백
     const padding = {
-      east: 112,
-      west: 133,
-      north: 52,
+      east: 102,
+      west: 138,
+      north: 72,
       south: 40,
     };
 
