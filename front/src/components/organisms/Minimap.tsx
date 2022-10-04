@@ -13,7 +13,6 @@ interface StyledObjectTypes {
 }
 interface PropTypes extends StyledObjectTypes {
   festivalList: any;
-  openedSideBar: boolean;
   focusedIdx: number;
 }
 const StyledMinimap = styled.div`
@@ -25,20 +24,26 @@ const StyledMinimap = styled.div`
 `;
 const StyledObject = styled.div<StyledObjectTypes>`
   ${tw`absolute`}
+  width: 0.3rem;
+  height: 0.3rem;
   ${({ x, y }) => css`
     left: ${x - 5}px;
     top: ${y - 3}px;
   `}
   background-color: ${({ isPlayer, focused }) =>
-    isPlayer ? 'red' : focused ? 'gold' : 'blue'};
+    isPlayer ? 'red' : focused ? 'gold' : '#A9A9A9'};
   ${({ isPlayer }) =>
     isPlayer &&
     css`
       z-index: 1;
     `}
+  ${({ isPlayer, focused }) =>
+    (isPlayer || focused) &&
+    css`
+      width: 0.5rem;
+      height: 0.5rem;
+    `}
   border-radius: 50%;
-  width: 0.5rem;
-  height: 0.5rem;
 `;
 
 /**
@@ -53,7 +58,7 @@ const StyledObject = styled.div<StyledObjectTypes>`
 const Minimap = ({
   x,
   y,
-  openedSideBar,
+
   festivalList,
   focusedIdx,
 }: PropTypes) => {
@@ -64,8 +69,7 @@ const Minimap = ({
       {x === 0 && y === 0 ? null : (
         <StyledObject x={playerLocation.x} y={playerLocation.y} isPlayer />
       )}
-      {openedSideBar &&
-        festivalList &&
+      {festivalList &&
         festivalList.map((festival: any, idx: number) => {
           const locationInGame = BootScene.convertLatLngToXY(festival);
           const locationInMinimap = convertXYGameToMinimap(

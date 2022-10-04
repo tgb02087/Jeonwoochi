@@ -116,8 +116,7 @@ const Main = () => {
           <Minimap
             x={location.x}
             y={location.y}
-            openedSideBar={openedSideBar}
-            festivalList={selected3}
+            festivalList={listData}
             focusedIdx={focusedIdx}
           />
         </MainBody>
