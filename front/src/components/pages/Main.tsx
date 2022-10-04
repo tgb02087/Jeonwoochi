@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import tw from 'twin.macro';
 import getFestivalItem from '../../api/getFestivalItem';
 import getFestivalList from '../../api/getFestivalList';
+import getSelectedFestivals from '../../api/getSelectedFestivals';
 import { MapData } from '../../mocks/handlers/festival_list';
 import eventEmitter from '../../utils/eventEmitter';
 import FestivalModal from '../organisms/FestivalModal';
@@ -45,8 +46,7 @@ const Main = () => {
   const { data: listData } = useQuery(['festivalList'], getFestivalList);
   // console.log(listData);
 
-  // opened 여부에 따라 화살표 방향, display none 바꿔주기
-  const [openedSideBar, setOpenedSideBar] = useState(true);
+  const [openedSideBar, setOpenedSideBar] = useState(false);
   const [openedFestivalModal, setOpenedFestivalModal] = useState(false);
   const [openedRequestFirstModal, setOpenedRequestFirstModal] = useState(false);
   const [openedRequestSecondModal, setOpenedRequestSecondModal] =
@@ -56,6 +56,11 @@ const Main = () => {
   // sound 음소거 유무 확인용 state
   const [isSound, setIsSound] = useState(true);
 
+  // 현재 진행 중인 축제 중 3개 가져오기
+  const { data: selected3 } = useQuery(
+    ['selectedFestivals'],
+    getSelectedFestivals,
+  );
   // 축제 오브젝트에서 Enter 키를 눌렀을 때 축제 페이지가 뜨도록 이벤트 수신
   eventEmitter.on('visit', (festival: MapData) => {
     setFestivalInfo(festival);
@@ -106,11 +111,13 @@ const Main = () => {
             openedSideBar={openedSideBar}
             setOpenedSideBar={setOpenedSideBar}
             setFocusedIdx={setFocusedIdx}
+            selectedFestivals={selected3}
           />
           <Minimap
             x={location.x}
             y={location.y}
-            festivalList={listData}
+            openedSideBar={openedSideBar}
+            festivalList={selected3}
             focusedIdx={focusedIdx}
           />
         </MainBody>
