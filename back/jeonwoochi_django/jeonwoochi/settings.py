@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # 3rd party apps
     'django_extensions',
     'rest_framework',
+    'corsheaders',
     # 'rest_framework.authtoken',  # token 기반 auth
     
     # native apps
@@ -54,6 +55,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware', 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -62,6 +65,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True # <- 모든 호스트 허용
+
+# or 
+
+# CORS_ORIGIN_WHITELIST = (
+#     "j7b305.p.ssafy.io",
+# )
 
 ROOT_URLCONF = 'jeonwoochi.urls'
 
