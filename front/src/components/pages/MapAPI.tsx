@@ -51,7 +51,7 @@ const MapAPI = () => {
   const location = useLocation();
   // const id = location.state.info.id;
   const mapData: any = location.state;
-  console.log(mapData);
+  // console.log(mapData);
 
   useEffect(() => {
     const bgm = new Audio(sound);
@@ -104,20 +104,23 @@ const MapAPI = () => {
     refetchOnWindowFocus: false,
   });
 
-  const x = mapData.lat;
-  const y = mapData.lng;
+  const x = Math.floor(mapData.lng);
+  const y = Math.floor(mapData.lat);
   // 날씨 정보 가져오기
-  const weatherInfo = useQuery(['weather'], () => getWeather(x, y), {
-    enabled: !!data?.title,
+  const weatherInfo = useQuery(['weather', x, y], () => getWeather(x, y), {
+    enabled: !!data,
     refetchOnWindowFocus: false,
   });
-  console.log(weatherInfo);
 
   // 뉴스 정보 가져오기
-  const newsInfo = useQuery(['news'], () => getFestivalNews(data?.title), {
-    enabled: !!data?.title,
-    refetchOnWindowFocus: false,
-  });
+  const newsInfo = useQuery(
+    ['news', data?.festivalName],
+    () => getFestivalNews(data?.festivalName),
+    {
+      enabled: !!data,
+      refetchOnWindowFocus: false,
+    },
+  );
 
   return (
     <MapAPIContainer>
