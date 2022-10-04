@@ -65,6 +65,10 @@ public class AuthController {
     @GetMapping("/recreatejwt")
     public ResponseEntity<?> recreatejwt(@CookieValue(value = "refresh-token", required = false) Cookie cookie,
             HttpServletResponse response) {
+        if(cookie.getValue()==null){
+            return new ResponseEntity<>("토큰재생성실패",HttpStatus.OK);
+        }
+        System.out.println("RT : "+cookie.getValue());
         ReJwtTokenResponse reJwtTokenResponse = as.resave(cookie.getValue());
         if (reJwtTokenResponse.getIsRT()) {
 //            ResponseCookie newcookie = ResponseCookie.from("refresh-token", reJwtTokenResponse.getRefreshtoken())
