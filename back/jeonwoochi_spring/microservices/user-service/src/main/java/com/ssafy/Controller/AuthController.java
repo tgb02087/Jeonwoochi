@@ -71,22 +71,22 @@ public class AuthController {
         System.out.println("RT : "+cookie.getValue());
         ReJwtTokenResponse reJwtTokenResponse = as.resave(cookie.getValue());
         if (reJwtTokenResponse.getIsRT()) {
-//            ResponseCookie newcookie = ResponseCookie.from("refresh-token", reJwtTokenResponse.getRefreshtoken())
-//                    .maxAge(60 * 60 * 24 * 15)
-//                    .httpOnly(true)
-//                    .secure(true)
-//                    .domain("")
-//                    .path("/")
-//                    .sameSite("None")
-//                    .build();
-//            resp.setHeader("set-Cookie", newcookie.toString());
-            Cookie newcookie = new Cookie("refresh-token", reJwtTokenResponse.getRefreshtoken());
-            cookie.setMaxAge(60 * 60 * 24 * 15);
-            cookie.setHttpOnly(true);
-            cookie.setSecure(true);
-            cookie.setDomain("");
-            cookie.setPath("/");
-            response.addCookie(newcookie);
+            ResponseCookie newcookie = ResponseCookie.from("refresh-token", reJwtTokenResponse.getRefreshtoken())
+                    .maxAge(60 * 60 * 24 * 15)
+                    .httpOnly(true)
+                    .secure(true)
+                    .domain("")
+                    .path("/api")
+                    .sameSite("None")
+                    .build();
+            response.setHeader("set-Cookie", newcookie.toString());
+//            Cookie newcookie = new Cookie("refresh-token", reJwtTokenResponse.getRefreshtoken());
+//            cookie.setMaxAge(60 * 60 * 24 * 15);
+//            cookie.setHttpOnly(true);
+//            cookie.setSecure(true);
+//            cookie.setDomain("");
+//            cookie.setPath("/");
+//            response.addCookie(newcookie);
         }
         return new ResponseEntity<>(AccessTokenResponse.create(reJwtTokenResponse.getAccesstoken()), HttpStatus.OK);
     }
