@@ -23,7 +23,6 @@ const getJwtAccessToken = async (token: string) => {
     params: {
       token,
     },
-    withCredentials: true,
   });
 
   // Axios 헤더에 액세스 토큰 추가

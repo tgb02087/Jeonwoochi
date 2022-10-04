@@ -15,6 +15,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 axios.defaults.baseURL = 'https://j7b305.p.ssafy.io/api';
+axios.defaults.withCredentials = true;
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
