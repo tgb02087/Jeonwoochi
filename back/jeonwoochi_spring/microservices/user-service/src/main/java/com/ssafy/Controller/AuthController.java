@@ -80,13 +80,6 @@ public class AuthController {
                     .sameSite("None")
                     .build();
             response.setHeader("set-Cookie", newcookie.toString());
-//            Cookie newcookie = new Cookie("refresh-token", reJwtTokenResponse.getRefreshtoken());
-//            cookie.setMaxAge(60 * 60 * 24 * 15);
-//            cookie.setHttpOnly(true);
-//            cookie.setSecure(true);
-//            cookie.setDomain("");
-//            cookie.setPath("/");
-//            response.addCookie(newcookie);
         }
         return new ResponseEntity<>(AccessTokenResponse.create(reJwtTokenResponse.getAccesstoken()), HttpStatus.OK);
     }

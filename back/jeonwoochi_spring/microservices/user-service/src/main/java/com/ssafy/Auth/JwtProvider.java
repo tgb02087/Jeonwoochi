@@ -102,12 +102,26 @@ public class JwtProvider {
                 .getBody();
     }
 
-    // 토큰 유효시간체킹
-    public boolean validateToken(String AT) {
+    // AT토큰 유효시간체킹
+    public boolean validateAT(String AT) {
         try {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(SECRET_KEY)
                     .parseClaimsJws(AT);
+            // System.out.println("현재시간 : " + new Date());
+            // System.out.println("만료시간 : " + claims.getBody().getExpiration());
+            return !claims.getBody().getExpiration().before(new Date());
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    // RT토큰 유효시간체킹
+    public boolean validateRT(String RT) {
+        try {
+            Jws<Claims> claims = Jwts.parser()
+                    .setSigningKey(REFRESH_KEY)
+                    .parseClaimsJws(RT);
             // System.out.println("현재시간 : " + new Date());
             // System.out.println("만료시간 : " + claims.getBody().getExpiration());
             return !claims.getBody().getExpiration().before(new Date());

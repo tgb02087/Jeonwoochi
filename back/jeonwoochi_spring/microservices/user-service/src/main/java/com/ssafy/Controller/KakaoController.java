@@ -49,13 +49,6 @@ public class KakaoController {
                 .sameSite("None")
                 .build();
         response.setHeader("set-Cookie", cookie.toString());
-//        Cookie cookie = new Cookie("refresh-token", jwtTokenResponse.getRefreshtoken());
-//        cookie.setMaxAge(60 * 60 * 24 * 15);
-//        cookie.setHttpOnly(true);
-//        cookie.setSecure(true);
-//        cookie.setDomain("");
-//        cookie.setPath("/");
-//        response.addCookie(cookie);
         return new ResponseEntity<>(AccessTokenResponse.create(jwtTokenResponse.getAccesstoken()), HttpStatus.OK);
     }
 

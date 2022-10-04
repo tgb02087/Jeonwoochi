@@ -30,7 +30,7 @@ public class AuthService {
 
     // 토큰 유효시간 체킹
     public boolean CheckAT(String token) {
-        return jp.validateToken(token);
+        return jp.validateAT(token);
     }
 
     // AT, RT 생성 후, RT는 Redis저장
@@ -63,13 +63,20 @@ public class AuthService {
         String AT = jp.makeJwtToken(tokenInfoRequest);
         String newRT = null;
         boolean RTchk = true;
-        if (findauthRedis.getExpiration() < 1) {
+        if(jp.validateRT(findauthRedis.getRefreshToken())){
             newRT = jp.makeRefreshToken(tokenInfoRequest);
             AuthRedis authRedis = AuthRedis.createAuth(tokenInfoRequest.getId(), newRT, 30L);
             arp.save(authRedis);
             RTchk = false;
+            return new ReJwtTokenResponse(AT,newRT,RTchk);
         }
-        return new ReJwtTokenResponse(AT, newRT, RTchk);
+//        if (findauthRedis.getExpiration() < 1) {
+//            newRT = jp.makeRefreshToken(tokenInfoRequest);
+//            AuthRedis authRedis = AuthRedis.createAuth(tokenInfoRequest.getId(), newRT, 30L);
+//            arp.save(authRedis);
+//            RTchk = false;
+//        }
+        return new ReJwtTokenResponse(AT, findauthRedis.getRefreshToken(), RTchk);
     }
 
     // Header 체크
