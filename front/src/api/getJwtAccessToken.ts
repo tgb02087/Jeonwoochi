@@ -19,7 +19,7 @@ const getJwtAccessToken = async (token: string) => {
     data: { accessToken },
   } = await axios({
     method: 'get',
-    url: 'http://localhost:8000/user-service/login/kakao',
+    url: 'https://j7b305.p.ssafy.io/api/user-service/login/kakao',
     params: {
       token,
     },

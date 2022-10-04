@@ -17,8 +17,11 @@ const getKakaoAccessToken = async (code: string) => {
     data: qs.stringify({
       grant_type: 'authorization_code',
       client_id: process.env.REACT_APP_KAKAO_KEY,
-      redirect_uri: 'http://localhost:3000/login/kakao',
-      client_secret: '653c5c4f76acf44b796a7c0e107d3d6f',
+      redirect_uri:
+        process.env.NODE_ENV === 'development'
+          ? 'http://localhost:3000/login/kakao'
+          : 'https://j7b305.p.ssafy.io/login/kakao',
+      client_secret: process.env.REACT_APP_KAKAO_KEY,
       code,
     }),
     headers: {
