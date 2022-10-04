@@ -22,9 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.ssafy.exception.NotFoundException.*;
@@ -149,6 +147,12 @@ public class FestivalServiceImpl implements FestivalService {
         List<FestivalResponse> festivals = festivalRepo.findAll().stream()
                 .map(FestivalResponse::response)
                 .collect(Collectors.toList());
+        Collections.sort(festivals, new Comparator<FestivalResponse>() {
+            @Override
+            public int compare(FestivalResponse f1, FestivalResponse f2) {
+                return Double.compare(f1.getLat(),f1.getLat());
+            }
+        });
         double cur_lat = 0.0;
         double cur_lng = 0.0;
         for(int i=festivals.size()-1; i>=0;i--){
@@ -161,7 +165,6 @@ public class FestivalServiceImpl implements FestivalService {
                 cur_lat = lat;
                 cur_lng = lng;
             }
-
         }
         return festivals;
     }
