@@ -150,7 +150,7 @@ public class FestivalServiceImpl implements FestivalService {
         Collections.sort(festivals, new Comparator<FestivalResponse>() {
             @Override
             public int compare(FestivalResponse f1, FestivalResponse f2) {
-                return Double.compare(f1.getLat(),f1.getLat());
+                return Double.compare(f1.getLat(), f2.getLat());
             }
         });
         double cur_lat = 0.0;
