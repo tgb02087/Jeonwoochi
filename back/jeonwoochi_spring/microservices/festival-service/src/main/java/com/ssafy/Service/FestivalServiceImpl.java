@@ -158,7 +158,7 @@ public class FestivalServiceImpl implements FestivalService {
         for(int i=festivals.size()-1; i>=0;i--){
             double lat = festivals.get(i).getLat();
             double lng = festivals.get(i).getLng();
-            if(Math.abs(lat-cur_lat)<=0.02 && Math.abs(lng-cur_lng)<=0.02){
+            if(Math.abs(lat-cur_lat)<=0.04 && Math.abs(lng-cur_lng)<=0.04){
                 festivals.remove(i);
             }
             else {
@@ -177,7 +177,7 @@ public class FestivalServiceImpl implements FestivalService {
         for(int i=festivals.size()-1; i>=0;i--){
             double lat = festivals.get(i).getLat();
             double lng = festivals.get(i).getLng();
-            if(Math.abs(lat-cur_lat)<=0.02 && Math.abs(lng-cur_lng)<=0.02){
+            if(Math.abs(lat-cur_lat)<=0.04 && Math.abs(lng-cur_lng)<=0.04){
                 festivals.remove(i);
             }
             else {
