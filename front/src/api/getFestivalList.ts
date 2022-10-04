@@ -4,7 +4,7 @@ import axios from 'axios';
 const getFestivalList = async () => {
   const { data }: { data: MapData[] } = await axios({
     method: 'GET',
-    url: '/festival-service/list',
+    url: '/festival-service/festival/list',
   });
   return data;
 };

@@ -1,16 +1,11 @@
 import styled, { css } from 'styled-components';
 import tw from 'twin.macro';
+import { MapData } from '../../mocks/handlers/festival_list';
 import Link from '../atoms/Link';
 import Text from '../atoms/Text';
 
 interface PropTypes {
-  info: {
-    title: string;
-    period: string;
-    festivalUrl: string;
-    posterUrl: string;
-    description: string;
-  };
+  info: MapData;
   size: number;
 }
 const StyledFestivalInfos = styled.div`
@@ -27,11 +22,16 @@ const StyledFestivalInfos = styled.div`
  * @author jojo
  */
 const FestivalInfos = ({ info, size }: PropTypes) => {
+  const homepage = info.homepage.split('"')[1];
   return (
     <StyledFestivalInfos>
-      <Text message={info.period} color={'white'} size={size} />
-      <Link href={info.festivalUrl} color="white" size={size}>
-        {info.festivalUrl}
+      <Text
+        message={info.startDate + ' ~ ' + info.endDate}
+        color={'white'}
+        size={size}
+      />
+      <Link href={homepage} color="white" size={size}>
+        {homepage}
       </Link>
       <Text message={info.description} color={'white'} size={size} />
     </StyledFestivalInfos>
