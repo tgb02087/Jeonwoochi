@@ -33,9 +33,10 @@ public class JwtProvider {
     public String makeJwtToken(TokenInfoRequest tokenInfoRequest) {
         Date now = new Date();
         return Jwts.builder()
-                .setHeader(createHeader())
+                .setHeader(createHeader("ACCESS_TOKEN"))
                 .setClaims(createClaims(tokenInfoRequest))
-                .setExpiration(createExpireDate(1000 * 60 * 1)) // 마지막 분
+                //.setExpiration(createExpireDate(1000 * 60 * 1)) // 마지막 분
+                .setExpiration(createExpireDate(60 * 60 * 12 * 1)) // 12시간
                 // .claim("id", tokenInfoRequest.getId())
                 .signWith(SignatureAlgorithm.HS256, createSigningKey(SECRET_KEY))
                 .compact();
@@ -45,18 +46,19 @@ public class JwtProvider {
     public String makeRefreshToken(TokenInfoRequest tokenInfoRequest) {
         Date now = new Date();
         return Jwts.builder()
-                .setHeader(createHeader())
+                .setHeader(createHeader("REFRESH_TOKEN"))
                 .setClaims(createClaims(tokenInfoRequest))
-                .setExpiration(createExpireDate(1000 * 60 * 10))
+                //.setExpiration(createExpireDate(1000 * 60 * 10))
+                .setExpiration(createExpireDate(60 * 60 * 24 * 15))
                 .signWith(SignatureAlgorithm.HS256, createSigningKey(REFRESH_KEY))
                 .compact();
     }
 
     // 헤더 부분 생성
-    private Map<String, Object> createHeader() {
+    private Map<String, Object> createHeader(String typ) {
         Map<String, Object> header = new HashMap<>();
 
-        header.put("typ", "ACCESS_TOKEN");
+        header.put("typ",typ);
         header.put("alg", "HS256");
         header.put("regDate", System.currentTimeMillis());
         System.out.println("헤더:" + header.get("typ"));

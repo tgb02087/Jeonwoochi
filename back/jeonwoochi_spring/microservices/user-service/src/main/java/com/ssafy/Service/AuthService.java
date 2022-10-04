@@ -61,10 +61,9 @@ public class AuthService {
             throw new NotMatchException(RT_NOT_MATCH);
         }
         String AT = jp.makeJwtToken(tokenInfoRequest);
-        String newRT = null;
         boolean RTchk = true;
-        if(jp.validateRT(findauthRedis.getRefreshToken())){
-            newRT = jp.makeRefreshToken(tokenInfoRequest);
+        if(!jp.validateRT(findauthRedis.getRefreshToken())){
+            String newRT = jp.makeRefreshToken(tokenInfoRequest);
             AuthRedis authRedis = AuthRedis.createAuth(tokenInfoRequest.getId(), newRT, 30L);
             arp.save(authRedis);
             RTchk = false;
