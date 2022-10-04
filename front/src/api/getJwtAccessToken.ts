@@ -19,11 +19,10 @@ const getJwtAccessToken = async (token: string) => {
     data: { accessToken },
   } = await axios({
     method: 'get',
-    url: 'https://j7b305.p.ssafy.io/api/user-service/login/kakao',
+    url: '/user-service/login/kakao',
     params: {
       token,
     },
-    withCredentials: true,
   });
 
   // Axios 헤더에 액세스 토큰 추가

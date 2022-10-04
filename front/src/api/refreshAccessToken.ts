@@ -20,7 +20,7 @@ const refreshAccessToken = async () => {
     data: { accessToken },
   } = await axios({
     method: 'get',
-    url: 'https://j7b305.p.ssafy.io/api/user-service/recreatejwt',
+    url: '/user-service/recreatejwt',
   });
 
   // Axios 헤더에 액세스 토큰 추가
