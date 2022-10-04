@@ -6,7 +6,7 @@ const getFestivalItem = async (id: number) => {
     method: 'GET',
     url: '/festival-service/festival/' + id,
   });
-  console.log(data);
+  // console.log(data);
 
   return data;
 };

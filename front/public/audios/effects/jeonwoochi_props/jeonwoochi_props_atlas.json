@@ -1,0 +1,268 @@
+{
+    "frames": [
+        {
+            "filename": "blacksmith_shop(ready_to_use)_to_build_another_shop_use_provided_props",
+            "frame": {
+                "w": 431,
+                "h": 274,
+                "x": 0,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "vendor-tent",
+            "frame": {
+                "w": 384,
+                "h": 224,
+                "x": 0,
+                "y": 274
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "sunlight_ray1",
+            "frame": {
+                "w": 334,
+                "h": 326,
+                "x": 431,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "sunlight_ray3",
+            "frame": {
+                "w": 334,
+                "h": 326,
+                "x": 0,
+                "y": 498
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "sunlight_ray2",
+            "frame": {
+                "w": 334,
+                "h": 326,
+                "x": 334,
+                "y": 498
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "altar",
+            "frame": {
+                "w": 256,
+                "h": 224,
+                "x": 765,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "sword_sharpener-3",
+            "frame": {
+                "w": 256,
+                "h": 32,
+                "x": 765,
+                "y": 224
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "sword_sharpener-1",
+            "frame": {
+                "w": 256,
+                "h": 32,
+                "x": 765,
+                "y": 256
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "altar-stone_columns-1",
+            "frame": {
+                "w": 199,
+                "h": 192,
+                "x": 765,
+                "y": 288
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "altar-stone_columns-2",
+            "frame": {
+                "w": 199,
+                "h": 192,
+                "x": 668,
+                "y": 480
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tree1",
+            "frame": {
+                "w": 96,
+                "h": 192,
+                "x": 867,
+                "y": 480
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "tree2",
+            "frame": {
+                "w": 96,
+                "h": 192,
+                "x": 0,
+                "y": 824
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "water_well-rope",
+            "frame": {
+                "w": 128,
+                "h": 160,
+                "x": 384,
+                "y": 326
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "shrine2-empty",
+            "frame": {
+                "w": 64,
+                "h": 99,
+                "x": 512,
+                "y": 326
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "shrine3-empty",
+            "frame": {
+                "w": 64,
+                "h": 99,
+                "x": 576,
+                "y": 326
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "shrine-empty",
+            "frame": {
+                "w": 64,
+                "h": 99,
+                "x": 640,
+                "y": 326
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "stone1",
+            "frame": {
+                "w": 64,
+                "h": 64,
+                "x": 512,
+                "y": 425
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "stone2",
+            "frame": {
+                "w": 64,
+                "h": 64,
+                "x": 576,
+                "y": 425
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "stone3",
+            "frame": {
+                "w": 64,
+                "h": 64,
+                "x": 96,
+                "y": 824
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "stone4",
+            "frame": {
+                "w": 64,
+                "h": 64,
+                "x": 96,
+                "y": 888
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Gamma V2",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}

@@ -24,20 +24,26 @@ const StyledMinimap = styled.div`
 `;
 const StyledObject = styled.div<StyledObjectTypes>`
   ${tw`absolute`}
+  width: 0.3rem;
+  height: 0.3rem;
   ${({ x, y }) => css`
     left: ${x - 5}px;
     top: ${y - 3}px;
   `}
   background-color: ${({ isPlayer, focused }) =>
-    isPlayer ? 'red' : focused ? 'gold' : 'blue'};
+    isPlayer ? 'red' : focused ? 'gold' : '#A9A9A9'};
   ${({ isPlayer }) =>
     isPlayer &&
     css`
       z-index: 1;
     `}
+  ${({ isPlayer, focused }) =>
+    (isPlayer || focused) &&
+    css`
+      width: 0.5rem;
+      height: 0.5rem;
+    `}
   border-radius: 50%;
-  width: 0.5rem;
-  height: 0.5rem;
 `;
 
 /**
@@ -49,7 +55,13 @@ const StyledObject = styled.div<StyledObjectTypes>`
  *
  * author: jojo
  */
-const Minimap = ({ x, y, festivalList, focusedIdx }: PropTypes) => {
+const Minimap = ({
+  x,
+  y,
+
+  festivalList,
+  focusedIdx,
+}: PropTypes) => {
   const playerLocation = convertXYGameToMinimap(x, y);
   return (
     <StyledMinimap>

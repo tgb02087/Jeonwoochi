@@ -62,7 +62,7 @@ const FestivalDetail = ({
   newsInfo,
   navigate,
 }: PropTypes) => {
-  // console.log(weatherInfo);
+  console.log(newsInfo);
 
   const clickHandler = () => {
     navigate(-1);
@@ -93,7 +93,7 @@ const FestivalDetail = ({
           <WeatherInfo>
             <Text color="white" message="날씨 예보" size={1.3} />
             {weatherInfo ? (
-              weatherInfo.data.map(({ data, sky, tmn, tmx }: WeatherType) => {
+              weatherInfo.map(({ data, sky, tmn, tmx }: WeatherType) => {
                 const date =
                   data.slice(0, 4) +
                   '-' +
