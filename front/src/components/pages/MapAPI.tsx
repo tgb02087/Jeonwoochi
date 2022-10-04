@@ -10,7 +10,7 @@ import { useGetLandmarkDataAfterClick } from '../../hooks/useGetLandmarkDataAfte
 import { MapData } from '../../mocks/handlers/festival_list';
 import { AxiosError } from 'axios';
 
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import styled from 'styled-components';
 import tw from 'twin.macro';
@@ -47,7 +47,11 @@ const StyledMapAPI = styled.div`
  */
 const MapAPI = () => {
   const navigate = useNavigate();
-  const { id } = useParams<{ id?: string | undefined }>();
+  // const { id } = useParams<{ id?: string | undefined }>();
+  const location = useLocation();
+  // const id = location.state.info.id;
+  const mapData: any = location.state;
+  console.log(mapData);
 
   useEffect(() => {
     const bgm = new Audio(sound);
@@ -56,9 +60,9 @@ const MapAPI = () => {
     bgm.play();
   }, []);
 
-  const MAPIDX = id && parseInt(id);
+  // const MAPIDX = id && parseInt(id);
   // 축제 좌표 불러오기
-  const mapData = useQuery<MapData[], AxiosError>(['Maps'], getFestivalList);
+  // const mapData = useQuery<MapData[], AxiosError>(['Maps'], getFestivalList);
 
   // 맛집 데이터 불러오기
   const restaurantData = useGetFoodDataAfterClick();
@@ -84,29 +88,30 @@ const MapAPI = () => {
   const landmarkData = useGetLandmarkDataAfterClick();
   const clickLandmarkButtonHandler = () => landmarkData.refetch();
 
-  const getCoordHandler = (idx: number) => {
-    const result = mapData.data!.filter(d => d.id === idx);
-    return {
-      // 임시 lat, lng 바꿔서 설정
-      // lat: result[0].lat,
-      // lng: result[0].lng,
-      lat: result[0].lng,
-      lng: result[0].lat,
-    };
-  };
+  // const getCoordHandler = (idx: number) => {
+  //   const result = mapData.data!.filter(d => d.id === idx);
+  //   return {
+  //     // 임시 lat, lng 바꿔서 설정
+  //     // lat: result[0].lat,
+  //     // lng: result[0].lng,
+  //     lat: result[0].lng,
+  //     lng: result[0].lat,
+  //   };
+  // };
 
   // 축제 상세 정보 불러오기
-  const { data } = useQuery(['info'], () => getFestivalItem(1), {
+  const { data } = useQuery(['info'], () => getFestivalItem(mapData.id), {
     refetchOnWindowFocus: false,
   });
 
-  const x = 35;
-  const y = 127;
+  const x = mapData.lat;
+  const y = mapData.lng;
   // 날씨 정보 가져오기
   const weatherInfo = useQuery(['weather'], () => getWeather(x, y), {
     enabled: !!data?.title,
     refetchOnWindowFocus: false,
   });
+  console.log(weatherInfo);
 
   // 뉴스 정보 가져오기
   const newsInfo = useQuery(['news'], () => getFestivalNews(data?.title), {
@@ -125,31 +130,31 @@ const MapAPI = () => {
         />
       </StyledFestivalDetail>
       <StyledMapAPI>
-        {mapData.isLoading || !MAPIDX ? (
+        {/* {mapData.isLoading || !MAPIDX ? (
           'Loading...'
         ) : mapData.error ? (
           <div>error: {mapData.error.message}</div>
-        ) : mapData.data ? (
-          <>
-            <FestivalMap
-              restaurantData={restaurantData.data}
-              lodgeData={lodgingData.data}
-              shoppingData={shoppingData.data}
-              cultureData={cultureData.data}
-              leisureData={leisureData.data}
-              landmarkData={landmarkData.data}
-              restaurantRecommClickHandler={clickFoodButtonHandler}
-              lodgeRecommClickHandler={clickLodgeButtonhandler}
-              shoppingRecommClickHandler={clickShopingButtonHandler}
-              cultureRecommClickHandler={clickCultureButtonHandler}
-              leisureRecommClickHandler={clickLeisureButtonHandler}
-              landmarkRecommClickHandler={clickLandmarkButtonHandler}
-              coord={getCoordHandler(MAPIDX)}
-            />
-          </>
-        ) : (
+        ) : mapData.data ? ( */}
+        <>
+          <FestivalMap
+            restaurantData={restaurantData.data}
+            lodgeData={lodgingData.data}
+            shoppingData={shoppingData.data}
+            cultureData={cultureData.data}
+            leisureData={leisureData.data}
+            landmarkData={landmarkData.data}
+            restaurantRecommClickHandler={clickFoodButtonHandler}
+            lodgeRecommClickHandler={clickLodgeButtonhandler}
+            shoppingRecommClickHandler={clickShopingButtonHandler}
+            cultureRecommClickHandler={clickCultureButtonHandler}
+            leisureRecommClickHandler={clickLeisureButtonHandler}
+            landmarkRecommClickHandler={clickLandmarkButtonHandler}
+            coord={{ lat: mapData.lng, lng: mapData.lat }}
+          />
+        </>
+        {/* ) : (
           <div>somthing went wrong!</div>
-        )}
+        )} */}
       </StyledMapAPI>
     </MapAPIContainer>
   );

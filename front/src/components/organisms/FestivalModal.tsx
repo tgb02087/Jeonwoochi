@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import tw from 'twin.macro';
 import { MapData } from '../../mocks/handlers/festival_list';
@@ -47,7 +48,16 @@ const RightBody = styled.div`
  * @author jojo
  */
 const FestivalModal = ({ info, setState }: PropTypes) => {
-  console.log(info);
+  // console.log(info);
+  const navigate = useNavigate();
+  const linkToMapApiPageHandler = (info: MapData | undefined) => {
+    if (info?.id) {
+      console.log(info);
+      navigate(`/map/${info.id}`, { state: info });
+    } else {
+      console.log('에러나버림');
+    }
+  };
 
   return (
     <StyledFestivalModal>
@@ -65,7 +75,10 @@ const FestivalModal = ({ info, setState }: PropTypes) => {
               </LeftBody>
               <RightBody>
                 <FestivalInfos info={info} size={1.3} />
-                <Button isText>
+                <Button
+                  isText
+                  clickHandler={() => linkToMapApiPageHandler(info)}
+                >
                   <Text message={'상세보기'} color="black" />
                 </Button>
               </RightBody>
