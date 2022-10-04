@@ -6,10 +6,7 @@ import com.ssafy.Domain.Entity.Festival;
 import com.ssafy.Domain.Entity.FestivalForm;
 import com.ssafy.Domain.Repository.FestivalFormRepo;
 import com.ssafy.Domain.Repository.FestivalRepo;
-import com.ssafy.Dto.FestivalCreateRequest;
-import com.ssafy.Dto.FestivalResponse;
-import com.ssafy.Dto.FestivalUpdateRequest;
-import com.ssafy.Dto.KakaoGeoRes;
+import com.ssafy.Dto.*;
 import com.ssafy.exception.NotFoundException;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
@@ -154,38 +151,98 @@ public class FestivalServiceImpl implements FestivalService {
             }
         });
         double cur_lat = 0.0;
-        double cur_lng = 0.0;
+        //double cur_lng = 0.0;
+        List<FestivalCustom> list = new ArrayList<>();
+        List<FestivalResponse> newlist = new ArrayList<>();
         for(int i=festivals.size()-1; i>=0;i--){
             double lat = festivals.get(i).getLat();
             double lng = festivals.get(i).getLng();
-            if(Math.abs(lat-cur_lat)<=0.04 && Math.abs(lng-cur_lng)<=0.04){
-                festivals.remove(i);
+            if(Math.abs(lat-cur_lat)<=0.035){
+                list.add(new FestivalCustom(lat,lng,i));
+                //festivals.remove(i);
+                if(i==0) newlist = sortlng(list,festivals,newlist);
             }
             else {
                 cur_lat = lat;
-                cur_lng = lng;
+                newlist = sortlng(list,festivals,newlist);
+                list.clear();
             }
         }
+        System.out.println(newlist.size());
+        festivals = newlist;
+        newlist = new ArrayList<>();
         Collections.sort(festivals, new Comparator<FestivalResponse>() {
             @Override
             public int compare(FestivalResponse f1, FestivalResponse f2) {
                 return Double.compare(f1.getLng(), f2.getLng());
             }
         });
-        cur_lat = 0.0;
-        cur_lng = 0.0;
+        //cur_lat = 0.0;
+        double cur_lng = 0.0;
         for(int i=festivals.size()-1; i>=0;i--){
             double lat = festivals.get(i).getLat();
             double lng = festivals.get(i).getLng();
-            if(Math.abs(lat-cur_lat)<=0.04 && Math.abs(lng-cur_lng)<=0.04){
-                festivals.remove(i);
+            if(Math.abs(lng-cur_lng)<=0.035){
+                list.add(new FestivalCustom(lat,lng,i));
+                //festivals.remove(i);
+                if(i==0) newlist = sortlat(list,festivals,newlist);
             }
             else {
-                cur_lat = lat;
                 cur_lng = lng;
+                newlist = sortlat(list,festivals,newlist);
+                list.clear();
             }
         }
-        return festivals;
+        System.out.println(newlist.size());
+        return newlist;
+    }
+    //lng정렬
+    private List<FestivalResponse> sortlng(List<FestivalCustom> list, List<FestivalResponse> festivals, List<FestivalResponse> newlist){
+        Collections.sort(list, new Comparator<FestivalCustom>() {
+            @Override
+            public int compare(FestivalCustom f1, FestivalCustom f2) {
+                return Double.compare(f1.getLng(), f2.getLng());
+            }
+        });
+        double cur_lng=0.0;
+        for(int j=list.size()-1; j>=0; j--){
+            double lng2 = list.get(j).getLng();
+            if(Math.abs(lng2-cur_lng)<=0.35){
+                //festivals.remove(list.get(j).idx);
+                list.remove(j);
+            }
+            else {
+                cur_lng = lng2;
+            }
+        }
+        for(int j=0; j< list.size(); j++){
+            newlist.add(festivals.get(list.get(j).getIdx()));
+        }
+        return newlist;
+    }
+    //lat정렬
+    private List<FestivalResponse> sortlat(List<FestivalCustom> list, List<FestivalResponse> festivals, List<FestivalResponse> newlist){
+        Collections.sort(list, new Comparator<FestivalCustom>() {
+            @Override
+            public int compare(FestivalCustom f1, FestivalCustom f2) {
+                return Double.compare(f1.getLat(), f2.getLat());
+            }
+        });
+        double cur_lat=0.0;
+        for(int j=list.size()-1; j>=0; j--){
+            double lat2 = list.get(j).getLat();
+            if(Math.abs(lat2-cur_lat)<=0.35){
+                //festivals.remove(list.get(j).idx);
+                list.remove(j);
+            }
+            else {
+                cur_lat = lat2;
+            }
+        }
+        for(int j=0; j< list.size(); j++){
+            newlist.add(festivals.get(list.get(j).getIdx()));
+        }
+        return newlist;
     }
 
 }
