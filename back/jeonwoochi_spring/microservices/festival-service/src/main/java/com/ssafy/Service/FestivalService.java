@@ -26,6 +26,7 @@ public interface FestivalService {
     FestivalResponse updateFestival(FestivalUpdateRequest request);
     //축제 삭제
     void deleteFestival(Long festivalId);
-
+    //축제 전체 리스트 커스텀
+    List<FestivalResponse> findFestivalCustom();
 
 }

@@ -133,4 +133,10 @@ public class FestivalController {
         return ResponseEntity.ok().build();
     }
 
+    // 축제 커스텀 조회
+    @GetMapping("festival/list")
+    public ResponseEntity<?> findFestivalCustom(){
+        return ResponseEntity.ok(festivalService.findFestivalCustom());
+    }
+
 }

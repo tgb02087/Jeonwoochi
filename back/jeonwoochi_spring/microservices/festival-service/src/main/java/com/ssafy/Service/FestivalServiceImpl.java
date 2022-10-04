@@ -142,4 +142,28 @@ public class FestivalServiceImpl implements FestivalService {
                 .orElseThrow(()->new NotFoundException(FESTIVAL_NOT_FOUND));
         festivalRepo.delete(festival);
     }
+
+    //축제 커스텀 조회
+    @Override
+    public List<FestivalResponse> findFestivalCustom() {
+        List<FestivalResponse> festivals = festivalRepo.findAll().stream()
+                .map(FestivalResponse::response)
+                .collect(Collectors.toList());
+        double cur_lat = 0.0;
+        double cur_lng = 0.0;
+        for(int i=festivals.size()-1; i>=0;i--){
+            double lat = festivals.get(i).getLat();
+            double lng = festivals.get(i).getLng();
+            if(Math.abs(lat-cur_lat)<=0.01 && Math.abs(lng-cur_lng)<=0.01){
+                festivals.remove(i);
+            }
+            else {
+                cur_lat = lat;
+                cur_lng = lng;
+            }
+
+        }
+        return festivals;
+    }
+
 }
