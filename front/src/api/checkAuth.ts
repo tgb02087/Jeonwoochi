@@ -11,6 +11,7 @@ const checkAuth = async () => {
   const { data }: { data: UserInfo } = await axios({
     method: 'get',
     url: '/user-service/checkAT',
+    withCredentials: true,
   });
 
   return data;

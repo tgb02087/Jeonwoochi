@@ -21,6 +21,7 @@ const refreshAccessToken = async () => {
   } = await axios({
     method: 'get',
     url: '/user-service/recreatejwt',
+    withCredentials: true,
   });
 
   // Axios 헤더에 액세스 토큰 추가
