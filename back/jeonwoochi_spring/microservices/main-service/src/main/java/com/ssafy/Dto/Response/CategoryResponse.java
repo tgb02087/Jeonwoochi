@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CategoryResponse {
 
-    private Long id;
+    private String id;
 
     private String name;
 
@@ -20,4 +20,5 @@ public class CategoryResponse {
                 category.getName()
         );
     }
+
 }

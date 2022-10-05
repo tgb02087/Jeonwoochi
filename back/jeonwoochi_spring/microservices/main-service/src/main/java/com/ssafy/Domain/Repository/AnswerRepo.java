@@ -1,18 +1,14 @@
 package com.ssafy.Domain.Repository;
 
 import com.ssafy.Domain.Entity.Answer;
+import com.ssafy.Domain.Entity.Question;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
-@Repository
-@RequiredArgsConstructor
-public class AnswerRepo {
-
-    private final EntityManager em;
-
-    public void save(Answer answer) { em.persist(answer);}
-
-    public Answer findOne(Long id) { return em.find(Answer.class,id); }
+public interface AnswerRepo extends JpaRepository<Answer, Long> {
+    List<Answer> findByQuestion(Question question);
 }

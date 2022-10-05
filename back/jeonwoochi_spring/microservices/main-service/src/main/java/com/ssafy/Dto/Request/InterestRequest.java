@@ -8,8 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InterestRequest {
-
-    private Long userId;
-
     private Long answerId;
 }

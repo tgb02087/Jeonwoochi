@@ -22,18 +22,18 @@ public class Interest {
     private Long userId;
 
     @ManyToOne
-    @JoinColumn(name = "answer_id")
-    private Answer answer;
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    public static Interest create(InterestRequest interestRequest, Answer answer){
+    public static Interest create(Long userId, Category category){
         Interest interest = new Interest();
-        interest.userId = interestRequest.getUserId();
-        interest.answer = answer;
+        interest.userId = userId;
+        interest.category = category;
         return interest;
     }
 
-    public void update(InterestUpdateRequest interestRequest, Answer answer){
+    public void update(InterestUpdateRequest interestRequest, Category category){
         this.userId = interestRequest.getUserId();
-        this.answer = answer;
+        this.category = category;
     }
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,14 +21,12 @@ public class Question {
 
     private String question;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Answer> answers;
 
-    public static Question create(QuestionRequest questionRequest, Category category){
+    public static Question create(QuestionRequest questionRequest){
         Question qs = new Question();
         qs.question = questionRequest.getQuestion();
-        qs.category = category;
         return qs;
     }
 }

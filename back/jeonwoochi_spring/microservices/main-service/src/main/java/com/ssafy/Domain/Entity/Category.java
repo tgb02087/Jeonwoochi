@@ -16,17 +16,17 @@ import java.util.List;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    private Long id;
+    private String id;
 
     private String name;
 
-    @OneToMany(mappedBy = "category")
-    private List<Question> questions = new ArrayList<>();
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Interest> interests;
 
-//    @OneToMany(mappedBy = "category")
-//    private List<Answer> answers = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "answer_id")
+    private Answer answer;
 
     public static Category create(CategoryRequest categoryRequest){
         Category category = new Category();

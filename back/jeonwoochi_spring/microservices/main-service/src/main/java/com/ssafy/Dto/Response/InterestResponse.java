@@ -1,5 +1,6 @@
 package com.ssafy.Dto.Response;
 
+import com.ssafy.Domain.Entity.Category;
 import com.ssafy.Domain.Entity.Interest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,13 +15,14 @@ public class InterestResponse {
 
     private Long userId;
 
-    private Long answerId;
-
     public static InterestResponse create(Interest interest){
         return new InterestResponse(
                 interest.getId(),
-                interest.getUserId(),
-                interest.getAnswer().getId()
+                interest.getUserId()
         );
+    }
+
+    public static String idResponse(Interest interest){
+        return interest.getCategory().getId();
     }
 }

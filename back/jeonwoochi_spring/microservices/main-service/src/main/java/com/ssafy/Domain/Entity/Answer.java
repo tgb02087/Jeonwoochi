@@ -21,18 +21,20 @@ public class Answer {
 
     private String answer;
 
+    private String image;
+
+    @OneToMany(mappedBy = "answer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Category> categories;
+
+
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @JoinColumn(name = "question_id")
+    private Question question;
 
-    @OneToMany(mappedBy = "answer")
-    List<Interest> interests = new ArrayList<>();
-
-
-    public static Answer create(AnswerRequest request, Category category){
+    public static Answer create(AnswerRequest request, Question question){
         Answer as = new Answer();
         as.answer = request.getAnswer();
-        as.category = category;
+        as.question = question;
         return as;
     }
 }

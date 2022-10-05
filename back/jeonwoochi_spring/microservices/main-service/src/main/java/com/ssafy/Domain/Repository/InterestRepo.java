@@ -3,17 +3,12 @@ package com.ssafy.Domain.Repository;
 import com.ssafy.Domain.Entity.Interest;
 import com.ssafy.Dto.Request.InterestRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
-@Repository
-@RequiredArgsConstructor
-public class InterestRepo {
-
-    private final EntityManager em;
-
-    public void save(Interest interest) { em.persist(interest); }
-
-    public Interest findOne(Long id) { return em.find(Interest.class, id); }
+public interface InterestRepo extends JpaRepository<Interest, Long> {
+    List<Interest> findByUserId(Long userId);
 }

@@ -14,13 +14,10 @@ public class AnswerResponse {
 
     private String answer;
 
-    private Long categoryId;
-
-    public static AnswerResponse create(Answer answer){
+    public static AnswerResponse response(Answer answer){
         return new AnswerResponse(
                 answer.getId(),
-                answer.getAnswer(),
-                answer.getCategory().getId()
+                answer.getAnswer()
         );
     }
 }
