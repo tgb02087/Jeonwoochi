@@ -15,7 +15,7 @@ const StyledSelected = styled.div<PropTypes>`
   background-color: rgba(0, 0, 88, 0.7);
 `;
 const StyledCheck = styled.div`
-  top: 30%;
+  top: 25%;
   ${tw`absolute`}
 `;
 /**
