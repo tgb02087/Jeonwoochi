@@ -10,6 +10,4 @@ import lombok.NoArgsConstructor;
 public class QuestionRequest {
 
     private String question;
-
-    private Long categoryId;
 }

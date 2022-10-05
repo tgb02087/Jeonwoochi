@@ -45,18 +45,8 @@ public class QuestionService {
 
     //질문 생성
     @Transactional
-    public String createQuestion(QuestionRequest questionRequest){
-        try {
-            Category category = categoryRepo.findOne(questionRequest.getCategoryId());
-            System.out.println("category = " + category.getName());
-            Question question = Question.create(questionRequest);
-            System.out.println("question = " + question.getQuestion());
-            questionRepo.save(question);
-            return "성공";
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        return "실패";
+    public void createQuestion(QuestionRequest questionRequest){
+        Question question = Question.create(questionRequest);
+        questionRepo.save(question);
     }
 }

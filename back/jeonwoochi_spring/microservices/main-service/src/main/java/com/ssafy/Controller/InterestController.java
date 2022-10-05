@@ -38,12 +38,11 @@ public class InterestController {
     //질문 생성
     @PostMapping("/question")
     public ResponseEntity<?> createQuestion(@Valid @RequestBody QuestionRequest request, BindingResult bindingResult){
-        System.out.println("if");
         if (bindingResult.hasErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
         }
-        System.out.println("request = " + request.getQuestion());
-        return new ResponseEntity<>(qs.createQuestion(request),HttpStatus.OK);
+        qs.createQuestion(request);
+        return ResponseEntity.ok().build();
     }
 
     //답변 조회
@@ -63,10 +62,10 @@ public class InterestController {
     }
 
     //카테고리 조회
-    @GetMapping("/category")
-    public ResponseEntity<?> getCategory(@RequestParam(value = "categoryId")Long categoryId){
-        return new ResponseEntity<>(cs.findCategory(categoryId),HttpStatus.OK);
-    }
+//    @GetMapping("/category")
+//    public ResponseEntity<?> getCategory(@RequestParam(value = "categoryId")Long categoryId){
+//        return new ResponseEntity<>(cs.findCategory(categoryId),HttpStatus.OK);
+//    }
 
     //카테고리 생성
     @PostMapping("/category")
@@ -74,7 +73,8 @@ public class InterestController {
         if(bindingResult.hasErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
         }
-        return new ResponseEntity<>(cs.createCategory(request),HttpStatus.OK);
+        cs.createCategory(request);
+        return ResponseEntity.ok().build();
     }
 
     //관심분야 작성
