@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static com.ssafy.exception.NotFoundException.ANSWER_NOT_FOUND;
 import static com.ssafy.exception.NotFoundException.INTEREST_NOT_FOUND;
 
@@ -26,12 +28,14 @@ public class InterestService {
 
     //관심사항 등록
     @Transactional
-    public void createInterest(Long userId, InterestRequest interestRequest){
-        Answer answer = answerRepo.findById(interestRequest.getAnswerId())
-                .orElseThrow(()->new NotFoundException(ANSWER_NOT_FOUND));
-        answer.getCategories().forEach(category -> {
-            Interest interest = Interest.create(userId, category);
-            interestRepo.save(interest);
+    public void createInterest(Long userId, List<InterestRequest> requests){
+        requests.forEach(interestRequest -> {
+            Answer answer = answerRepo.findById(interestRequest.getAnswerId())
+                    .orElseThrow(()->new NotFoundException(ANSWER_NOT_FOUND));
+            answer.getCategories().forEach(category -> {
+                Interest interest = Interest.create(userId, category);
+                interestRepo.save(interest);
+                });
         });
     }
 }

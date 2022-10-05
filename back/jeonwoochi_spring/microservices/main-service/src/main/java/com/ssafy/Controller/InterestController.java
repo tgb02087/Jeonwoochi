@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -81,8 +82,8 @@ public class InterestController {
     @PostMapping("/interest")
     public ResponseEntity<?> createInterest(
             @LoginUser User user,
-            @Valid @RequestBody InterestRequest request){
-        is.createInterest(user.getId(), request);
+            @Valid @RequestBody List<InterestRequest> requests){
+        is.createInterest(user.getId(), requests);
         return ResponseEntity.ok().build();
     }
 
