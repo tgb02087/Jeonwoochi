@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import tw from 'twin.macro';
 
 import { MapData } from '../../mocks/handlers/festival_list';
-import { bgmOff, bgmStart } from '../../utils/mapBgm';
-import { history } from '../../utils/History';
+import { bgmOff } from '../../utils/mapBgm';
 
 import Image from '../atoms/Image';
 import Link from '../atoms/Link';
@@ -69,20 +68,6 @@ const FestivalDetail = ({
   navigate,
 }: PropTypes) => {
   // console.log(newsInfo);
-
-  useEffect(() => {
-    bgmStart();
-  }, []);
-
-  useEffect(() => {
-    const unlisten = history.listen(history => {
-      if (history.action === 'POP') bgmOff();
-    });
-
-    return () => {
-      unlisten();
-    };
-  }, [history]);
 
   const clickHandler = () => {
     bgmOff();

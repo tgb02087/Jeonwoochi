@@ -10,6 +10,9 @@ import { useGetLandmarkDataAfterClick } from '../../hooks/useGetLandmarkDataAfte
 import { MapData } from '../../mocks/handlers/festival_list';
 import { AxiosError } from 'axios';
 
+import { bgmOff, bgmStart } from '../../utils/mapBgm';
+import { history } from '../../utils/History';
+
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -79,16 +82,19 @@ const MapAPI = () => {
   const landmarkData = useGetLandmarkDataAfterClick();
   const clickLandmarkButtonHandler = () => landmarkData.refetch();
 
-  // const getCoordHandler = (idx: number) => {
-  //   const result = mapData.data!.filter(d => d.id === idx);
-  //   return {
-  //     // 임시 lat, lng 바꿔서 설정
-  //     // lat: result[0].lat,
-  //     // lng: result[0].lng,
-  //     lat: result[0].lng,
-  //     lng: result[0].lat,
-  //   };
-  // };
+  useEffect(() => {
+    bgmStart();
+  }, []);
+
+  useEffect(() => {
+    const unlisten = history.listen(history => {
+      if (history.action === 'POP') bgmOff();
+    });
+
+    return () => {
+      unlisten();
+    };
+  }, [history]);
 
   // 축제 상세 정보 불러오기
   const { data } = useQuery(['info'], () => getFestivalItem(mapData.id), {
