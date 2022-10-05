@@ -138,7 +138,7 @@ const KakaoMap = ({
 }: PropTypes) => {
   const { lat, lng } = coord;
   // 마커 이미지
-  const playerSrc = '/images/map/mira.gif';
+  const playerSrc = '/images/map/player-marker.gif';
   const restaurantSrc = '/images/map/restaurant_marker.png';
   const lodgeSrc = '/images/map/lodge_marker.png';
   const shoppingSrc = '/images/map/shopping_marker.png';
@@ -152,6 +152,7 @@ const KakaoMap = ({
   const bounds = useMemo(() => {
     const bounds = new kakao.maps.LatLngBounds();
     bounds.extend(new kakao.maps.LatLng(lat, lng));
+
     if (isVisibleMarkerRestaurant && restaurantData) {
       restaurantData.forEach(rd => {
         bounds.extend(new kakao.maps.LatLng(rd.lat, rd.lng));
@@ -182,6 +183,7 @@ const KakaoMap = ({
         bounds.extend(new kakao.maps.LatLng(ld.lat, ld.lng));
       });
     }
+
     return bounds;
   }, [
     restaurantData,
@@ -204,6 +206,12 @@ const KakaoMap = ({
       mapRef.current.setBounds(bounds);
     }
   }, [
+    restaurantData,
+    lodgeData,
+    shoppingData,
+    cultureData,
+    leisureData,
+    landmarkData,
     isVisibleMarkerRestaurant,
     isVisibleMarkerLodge,
     isVisibleMarkerShopping,
