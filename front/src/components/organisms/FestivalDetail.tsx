@@ -1,7 +1,12 @@
-import { NavigateFunction } from 'react-router-dom';
+import { useEffect } from 'react';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import tw from 'twin.macro';
+
 import { MapData } from '../../mocks/handlers/festival_list';
+import { bgmOff, bgmStart } from '../../utils/mapBgm';
+import { history } from '../../utils/History';
+
 import Image from '../atoms/Image';
 import Link from '../atoms/Link';
 import Sheet from '../atoms/Sheet';
@@ -49,6 +54,7 @@ const WeatherIcon = styled.div`
 const NewsInfo = styled.div`
   height: 15vh;
 `;
+
 /**
  * 축제 상세 정보 컴포넌트
  * 축제에 대한 기본적인 정보와 날씨, 관련 기사, 추천 맛집
@@ -62,9 +68,24 @@ const FestivalDetail = ({
   newsInfo,
   navigate,
 }: PropTypes) => {
-  console.log(newsInfo);
+  // console.log(newsInfo);
+
+  useEffect(() => {
+    bgmStart();
+  }, []);
+
+  useEffect(() => {
+    const unlisten = history.listen(history => {
+      if (history.action === 'POP') bgmOff();
+    });
+
+    return () => {
+      unlisten();
+    };
+  }, [history]);
 
   const clickHandler = () => {
+    bgmOff();
     navigate(-1);
   };
   return (
