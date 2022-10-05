@@ -21,5 +21,5 @@ import jwt
 @authentication_classes((JSONWebTokenAuthentication,))
 def get_snbr(request, user_id):
     token = request.META.get('HTTP_AUTHORIZATION').lstrip('jwt ')
-    user_id = jwt.decode(token, 'secretKey', algorithms=['HS256'])['user_id']
+    # user_id = jwt.decode(token, 'secretKey', algorithms=['HS256'])['user_id']
     return JsonResponse(user_based_cf(user_id), status=status.HTTP_200_OK, safe=False)
