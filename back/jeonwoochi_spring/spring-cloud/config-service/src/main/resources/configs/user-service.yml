@@ -13,7 +13,7 @@ spring:
     show-sql: true
     hibernate:
       format_sql: true
-      ddl-auto: none
+      ddl-auto: create
   redis:
     host: j7b305.hopto.org
     port: 6379
