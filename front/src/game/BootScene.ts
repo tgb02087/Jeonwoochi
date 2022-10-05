@@ -65,6 +65,7 @@ class BootScene extends Scene {
     eventEmitter.on('festivals', (festivalList?: MapData[]) => {
       this.festivalList = festivalList;
       this.festivalListFetched = true;
+      console.log('부트씬 받았다');
     });
   }
 
@@ -139,8 +140,7 @@ class BootScene extends Scene {
     this.enterKey = this.input.keyboard.addKey('ENTER');
 
     // 이미 존재하는 게 있다면 삭제
-    clearInterval(1);
-    setInterval(
+    const intervalId: number = window.setInterval(
       () =>
         eventEmitter.emit('playerLocation', {
           x: this.player.body.x,
@@ -148,6 +148,8 @@ class BootScene extends Scene {
         }),
       1000,
     );
+
+    eventEmitter.emit('intervalId', intervalId);
   }
 
   update(time: number) {
@@ -164,8 +166,9 @@ class BootScene extends Scene {
       console.log('stop');
       this.bgm.stop();
     }
-
+    // 여기를 못옴
     // festivalListFetched 상태로 축제 리스트 업데이트 여부 확인
+
     if (this.festivalListFetched) {
       this.createFestivalObjects();
       this.festivalListFetched = false;

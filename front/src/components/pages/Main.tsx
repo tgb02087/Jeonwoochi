@@ -96,6 +96,12 @@ const Main = () => {
       };
     }),
   );
+  // 좌표 계속 보내주는 setInterval id 받아 저장
+  // MapAPI로 넘어갈 때 clearInterval 실행
+  const [intervalId, setIntervalId] = useState(0);
+  eventEmitter.once('intervalId', intervalId => {
+    setIntervalId(intervalId);
+  });
 
   return (
     <StyledMain>
@@ -124,7 +130,11 @@ const Main = () => {
       </MainFrame>
 
       {openedFestivalModal ? (
-        <FestivalModal setState={setOpenedFestivalModal} info={festivalInfo} />
+        <FestivalModal
+          setState={setOpenedFestivalModal}
+          info={festivalInfo}
+          intervalId={intervalId}
+        />
       ) : null}
       <RequestModalWrapper>
         {/* 나중에 관리자 유무 받아서 여기 false에 넣기 */}

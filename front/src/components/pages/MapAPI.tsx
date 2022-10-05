@@ -30,7 +30,7 @@ const MapAPIContainer = styled.div`
 `;
 
 const StyledFestivalDetail = styled.div`
-  width: 20vw;
+  width: 25vw;
 `;
 
 // MapAPI 사이즈용 STMP
@@ -118,6 +118,7 @@ const MapAPI = () => {
       refetchOnWindowFocus: false,
     },
   );
+  if (newsInfo) console.log(newsInfo);
 
   return (
     <MapAPIContainer>
