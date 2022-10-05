@@ -27,7 +27,7 @@ const StyledFestivalDetail = styled.div`
 const InnerSheet = styled.div`
   ${tw`flex flex-col`}
   width: 100%;
-  height: 95.5vh;
+  height: 94.5vh;
   gap: 1rem;
 `;
 const StyledFestivalInfo = styled.div`
@@ -62,11 +62,16 @@ const FestivalDetail = ({
   newsInfo,
   navigate,
 }: PropTypes) => {
-  console.log(newsInfo);
-
   const clickHandler = () => {
     navigate(-1);
   };
+  const newsTitles = newsInfo?.map(({ title }: { title: string }) => {
+    return title
+      .replaceAll('&apos;', '')
+      .replaceAll('<b>', '')
+      .replaceAll('</b>', '');
+  });
+
   return (
     <StyledFestivalDetail>
       <Sheet>
@@ -124,11 +129,11 @@ const FestivalDetail = ({
             {newsInfo ? (
               <>
                 <Link href={newsInfo[0].link} color="white">
-                  {'- ' + newsInfo[0].title.substring(0, 25)}
+                  {'- ' + newsTitles[0].substring(0, 25)}
                 </Link>
                 <br />
                 <Link href={newsInfo[1].link} color="white">
-                  {'- ' + newsInfo[1].title.substring(0, 25)}
+                  {'- ' + newsTitles[1].substring(0, 25)}
                 </Link>
               </>
             ) : (
