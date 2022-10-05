@@ -582,4 +582,5 @@
     + `react-router v6` 에는 `history` 관련 이벤트 감지 기능이 사라짐
     + 뒤로가기 이벤트 감지용 `History` 라이브러리 설치
     + 뒤로가기 클릭시 동일하게 `bgmOff()` 함수가 실행되도록 설정
-     
+  + 리팩토링
+    + bgm Event 기능, `festivalDetail.tsx` -> `mapAPI.tsx`
