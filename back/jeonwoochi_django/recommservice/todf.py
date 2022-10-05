@@ -24,7 +24,6 @@ def recomm_stores(store):
     return recomm_stores
 
 def local_reviews(x, y): # lat, lng
-    # 기본값 x, y = 37.4097995, 127.128697
     
     # print("====================== \n into get_local_store")
     
