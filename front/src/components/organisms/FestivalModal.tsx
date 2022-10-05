@@ -1,8 +1,9 @@
-import { Dispatch, SetStateAction } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import tw from 'twin.macro';
 import { MapData } from '../../mocks/handlers/festival_list';
+import eventEmitter from '../../utils/eventEmitter';
 import Button from '../atoms/Button';
 import Image from '../atoms/Image';
 import Sheet from '../atoms/Sheet';
@@ -13,6 +14,7 @@ import TitleCancelHeader from './TitleCancelHeader';
 interface PropTypes {
   info: MapData | null;
   setState: Dispatch<SetStateAction<boolean>>;
+  intervalId: number;
 }
 const StyledFestivalModal = styled.div`
   ${tw`absolute `}
@@ -47,12 +49,15 @@ const RightBody = styled.div`
  *
  * @author jojo
  */
-const FestivalModal = ({ info, setState }: PropTypes) => {
+const FestivalModal = ({ info, setState, intervalId }: PropTypes) => {
   // console.log(info);
   const navigate = useNavigate();
+
   const linkToMapApiPageHandler = (info: MapData | undefined) => {
     if (info?.id) {
-      console.log(info);
+      // console.log(info);
+
+      clearInterval(intervalId);
       navigate(`/map/${info.id}`, { state: info });
     } else {
       console.log('에러나버림');
