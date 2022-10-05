@@ -14,10 +14,12 @@ public class AnswerResponse {
 
     private String answer;
 
+    private String image;
     public static AnswerResponse response(Answer answer){
         return new AnswerResponse(
                 answer.getId(),
-                answer.getAnswer()
+                answer.getAnswer(),
+                answer.getImage()
         );
     }
 }
