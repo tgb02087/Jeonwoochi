@@ -15,9 +15,9 @@ from tensorflow import keras
 # from tensorflow.keras.optimizers import SGD
 from rest_framework.exceptions import ParseError
 
-def user_based_cf(user_id):
-    # x, y값을 받아야 함
-    r = local_reviews(37.4097995, 127.128697)
+def user_based_cf(user_id, x, y):
+    # 기본값 x, y = 37.4097995, 127.128697
+    r = local_reviews(x, y)
     df_rating = r
     
     if len(df_rating) == 0:
