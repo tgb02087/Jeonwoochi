@@ -21,7 +21,6 @@ import { useEffect } from 'react';
 import { UserInfo, userInfo } from '../../recoil/atoms/userInfo';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 
-
 const MapAPIContainer = styled.div`
   ${tw`flex flex-row`}
 `;
@@ -51,7 +50,6 @@ const MapAPI = () => {
   // const id = location.state.info.id;
   const mapData: any = location.state;
   // console.log(mapData);
-  const [user] = useRecoilState(userInfo);
 
   // const MAPIDX = id && parseInt(id);
   // 축제 좌표 불러오기
