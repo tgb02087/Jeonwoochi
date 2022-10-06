@@ -25,11 +25,15 @@ spring:
   cloud:
     gateway:
       routes:
+
+#---------------------------------------------USER FILTER START---------------------------------------------------------------
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/api/user-service/checkAT
-            - Method=GET,POST
+            - Path=/api/user-service/recreatejwt
+            - Method=GET
+          filters:
+            - AuthorizationFilter
 
         - id: user-service
           uri: lb://USER-SERVICE
@@ -40,16 +44,63 @@ spring:
           #   - RemoveRequestHeader=Cookie
           #   - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
           #   - AuthorizationFilter
+#---------------------------------------------USER FILTER END---------------------------------------------------------------
+
+#---------------------------------------------FESTIVAL FILTER START---------------------------------------------------------------
+        - id: festival-service
+          uri: lb://FESTIVAL-SERVICE
+          predicates:
+            - Path=/api/festival-service/festival
+            - Method=POST,PUT
+          filters:
+            - AdminFilter
+
+        - id: festival-service
+          uri: lb://FESTIVAL-SERVICE
+          predicates:
+            - Path=/api/festival-service/festival/**
+            - Method=DELETE
+          filters:
+            - AdminFilter
+
+        - id: festival-service
+          uri: lb://FESTIVAL-SERVICE
+          predicates:
+            - Path=/api/festival-service/festival-form
+            - Method=GET
+          filters:
+            - AdminFilter
+
+        - id: festival-service
+          uri: lb://FESTIVAL-SERVICE
+          predicates:
+            - Path=/api/festival-service/festival-form/**
+            - Method=GET
+          filters:
+            - AdminFilter
+
+        - id: festival-service
+          uri: lb://FESTIVAL-SERVICE
+          predicates:
+            - Path=/api/festival-service/festival-form
+            - Method=POST,PUT
+          filters:
+            - AuthorizationFilter
+
+        - id: festival-service
+          uri: lb://FESTIVAL-SERVICE
+          predicates:
+            - Path=/api/festival-service/festival-form/**
+            - Method=DELETE
+          filters:
+            - AuthorizationFilter
 
         - id: festival-service
           uri: lb://FESTIVAL-SERVICE
           predicates:
             - Path=/api/festival-service/**
-            - Method=GET,POST,PUT,DELETE
-        #          filters:
-        #            - RemoveRequestHeader=Cookie
-        #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
-
+            - Method=GET
+#---------------------------------------------FESTIVAL FILTER END---------------------------------------------------------------
         - id: main-service
           uri: lb://MAIN-SERVICE
           predicates:

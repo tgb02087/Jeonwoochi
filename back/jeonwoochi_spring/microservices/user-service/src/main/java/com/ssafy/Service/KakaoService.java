@@ -8,6 +8,7 @@ import com.ssafy.Domain.Repository.UserRepo;
 import com.ssafy.Dto.Request.UserRequest;
 import com.ssafy.Dto.Response.UserLoginResponse;
 import com.ssafy.Dto.Response.UserReponse;
+import com.ssafy.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,12 +22,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+import static com.ssafy.exception.NotFoundException.USER_NOT_FOUND;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class KakaoService {
 
-    private final UserRepo userrepo;
+    private final UserRepo userRepo;
 
     @Value("${client.key}")
     private String clientkey;
@@ -139,48 +142,33 @@ public class KakaoService {
     }
 
     // 회원가입 유저인지 확인
-    public UserLoginResponse userchk(UserReponse userReponse) {
-        List<User> list = findById(userReponse.getId());
-        System.out.println("검새사이즈 : " + list.size());
-        // List<User> list = userrepo.findById(userReponse.getId());
-        User user = null;
+    public UserLoginResponse userchk(UserReponse userResponse) {
         //새로운 유저
         UserLoginResponse userLoginResponse = null;
-        if (list.size() == 0) {
-            String kakaoid = userReponse.getId();
+        if (!userRepo.findByKakaoId(userResponse.getId()).isPresent()) {
+            String kakaoid = userResponse.getId();
             String googleid = null;
-            String name = userReponse.getName();
-            GenderType gender = userReponse.getGender();
-            int age = userReponse.getAge();
+            String name = userResponse.getName();
+            GenderType gender = userResponse.getGender();
+            int age = userResponse.getAge();
             RoleType role = RoleType.USER;
             StateType stateType = StateType.활성;
             UserRequest userRequest = new UserRequest(kakaoid, googleid, name, gender, age, role, stateType, false);
-            user = User.create(userRequest);
-            usersave(user);
+            User user = User.create(userRequest);
+            userRepo.save(user);
             userLoginResponse = new UserLoginResponse(user.getId(),
-                    kakaoid,googleid, name, gender, age, role, stateType, false,true);
+                    kakaoid,googleid, name, gender, age, role, stateType, false,false);
         } else {
-            user = list.get(0);
+            User user = userRepo.findByKakaoId(userResponse.getId())
+                    .orElseThrow(()-> new NotFoundException(USER_NOT_FOUND));
             userLoginResponse = new UserLoginResponse(user.getId(),
                     user.getKakao_id(),user.getGoogle_id(),user.getName(),user.getGender(),user.getAge(),
-                    user.getRole(),user.getStateType(),false,false);
+                    user.getRole(),user.getStateType(),false,true);
         }
-        System.out.println(user.getId());
         // 토큰 재발급
         return userLoginResponse;
     }
 
-    public void usersave(User user) {
-        userrepo.save(user);
-    }
-
-    public User findOne(Long id) {
-        return userrepo.findOne(id);
-    }
-
-    public List<User> findById(String kakao_id) {
-        return userrepo.findById(kakao_id);
-    }
 
     public String logout(String code) throws IOException {
         String host = "https://kapi.kakao.com/v1/user/logout";
@@ -215,9 +203,8 @@ public class KakaoService {
     }
 
     public String userDisable(Long id) {
-        User user = userrepo.findOne(id);
-        if (user == null)
-            return "회원 탈퇴 실패";
+        User user = userRepo.findById(id)
+                .orElseThrow(()-> new NotFoundException(USER_NOT_FOUND));
         user.disable(StateType.비활성);
         return "회원 탈퇴 성공";
     }

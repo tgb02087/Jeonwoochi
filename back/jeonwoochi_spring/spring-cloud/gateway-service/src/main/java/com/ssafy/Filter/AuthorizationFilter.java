@@ -34,8 +34,8 @@ public class AuthorizationFilter extends AbstractGatewayFilterFactory<Authorizat
         return ((exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
-            log.info("Jwt검증 전 : 헤더 :" + request.getHeaders());
-            log.info("헤더 정보 : " + request.getHeaders().get(HttpHeaders.AUTHORIZATION));
+            //log.info("Jwt검증 전 : 헤더 :" + request.getHeaders());
+            //log.info("헤더 정보 : " + request.getHeaders().get(HttpHeaders.AUTHORIZATION));
 
             if(!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)){
                 return onError(exchange,"No Authorization Header", HttpStatus.UNAUTHORIZED);
@@ -44,13 +44,13 @@ public class AuthorizationFilter extends AbstractGatewayFilterFactory<Authorizat
             String authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
             String jwt = authorizationHeader.replace("Bearer ", "");
 
-            log.info("Jwt 검증 후" + jwt);
+            //log.info("Jwt 검증 후" + jwt);
             if(!isJwtValid(jwt)){
                 return onError(exchange,"엑세스토큰 만료",HttpStatus.UNAUTHORIZED);
             }
 
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
-                log.info("Filter 응답code -> {}", response.getStatusCode());
+                //log.info("Filter 응답code -> {}", response.getStatusCode());
             }));
         });
     }

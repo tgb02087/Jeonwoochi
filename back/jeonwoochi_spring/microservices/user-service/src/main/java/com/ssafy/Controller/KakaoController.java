@@ -51,15 +51,7 @@ public class KakaoController {
                 .sameSite("None")
                 .build();
         response.setHeader("set-Cookie", cookie.toString());
-        return new ResponseEntity<>(AccessTokenResponse.create(jwtTokenResponse.getAccesstoken(),userLoginResponse.getIsUser()), HttpStatus.OK);
-    }
-
-    // 유저정보 조회
-    @GetMapping("/userinfo")
-    public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
-        String id = request.getParameter("id");
-        List<User> list = ks.findById(id);
-        return new ResponseEntity<>(list.get(0), HttpStatus.OK);
+        return new ResponseEntity<>(AccessTokenResponse.create(jwtTokenResponse.getAccesstoken(),userLoginResponse.getIsAlreadyJoined()), HttpStatus.OK);
     }
 
     // 로그아웃

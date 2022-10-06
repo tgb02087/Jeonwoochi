@@ -29,21 +29,6 @@ public class AuthController {
 
     private final KakaoService ks;
 
-    @RequestMapping("/test3")
-    public ResponseEntity<?> test3(Model model) {
-        System.out.println(model.getAttribute("token"));
-        System.out.println("test3");
-        // Map<String,?> map = RequestContextUtils.getInputFlashMap(request);
-        // System.out.println("값: "+(String) map.get("token"));
-        return new ResponseEntity<>("성공", HttpStatus.OK);
-    }
-
-    @GetMapping("/filtertest")
-    public ResponseEntity<?> test() {
-        System.out.println("test : ");
-        return new ResponseEntity<>("성공", HttpStatus.OK);
-    }
-
     // AT, RT 생성, 쿠키 전송
     @PostMapping("/createjwt")
     public ResponseEntity<?> createjwt(@RequestBody TokenInfoRequest tokenInfoRequest,

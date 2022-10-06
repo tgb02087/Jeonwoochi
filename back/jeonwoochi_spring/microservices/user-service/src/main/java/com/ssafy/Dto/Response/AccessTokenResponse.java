@@ -14,13 +14,13 @@ public class AccessTokenResponse {
 
     private String accessToken;
 
-    private Boolean isUser;
+    private Boolean isAlreadyJoined;
 
-    public static AccessTokenResponse create(String AT, Boolean isuser){
+    public static AccessTokenResponse create(String AT, Boolean isAlreadyJoined){
         AccessTokenResponse accessTokenResponse = new AccessTokenResponse();
         accessTokenResponse.accessToken=AT;
         accessTokenResponse.grantType="Bearer";
-        accessTokenResponse.isUser=isuser;
+        accessTokenResponse.isAlreadyJoined=isAlreadyJoined;
         return accessTokenResponse;
     }
 }

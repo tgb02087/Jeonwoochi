@@ -29,5 +29,5 @@ public class UserLoginResponse {
 
     private Boolean is_dummy;
 
-    private Boolean isUser;
+    private Boolean isAlreadyJoined;
 }
