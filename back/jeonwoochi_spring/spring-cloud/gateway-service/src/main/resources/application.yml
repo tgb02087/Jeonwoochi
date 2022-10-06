@@ -38,12 +38,32 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
+            - Path=/api/user-service/game
+            - Method=GET,POST
+          filters:
+            - AuthorizationFilter
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/user-service/disable
+            - Method=GET
+          filters:
+            - AuthorizationFilter
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/user-service/logout
+            - Method=GET
+          filters:
+            - AuthorizationFilter
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
             - Path=/api/user-service/**
             - Method=GET,POST,PUT,DELETE
-          # filters:
-          #   - RemoveRequestHeader=Cookie
-          #   - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
-          #   - AuthorizationFilter
 #---------------------------------------------USER FILTER END---------------------------------------------------------------
 
 #---------------------------------------------FESTIVAL FILTER START---------------------------------------------------------------
@@ -101,23 +121,42 @@ spring:
             - Path=/api/festival-service/**
             - Method=GET
 #---------------------------------------------FESTIVAL FILTER END---------------------------------------------------------------
+
+#---------------------------------------------MAIN FILTER START---------------------------------------------------------------
+        - id: main-service
+          uri: lb://MAIN-SERVICE
+          predicates:
+            - Path=/api/main-service/category
+            - Method=POST
+          filters:
+            - AdminFilter
+
+        - id: main-service
+          uri: lb://MAIN-SERVICE
+          predicates:
+            - Path=/api/main-service/question
+            - Method=POST
+          filters:
+            - AdminFilter
+
         - id: main-service
           uri: lb://MAIN-SERVICE
           predicates:
             - Path=/api/main-service/**
             - Method=GET,POST,PUT,DELETE
-        #          filters:
-        #            - RemoveRequestHeader=Cookie
-        #            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+          filters:
+            - AuthorizationFilter
+#---------------------------------------------MAIN FILTER END---------------------------------------------------------------
 
+#---------------------------------------------RECOMM FILTER START---------------------------------------------------------------
         - id: recomm-service
           uri: lb://RECOMM-SERVICE
           predicates:
             - Path=/api/recomm-service/**
             - Method=GET,POST
-#          filters:
-#            - RemoveRequestHeader=Cookie
-#            - RewritePath=/auth-service/(?<segment>.*),/$\{segment}
+          filters:
+            - AuthorizationFilter
+#---------------------------------------------RECOMM FILTER END---------------------------------------------------------------
 
 token:
   secret: secretKey
