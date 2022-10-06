@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
 import qs from 'qs';
@@ -5,6 +6,7 @@ import getKakaoAccessToken from '../../api/getKakaoAccessToken';
 import getJwtAccessToken from '../../api/getJwtAccessToken';
 import checkAuth from '../../api/checkAuth';
 import { userInfo } from '../../recoil/atoms/userInfo';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * 카카오 로그인 리다이렉트 페이지 컴포넌트
@@ -15,12 +17,13 @@ import { userInfo } from '../../recoil/atoms/userInfo';
  */
 const LoginKakaoRedirect = () => {
   const setUser = useSetRecoilState(userInfo);
+  const navigate = useNavigate();
 
   const { code } = qs.parse(new URL(location.href).search, {
     ignoreQueryPrefix: true,
   }) as { code: string };
 
-  useQuery(
+  const { isError } = useQuery(
     ['accessToken'],
     async () => {
       const kakaoAccessToken = await getKakaoAccessToken(code);
@@ -36,6 +39,9 @@ const LoginKakaoRedirect = () => {
       refetchOnWindowFocus: false,
     },
   );
+  useEffect(() => {
+    if (isError) navigate('/');
+  }, [isError]);
 
   return null;
 };
