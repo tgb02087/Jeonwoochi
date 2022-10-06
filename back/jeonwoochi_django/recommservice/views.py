@@ -15,15 +15,20 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 import pandas as pd
 import numpy as np
 import jwt
+import base64
+
+
 
 # Create your views here.
 # @permission_classes((IsAuthenticated, ))
 # @authentication_classes((JSONWebTokenAuthentication,))
 @api_view(['POST'])
 def get_snbr(request):
+    
     token = request.META.get('HTTP_AUTHORIZATION').split(" ")[1]
-    user_id = jwt.decode(token, 'secretKey', algorithms=['HS256'])['user_id']
+    user_id = jwt.decode(token, base64.b64decode('secretKe'))['id']
     if request.method == 'POST':
+
         data=json.loads(request.body)
         x = float(data.get('lat' , None))
         y = float(data.get('lng' , None))
