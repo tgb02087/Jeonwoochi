@@ -34,4 +34,21 @@ public class LeportsQueryRepo {
                 .where(leports.category.in(categories))
                 .fetch();
     }
+
+    public List<Leports> findLeportsByDist(Double festival_lat, Double festival_lng){
+        return queryFactory
+                .select(leports)
+                .from(leports)
+                .where(
+                        acos(cos(radians(Expressions.constant(festival_lat)))
+                                .multiply(cos(radians(leports.lat))
+                                        .multiply(cos(radians(leports.lng))
+                                                .subtract(radians(Expressions.constant(festival_lng)))
+                                                .add(sin(radians(Expressions.constant(festival_lat)))
+                                                        .multiply(sin(radians(leports.lat)))))))
+                                .multiply(Expressions.constant(6371))
+                                .loe(20.0)
+                )
+                .fetch();
+    }
 }

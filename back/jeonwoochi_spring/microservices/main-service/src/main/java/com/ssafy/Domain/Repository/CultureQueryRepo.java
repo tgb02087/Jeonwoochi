@@ -34,4 +34,21 @@ public class CultureQueryRepo {
                 .where(culture.category.in(categories))
                 .fetch();
     }
+
+    public List<Culture> findCultureByDist(Double festival_lat, Double festival_lng){
+        return queryFactory
+                .select(culture)
+                .from(culture)
+                .where(
+                        acos(cos(radians(Expressions.constant(festival_lat)))
+                                .multiply(cos(radians(culture.lat))
+                                        .multiply(cos(radians(culture.lng))
+                                                .subtract(radians(Expressions.constant(festival_lng)))
+                                                .add(sin(radians(Expressions.constant(festival_lat)))
+                                                        .multiply(sin(radians(culture.lat)))))))
+                                .multiply(Expressions.constant(6371))
+                                .loe(20.0)
+                )
+                .fetch();
+    }
 }

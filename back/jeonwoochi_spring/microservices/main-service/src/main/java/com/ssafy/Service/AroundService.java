@@ -29,6 +29,11 @@ public class AroundService {
         List<LodgmentResponse> lodgmentResponses = lodgmentQueryRepo.findLodgmentByDistAndCategory(festival_lat, festival_lng, categories).stream()
                 .map(LodgmentResponse::response)
                 .collect(Collectors.toList());
+        if(lodgmentResponses.isEmpty()){
+            lodgmentResponses = lodgmentQueryRepo.findLodgmentByDist(festival_lat, festival_lng).stream()
+                    .map(LodgmentResponse::response)
+                    .collect(Collectors.toList());
+        }
         return lodgmentResponses;
     }
 
@@ -41,6 +46,11 @@ public class AroundService {
         List<LeportsResponse> leportsResponses = leportsQueryRepo.findLeportsByDistAndCategory(festival_lat, festival_lng, categories).stream()
                 .map(LeportsResponse::response)
                 .collect(Collectors.toList());
+        if(leportsResponses.isEmpty()){
+            leportsResponses = leportsQueryRepo.findLeportsByDist(festival_lat, festival_lng).stream()
+                    .map(LeportsResponse::response)
+                    .collect(Collectors.toList());
+        }
         return leportsResponses;
     }
 
@@ -53,6 +63,11 @@ public class AroundService {
         List<CultureResponse> cultureResponses = cultureQueryRepo.findCultureByDistAndCategory(festival_lat, festival_lng, categories).stream()
                 .map(CultureResponse::response)
                 .collect(Collectors.toList());
+        if(cultureResponses.isEmpty()){
+            cultureResponses = cultureQueryRepo.findCultureByDist(festival_lat, festival_lng).stream()
+                    .map(CultureResponse::response)
+                    .collect(Collectors.toList());
+        }
         return cultureResponses;
     }
 
@@ -65,6 +80,11 @@ public class AroundService {
         List<ShoppingResponse> shoppingResponses = shoppingQueryRepo.findShoppingByDistAndCategory(festival_lat, festival_lng, categories).stream()
                 .map(ShoppingResponse::response)
                 .collect(Collectors.toList());
+        if(shoppingResponses.isEmpty()){
+            shoppingResponses = shoppingQueryRepo.findShoppingByDist(festival_lat, festival_lng).stream()
+                    .map(ShoppingResponse::response)
+                    .collect(Collectors.toList());
+        }
         return shoppingResponses;
     }
 }

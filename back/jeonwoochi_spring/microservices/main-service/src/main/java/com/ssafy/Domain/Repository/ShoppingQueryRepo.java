@@ -35,4 +35,21 @@ public class ShoppingQueryRepo {
                 .where(shopping.category.in(categories))
                 .fetch();
     }
+
+    public List<Shopping> findShoppingByDist(Double festival_lat, Double festival_lng){
+        return queryFactory
+                .select(shopping)
+                .from(shopping)
+                .where(
+                        acos(cos(radians(Expressions.constant(festival_lat)))
+                                .multiply(cos(radians(shopping.lat))
+                                        .multiply(cos(radians(shopping.lng))
+                                                .subtract(radians(Expressions.constant(festival_lng)))
+                                                .add(sin(radians(Expressions.constant(festival_lat)))
+                                                        .multiply(sin(radians(shopping.lat)))))))
+                                .multiply(Expressions.constant(6371))
+                                .loe(20.0)
+                )
+                .fetch();
+    }
 }

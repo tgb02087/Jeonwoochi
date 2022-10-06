@@ -34,4 +34,21 @@ public class LodgmentQueryRepo {
                 .where(lodgment.category.in(categories))
                 .fetch();
     }
+
+    public List<Lodgment> findLodgmentByDist(Double festival_lat, Double festival_lng){
+        return queryFactory
+                .select(lodgment)
+                .from(lodgment)
+                .where(
+                        acos(cos(radians(Expressions.constant(festival_lat)))
+                                .multiply(cos(radians(lodgment.lat))
+                                        .multiply(cos(radians(lodgment.lng))
+                                                .subtract(radians(Expressions.constant(festival_lng)))
+                                                .add(sin(radians(Expressions.constant(festival_lat)))
+                                                        .multiply(sin(radians(lodgment.lat)))))))
+                                .multiply(Expressions.constant(6371))
+                                .loe(20.0)
+                )
+                .fetch();
+    }
 }

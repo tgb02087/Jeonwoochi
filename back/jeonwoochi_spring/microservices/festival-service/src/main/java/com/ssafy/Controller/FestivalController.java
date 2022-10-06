@@ -99,6 +99,8 @@ public class FestivalController {
             @Valid @RequestPart(value = "data", required = true) final FestivalFormCreateRequest request,
             @LoginUser User user
     ){
+        System.out.println(file);
+        System.out.println(request);
         String imgUrl = awsS3Service.uploadFile(file);
         festivalFormService.createFestivalForm(request, user.getId(), baseURL+imgUrl);
         return ResponseEntity.ok().build();
