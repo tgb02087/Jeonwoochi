@@ -25,8 +25,8 @@ import getFestivalNews from '../../api/getFestivalNews';
 import getFestivalList from '../../api/getFestivalList';
 import checkLoginState from '../../api/checkLoginState';
 import { useEffect } from 'react';
-import { userInfo } from '../../recoil/atoms/userInfo';
-import { useSetRecoilState } from 'recoil';
+import { UserInfo, userInfo } from '../../recoil/atoms/userInfo';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 
 const MapAPIContainer = styled.div`
   ${tw`flex flex-row`}
@@ -61,9 +61,11 @@ const MapAPI = () => {
   // 축제 좌표 불러오기
   // const mapData = useQuery<MapData[], AxiosError>(['Maps'], getFestivalList);
 
+  const user: UserInfo | undefined = useRecoilValue(userInfo);
+
   const { lat, lng } = mapData;
   // 맛집 데이터 불러오기
-  const restaurantData = useGetFoodDataAfterClick(lat, lng);
+  const restaurantData = useGetFoodDataAfterClick(lat, lng, user!.id);
   const clickFoodButtonHandler = () => restaurantData.refetch();
 
   // 숙박 데이터 불러오기
