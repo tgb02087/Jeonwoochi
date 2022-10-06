@@ -8,8 +8,8 @@ import { userInfo } from '../../recoil/atoms/userInfo';
 
 const LoginBackground = styled.div`
   ${tw`flex justify-center items-center h-screen`}
-  background-image: url(/images/login/background.PNG);
-  background-size: cover;
+  background-image: url(/images/login/background.gif);
+  background-size: 100vw;
 `;
 
 /**
