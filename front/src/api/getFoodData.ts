@@ -12,10 +12,10 @@ const getFoodData = async (lat: number, lng: number, userId: number) => {
 
     const { data } = await axios({
       method: 'POST',
-      url: `/recomm-service/r_cf/${userId}`,
-      headers: {
-        Authorization: 'k=sdfohijkahsdofhoi',
-      },
+      url: `/recomm-service/r_cf/`,
+      // headers: {
+      //   Authorization: 'k=sdfohijkahsdofhoi',
+      // },
       data: {
         lat: lng,
         lng: lat,
