@@ -30,7 +30,7 @@ public class ShoppingQueryRepo {
                                                 .add(sin(radians(Expressions.constant(festival_lat)))
                                                         .multiply(sin(radians(shopping.lat)))))))
                                 .multiply(Expressions.constant(6371))
-                                .loe(20.0)
+                                .loe(5.0)
                 )
                 .where(shopping.category.in(categories))
                 .fetch();
@@ -48,7 +48,7 @@ public class ShoppingQueryRepo {
                                                 .add(sin(radians(Expressions.constant(festival_lat)))
                                                         .multiply(sin(radians(shopping.lat)))))))
                                 .multiply(Expressions.constant(6371))
-                                .loe(20.0)
+                                .loe(5.0)
                 )
                 .fetch();
     }

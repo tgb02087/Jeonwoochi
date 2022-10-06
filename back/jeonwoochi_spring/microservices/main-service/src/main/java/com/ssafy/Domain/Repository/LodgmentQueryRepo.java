@@ -29,7 +29,7 @@ public class LodgmentQueryRepo {
                                                 .add(sin(radians(Expressions.constant(festival_lat)))
                                                         .multiply(sin(radians(lodgment.lat)))))))
                                 .multiply(Expressions.constant(6371))
-                                .loe(20.0)
+                                .loe(5.0)
                 )
                 .where(lodgment.category.in(categories))
                 .fetch();
@@ -47,7 +47,7 @@ public class LodgmentQueryRepo {
                                                 .add(sin(radians(Expressions.constant(festival_lat)))
                                                         .multiply(sin(radians(lodgment.lat)))))))
                                 .multiply(Expressions.constant(6371))
-                                .loe(20.0)
+                                .loe(5.0)
                 )
                 .fetch();
     }
