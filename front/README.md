@@ -584,3 +584,8 @@
     + 뒤로가기 클릭시 동일하게 `bgmOff()` 함수가 실행되도록 설정
   + 리팩토링
     + bgm Event 기능, `festivalDetail.tsx` -> `mapAPI.tsx`
+
+## 221006
++ 종현
+  + `recomm` 관련 버튼 서버와 연결
+    

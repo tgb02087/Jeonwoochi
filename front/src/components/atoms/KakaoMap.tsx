@@ -79,14 +79,14 @@ const EventMarkerContainer = ({
   const focusInfoWindowHandler = () => {
     setIsVisible(prev => !prev);
     if (!isVisible) {
-      map.setCenter(new kakao.maps.LatLng(position.lat, position.lng));
+      map.setCenter(new kakao.maps.LatLng(position.lng, position.lat));
       // map.panTo(new kakao.maps.LatLng(position.lat, position.lng));
     }
   };
 
   return (
     <MapMarker
-      position={{ lat: position.lat, lng: position.lng }}
+      position={{ lat: position.lng, lng: position.lat }}
       onClick={focusInfoWindowHandler}
       image={{ src: markerSrc, size: { width: 50, height: 50 } }}
     >
@@ -105,13 +105,13 @@ interface PropTypes {
   shoppingData?: Shopping[] | undefined;
   cultureData?: Culture[] | undefined;
   leisureData?: Leisure[] | undefined;
-  landmarkData?: Landmark[] | undefined;
+  // landmarkData?: Landmark[] | undefined;
   isVisibleMarkerRestaurant: boolean;
   isVisibleMarkerLodge: boolean;
   isVisibleMarkerShopping: boolean;
   isVisibleMarkerCulture: boolean;
   isVisibleMarkerLeisure: boolean;
-  isVisibleMarkerLandmark: boolean;
+  // isVisibleMarkerLandmark: boolean;
 }
 
 /**
@@ -128,14 +128,14 @@ const KakaoMap = ({
   shoppingData,
   cultureData,
   leisureData,
-  landmarkData,
+  // landmarkData,
   isVisibleMarkerRestaurant,
   isVisibleMarkerLodge,
   isVisibleMarkerShopping,
   isVisibleMarkerCulture,
   isVisibleMarkerLeisure,
-  isVisibleMarkerLandmark,
-}: PropTypes) => {
+}: // isVisibleMarkerLandmark,
+PropTypes) => {
   const { lat, lng } = coord;
   // 마커 이미지
   const playerSrc = '/images/map/player-marker.gif';
@@ -144,7 +144,7 @@ const KakaoMap = ({
   const shoppingSrc = '/images/map/shopping_marker.png';
   const cultureSrc = '/images/map/culture_marker.png';
   const leisureSrc = '/images/map/leisure_marker.png';
-  const landmarkSrc = '/images/map/landmark_marker.png';
+  // const landmarkSrc = '/images/map/landmark_marker.png';
 
   const size = { width: 32, height: 45 };
   const mapRef = useRef(null);
@@ -155,34 +155,34 @@ const KakaoMap = ({
 
     if (isVisibleMarkerRestaurant && restaurantData) {
       restaurantData.forEach(rd => {
-        bounds.extend(new kakao.maps.LatLng(rd.lat, rd.lng));
+        bounds.extend(new kakao.maps.LatLng(rd.lng, rd.lat));
       });
     }
     if (isVisibleMarkerLodge && lodgeData) {
       lodgeData.forEach(ld => {
-        bounds.extend(new kakao.maps.LatLng(ld.lat, ld.lng));
+        bounds.extend(new kakao.maps.LatLng(ld.lng, ld.lat));
       });
     }
     if (isVisibleMarkerShopping && shoppingData) {
       shoppingData.forEach(sp => {
-        bounds.extend(new kakao.maps.LatLng(sp.lat, sp.lng));
+        bounds.extend(new kakao.maps.LatLng(sp.lng, sp.lat));
       });
     }
     if (isVisibleMarkerCulture && cultureData) {
       cultureData.forEach(cd => {
-        bounds.extend(new kakao.maps.LatLng(cd.lat, cd.lng));
+        bounds.extend(new kakao.maps.LatLng(cd.lng, cd.lat));
       });
     }
     if (isVisibleMarkerLeisure && leisureData) {
       leisureData.forEach(ld => {
-        bounds.extend(new kakao.maps.LatLng(ld.lat, ld.lng));
+        bounds.extend(new kakao.maps.LatLng(ld.lng, ld.lat));
       });
     }
-    if (isVisibleMarkerLandmark && landmarkData) {
-      landmarkData.forEach(ld => {
-        bounds.extend(new kakao.maps.LatLng(ld.lat, ld.lng));
-      });
-    }
+    // if (isVisibleMarkerLandmark && landmarkData) {
+    //   landmarkData.forEach(ld => {
+    //     bounds.extend(new kakao.maps.LatLng(ld.lat, ld.lng));
+    //   });
+    // }
 
     return bounds;
   }, [
@@ -191,13 +191,13 @@ const KakaoMap = ({
     shoppingData,
     cultureData,
     leisureData,
-    landmarkData,
+    // landmarkData,
     isVisibleMarkerRestaurant,
     isVisibleMarkerLodge,
     isVisibleMarkerShopping,
     isVisibleMarkerCulture,
     isVisibleMarkerLeisure,
-    isVisibleMarkerLandmark,
+    // isVisibleMarkerLandmark,
   ]);
 
   useEffect(() => {
@@ -211,13 +211,13 @@ const KakaoMap = ({
     shoppingData,
     cultureData,
     leisureData,
-    landmarkData,
+    // landmarkData,
     isVisibleMarkerRestaurant,
     isVisibleMarkerLodge,
     isVisibleMarkerShopping,
     isVisibleMarkerCulture,
     isVisibleMarkerLeisure,
-    isVisibleMarkerLandmark,
+    // isVisibleMarkerLandmark,
   ]);
 
   return (
@@ -279,7 +279,7 @@ const KakaoMap = ({
             markerSrc={leisureSrc}
           />
         ))}
-      {isVisibleMarkerLandmark &&
+      {/* {isVisibleMarkerLandmark &&
         landmarkData &&
         landmarkData.map((position, index) => (
           <EventMarkerContainer
@@ -287,7 +287,7 @@ const KakaoMap = ({
             position={{ lat: position.lat, lng: position.lng }}
             markerSrc={landmarkSrc}
           />
-        ))}
+        ))} */}
     </Map>
   );
 };

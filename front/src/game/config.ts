@@ -22,12 +22,12 @@ const config: Types.Core.GameConfig = {
   // 임시 추가
   // scale: {
   //   mode: Phaser.Scale.FIT,
-  //   autoCenter: Phaser.Scale.CENTER_BOTH
+  //   autoCenter: Phaser.Scale.CENTER_BOTH,
   // },
   // render: {
   //   antialias: false,
   //   pixelArt: true,
-  //   roundPixels: true
+  //   roundPixels: true,
   // },
   scene: BootScene,
 };
