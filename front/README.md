@@ -587,5 +587,9 @@
 
 ## 221006
 + 종현
-  + `recomm` 관련 버튼 서버와 연결
-    
+  + `recomm` spiring 연결
+    + `culture`
+    + `shopping`
+    + `reports`
+  + `recomm` django 연결
+    + `restaurant`

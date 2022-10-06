@@ -5,7 +5,7 @@ import { Shopping } from '../../mocks/handlers/festival_recomm_shopping';
 import { Culture } from '../../mocks/handlers/festival_recomm_culture';
 import { Map, MapMarker, useMap } from 'react-kakao-maps-sdk';
 import { Leisure } from '../../mocks/handlers/festival_recomm_leisure';
-import { Landmark } from '../../mocks/handlers/festival_recomm_landmark';
+// import { Landmark } from '../../mocks/handlers/festival_recomm_landmark';
 
 // 마커 사이즈
 
@@ -79,14 +79,14 @@ const EventMarkerContainer = ({
   const focusInfoWindowHandler = () => {
     setIsVisible(prev => !prev);
     if (!isVisible) {
-      map.setCenter(new kakao.maps.LatLng(position.lng, position.lat));
+      map.setCenter(new kakao.maps.LatLng(position.lat, position.lng));
       // map.panTo(new kakao.maps.LatLng(position.lat, position.lng));
     }
   };
 
   return (
     <MapMarker
-      position={{ lat: position.lng, lng: position.lat }}
+      position={{ lat: position.lat, lng: position.lng }}
       onClick={focusInfoWindowHandler}
       image={{ src: markerSrc, size: { width: 50, height: 50 } }}
     >
@@ -155,7 +155,7 @@ PropTypes) => {
 
     if (isVisibleMarkerRestaurant && restaurantData) {
       restaurantData.forEach(rd => {
-        bounds.extend(new kakao.maps.LatLng(rd.lng, rd.lat));
+        bounds.extend(new kakao.maps.LatLng(rd.lat, rd.lng));
       });
     }
     if (isVisibleMarkerLodge && lodgeData) {
@@ -257,7 +257,7 @@ PropTypes) => {
         shoppingData.map((position, index) => (
           <EventMarkerContainer
             key={index}
-            position={{ lat: position.lat, lng: position.lng }}
+            position={{ lat: position.lng, lng: position.lat }}
             markerSrc={shoppingSrc}
           />
         ))}

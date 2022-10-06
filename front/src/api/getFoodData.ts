@@ -1,19 +1,21 @@
 import axios from 'axios';
 
 import sound from '../effect/walk.wav';
-import { festivalRequestId } from '../recoil/atoms/festivalRequestId';
 
-const getFoodData = async (lat: number, lng: number) => {
+const getFoodData = async (lat: number, lng: number, userId: number) => {
   try {
     const audio = new Audio(sound);
     audio.volume = 0.2;
     audio.play();
 
-    console.log(festivalRequestId);
+    console.log(userId);
 
     const { data } = await axios({
       method: 'POST',
-      url: '/recomm-service/r_cf/74999',
+      url: `/recomm-service/r_cf/${userId}`,
+      headers: {
+        Authorization: 'k=sdfohijkahsdofhoi',
+      },
       data: {
         lat: lng,
         lng: lat,
