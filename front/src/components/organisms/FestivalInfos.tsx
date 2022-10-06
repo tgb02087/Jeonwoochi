@@ -30,10 +30,14 @@ const FestivalInfos = ({ info, size }: PropTypes) => {
         color={'white'}
         size={size}
       />
-      <Link href={homepage} color="white" size={size}>
+      <Link href={homepage} color="skyblue" size={size}>
         {homepage}
       </Link>
-      <Text message={info.description} color={'white'} size={size} />
+      <Text
+        message={info.description.replaceAll('<br>', '. ')}
+        color={'white'}
+        size={size}
+      />
     </StyledFestivalInfos>
   );
 };
