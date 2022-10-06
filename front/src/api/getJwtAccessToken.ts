@@ -15,9 +15,9 @@ interface HeaderWithAuthorization extends HeadersDefaults {
  * @author Sckroll
  */
 const getJwtAccessToken = async (token: string) => {
-  // isUser - true: 가입되어 있는 유저 / false: 신규 유저
+  // isAlreadyJoined - true: 가입되어 있는 유저 / false: 신규 유저
   const {
-    data: { accessToken, isUser },
+    data: { isAlreadyJoined, accessToken },
   } = await axios({
     method: 'get',
     url: '/user-service/login/kakao',
@@ -25,14 +25,13 @@ const getJwtAccessToken = async (token: string) => {
       token,
     },
   });
-  console.log(isUser);
+  console.log(isAlreadyJoined);
+  localStorage.setItem('isAlreadyJoined', isAlreadyJoined);
 
   // Axios 헤더에 액세스 토큰 추가
   (
     axios.defaults.headers as HeaderWithAuthorization
   ).Authorization = `Bearer ${accessToken}`;
-
-  return accessToken;
 };
 
 export default getJwtAccessToken;
