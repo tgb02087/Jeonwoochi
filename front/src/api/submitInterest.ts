@@ -1,13 +1,16 @@
 import axios from 'axios';
 
-const submitInterest = async (interests: any) => {
+const submitInterest = async (interests: any, navigate: any) => {
+  console.log(interests);
+
   try {
-    const { data } = await axios({
+    await axios({
       method: 'POST',
       url: '/main-service/interest',
       data: interests,
     });
-    return data;
+    window.alert('관심사가 선택되었습니다!');
+    navigate('/game');
   } catch (e) {
     console.log(e);
   }
