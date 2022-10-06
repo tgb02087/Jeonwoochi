@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import getFestivalItem from '../../api/getFestivalItem';
@@ -8,7 +8,7 @@ import getFestivalList from '../../api/getFestivalList';
 import getSelectedFestivals from '../../api/getSelectedFestivals';
 import checkLoginState from '../../api/checkLoginState';
 import { MapData } from '../../mocks/handlers/festival_list';
-import { userInfo } from '../../recoil/atoms/userInfo';
+import { userInfo, UserInfo } from '../../recoil/atoms/userInfo';
 import eventEmitter from '../../utils/eventEmitter';
 import FestivalModal from '../organisms/FestivalModal';
 import FestivalSideBar from '../organisms/FestivalSideBar';
@@ -20,6 +20,7 @@ import Minimap from '../organisms/Minimap';
 import RequestConfirmModal from '../organisms/RequestConfirmModal';
 import RequestListModal from '../organisms/RequestListModal';
 import RequestModal from '../organisms/RequestModal';
+import { useNavigate } from 'react-router-dom';
 
 const StyledMain = styled.div`
   height: 95vh;
@@ -45,6 +46,7 @@ const Main = () => {
   // festivalInfo를 props로 넘겨 FestivalModal 렌더링
   // isLoading, isError는 당장 사용하지 않아서 우선 제거
   const [festivalInfo, setFestivalInfo] = useState<MapData | null>(null);
+  const navigate = useNavigate();
 
   const { data: listData } = useQuery(['festivalList'], getFestivalList);
   // console.log(listData);
@@ -76,6 +78,8 @@ const Main = () => {
   const soundBtnClickHandler = () => {
     setIsSound(prev => !prev);
   };
+
+  const [user] = useRecoilState(userInfo);
 
   useEffect(() => {
     checkLoginState(setUserData);
@@ -116,10 +120,11 @@ const Main = () => {
     <StyledMain>
       <MainFrame>
         <MainHeader
-          isAdmin={true}
+          userInfo={user}
           isSound={isSound}
           soundBtnClickHandler={soundBtnClickHandler}
           setState={setOpenedRequestFirstModal}
+          navigate={navigate}
         />
         <MainBody>
           <FestivalSideBar
@@ -147,16 +152,20 @@ const Main = () => {
       ) : null}
       <RequestModalWrapper>
         {/* 나중에 관리자 유무 받아서 여기 false에 넣기 */}
-        {openedRequestFirstModal && false ? (
+        {openedRequestFirstModal && !user?.isAdmin ? (
           <RequestModal setState={setOpenedRequestFirstModal} />
         ) : null}
-        {openedRequestFirstModal && !openedRequestSecondModal && true ? (
+        {openedRequestFirstModal &&
+        !openedRequestSecondModal &&
+        user?.isAdmin ? (
           <RequestListModal
             setState={setOpenedRequestFirstModal}
             setOpenedDetail={setOpenedRequestSecondModal}
           />
         ) : null}
-        {!openedRequestFirstModal && openedRequestSecondModal && true ? (
+        {!openedRequestFirstModal &&
+        openedRequestSecondModal &&
+        user?.isAdmin ? (
           <RequestConfirmModal
             setState={setOpenedRequestSecondModal}
             setOpenedList={setOpenedRequestFirstModal}
