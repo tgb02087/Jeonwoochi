@@ -32,6 +32,7 @@ public class ShoppingQueryRepo {
                                 .loe(5.0)
                 )
                 .where(shopping.category.in(categories))
+                .limit(20)
                 .fetch();
     }
 
@@ -48,6 +49,7 @@ public class ShoppingQueryRepo {
                                 .multiply(Expressions.constant(6371))
                                 .loe(5.0)
                 )
+                .limit(20)
                 .fetch();
     }
 }

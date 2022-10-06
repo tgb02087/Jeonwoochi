@@ -31,6 +31,7 @@ public class CultureQueryRepo {
                         .loe(5.0)
                 )
                 .where(culture.category.in(categories))
+                .limit(20)
                 .fetch();
     }
 
@@ -47,6 +48,7 @@ public class CultureQueryRepo {
                                 .multiply(Expressions.constant(6371))
                                 .loe(5.0)
                 )
+                .limit(20)
                 .fetch();
     }
 }

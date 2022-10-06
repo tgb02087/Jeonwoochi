@@ -31,6 +31,7 @@ public class LeportsQueryRepo {
                                 .loe(5.0)
                 )
                 .where(leports.category.in(categories))
+                .limit(20)
                 .fetch();
     }
 
@@ -47,6 +48,7 @@ public class LeportsQueryRepo {
                                 .multiply(Expressions.constant(6371))
                                 .loe(5.0)
                 )
+                .limit(20)
                 .fetch();
     }
 }

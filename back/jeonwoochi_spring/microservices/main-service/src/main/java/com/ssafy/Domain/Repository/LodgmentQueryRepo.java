@@ -37,6 +37,7 @@ public class LodgmentQueryRepo {
                                 .loe(5.0)
                 )
                 .where(lodgment.category.in(categories))
+                .limit(20)
                 .fetch();
     }
 
@@ -53,6 +54,7 @@ public class LodgmentQueryRepo {
                                 .multiply(Expressions.constant(6371))
                                 .loe(5.0)
                 )
+                .limit(20)
                 .fetch();
     }
 }
