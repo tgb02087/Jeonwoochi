@@ -1,5 +1,5 @@
 import { Input, Scene } from 'phaser';
-import map from './country-map.json';
+import map from './country-map2.json';
 import Player from './Player';
 import Resource from './Resources';
 import eventEmitter from '../utils/eventEmitter';
@@ -34,13 +34,13 @@ class BootScene extends Scene {
 
   preload() {
     // 타일맵 불러오기
-    this.load.image('tiles', '/images/map/jeonwoochi-tileset.png');
+    // this.load.image('tiles', '/images/map/jeonwoochi-tileset.png');
     this.load.image('sea', '/images/map/Animated water tiles (full tile).png');
     this.load.image(
-      'land',
+      'world',
       '/images/map/Animated water tiles(edges) - flat style.png',
     );
-    this.load.image('props', '/images/map/Tileset-Props.png');
+    this.load.image('etc', '/images/map/Tileset-Props.png');
 
     this.load.tilemapTiledJSON('map', map);
 
@@ -74,18 +74,20 @@ class BootScene extends Scene {
 
     // 앱, 타일, 레이어 설정
     const map = this.make.tilemap({ key: 'map' });
-    const tileset = map.addTilesetImage('jeonwoochi-tileset', 'tiles');
-    const seas = map.addTilesetImage('Animated water tiles (full tile)', 'sea');
-    const lands = map.addTilesetImage(
+    // const tileset = map.addTilesetImage('jeonwoochi-tileset', 'tiles');
+    // const sea = map.addTilesetImage('Animated water tiles (full tile)', 'sea');
+    const world = map.addTilesetImage(
       'Animated water tiles(edges) - flat style',
-      'land',
+      'world',
     );
-    const etcs = map.addTilesetImage('Tileset-Props', 'props');
+    const sea = map.addTilesetImage('Animated water tiles (full tile)', 'sea');
+    const etc = map.addTilesetImage('Tileset-Props', 'etc');
 
-    const worldLayer = map.createLayer('tiles1', tileset, 0, 0);
-    const seaLayer = map.createLayer('sea', seas, 0, 0);
-    const landLayer = map.createLayer('land', lands, 0, 0);
-    const etcLayer = map.createLayer('etc', etcs, 0, 0);
+    // const worldLayer = map.createLayer('tiles1', tileset, 0, 0);
+    // const seaLayer = map.createLayer('sea', sea, 0, 0);
+    const worldLayer = map.createLayer('world', [world, sea], 0, 0);
+    // const seaLayer = map.createLayer('world', sea, 0, 0);
+    const etcLayer = map.createLayer('etc', etc, 0, 0);
 
     // bgm 설정 초기화
     this.bgm = this.sound.add('bgm', {
@@ -100,7 +102,7 @@ class BootScene extends Scene {
     this.bgm.play();
 
     // 타일에 충돌(Collision) 적용
-    seaLayer.setCollisionByProperty({ collides: true });
+    // world2Layer.setCollisionByProperty({ collides: true });
     worldLayer.setCollisionByProperty({ collides: true });
     etcLayer.setCollisionByProperty({ collides: true });
 
@@ -236,7 +238,7 @@ class BootScene extends Scene {
       // console.log(festival.festivalName, x, y);
 
       // 오브젝트 생성
-      const { me } = new Resource(this, x, y, 'festival', 'festival2');
+      const { me } = new Resource(this, x, y, 'festival', 'festival3');
       const festivalObject = { festival, x, y, height: me.height };
 
       // 충돌 적용
