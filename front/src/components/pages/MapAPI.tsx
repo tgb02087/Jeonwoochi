@@ -58,24 +58,25 @@ const MapAPI = () => {
   // 축제 좌표 불러오기
   // const mapData = useQuery<MapData[], AxiosError>(['Maps'], getFestivalList);
 
+  const { lat, lng } = mapData;
   // 맛집 데이터 불러오기
-  const restaurantData = useGetFoodDataAfterClick(mapData.lat, mapData.lng);
+  const restaurantData = useGetFoodDataAfterClick(lat, lng);
   const clickFoodButtonHandler = () => restaurantData.refetch();
 
   // 숙박 데이터 불러오기
-  const lodgingData = useGetLodgeDataAfterClick();
+  const lodgingData = useGetLodgeDataAfterClick(lat, lng);
   const clickLodgeButtonhandler = () => lodgingData.refetch();
 
   // 쇼핑 데이터 불러오기
-  const shoppingData = useGetShoppingDataAfterClick();
+  const shoppingData = useGetShoppingDataAfterClick(lat, lng);
   const clickShopingButtonHandler = () => shoppingData.refetch();
 
   // 문화 데이터 불러오기
-  const cultureData = useGetCultureDataAfterClick();
+  const cultureData = useGetCultureDataAfterClick(lat, lng);
   const clickCultureButtonHandler = () => cultureData.refetch();
 
   // 레저 데이터 불러오기
-  const leisureData = useGetLeisureDataAfterClick();
+  const leisureData = useGetLeisureDataAfterClick(lat, lng);
   const clickLeisureButtonHandler = () => leisureData.refetch();
 
   // 관광명소 데이터 불러오기
