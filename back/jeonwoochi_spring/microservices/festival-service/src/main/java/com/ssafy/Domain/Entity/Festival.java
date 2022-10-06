@@ -48,6 +48,7 @@ public class Festival {
         festival.image = festivalForm.getImage();
         festival.lat = lat;
         festival.lng = lng;
+        festival.fee = festivalForm.getFee();
         festival.homepage = festivalForm.getHomepage();
         return festival;
     }
