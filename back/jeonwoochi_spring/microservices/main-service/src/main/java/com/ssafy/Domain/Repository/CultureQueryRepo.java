@@ -24,8 +24,8 @@ public class CultureQueryRepo {
                 .where(
                         acos(cos(radians(Expressions.constant(festival_lat)))
                                 .multiply(cos(radians(culture.lat))
-                                        .multiply(cos(radians(culture.lng))
-                                                .subtract(radians(Expressions.constant(festival_lng)))
+                                        .multiply(cos(radians(culture.lng)
+                                                .subtract(radians(Expressions.constant(festival_lng))))
                                                 .add(sin(radians(Expressions.constant(festival_lat)))
                                                         .multiply(sin(radians(culture.lat)))))))
                                 .multiply(Expressions.constant(6371))
@@ -42,8 +42,8 @@ public class CultureQueryRepo {
                 .where(
                         acos(cos(radians(Expressions.constant(festival_lat)))
                                 .multiply(cos(radians(culture.lat))
-                                        .multiply(cos(radians(culture.lng))
-                                                .subtract(radians(Expressions.constant(festival_lng)))
+                                        .multiply(cos(radians(culture.lng)
+                                                .subtract(radians(Expressions.constant(festival_lng))))
                                                 .add(sin(radians(Expressions.constant(festival_lat)))
                                                         .multiply(sin(radians(culture.lat)))))))
                                 .multiply(Expressions.constant(6371))

@@ -25,8 +25,8 @@ public class ShoppingQueryRepo {
                 .where(
                         acos(cos(radians(Expressions.constant(festival_lat)))
                                 .multiply(cos(radians(shopping.lat))
-                                        .multiply(cos(radians(shopping.lng))
-                                                .subtract(radians(Expressions.constant(festival_lng)))
+                                        .multiply(cos(radians(shopping.lng)
+                                                .subtract(radians(Expressions.constant(festival_lng))))
                                                 .add(sin(radians(Expressions.constant(festival_lat)))
                                                         .multiply(sin(radians(shopping.lat)))))))
                                 .multiply(Expressions.constant(6371))
@@ -43,8 +43,8 @@ public class ShoppingQueryRepo {
                 .where(
                         acos(cos(radians(Expressions.constant(festival_lat)))
                                 .multiply(cos(radians(shopping.lat))
-                                        .multiply(cos(radians(shopping.lng))
-                                                .subtract(radians(Expressions.constant(festival_lng)))
+                                        .multiply(cos(radians(shopping.lng)
+                                                .subtract(radians(Expressions.constant(festival_lng))))
                                                 .add(sin(radians(Expressions.constant(festival_lat)))
                                                         .multiply(sin(radians(shopping.lat)))))))
                                 .multiply(Expressions.constant(6371))

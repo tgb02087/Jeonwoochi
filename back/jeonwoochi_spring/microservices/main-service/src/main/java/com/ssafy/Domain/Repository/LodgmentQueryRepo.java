@@ -24,8 +24,8 @@ public class LodgmentQueryRepo {
                 .where(
                         acos(cos(radians(Expressions.constant(festival_lat)))
                                 .multiply(cos(radians(lodgment.lat))
-                                        .multiply(cos(radians(lodgment.lng))
-                                                .subtract(radians(Expressions.constant(festival_lng)))
+                                        .multiply(cos(radians(lodgment.lng)
+                                                .subtract(radians(Expressions.constant(festival_lng))))
                                                 .add(sin(radians(Expressions.constant(festival_lat)))
                                                         .multiply(sin(radians(lodgment.lat)))))))
                                 .multiply(Expressions.constant(6371))
@@ -42,8 +42,8 @@ public class LodgmentQueryRepo {
                 .where(
                         acos(cos(radians(Expressions.constant(festival_lat)))
                                 .multiply(cos(radians(lodgment.lat))
-                                        .multiply(cos(radians(lodgment.lng))
-                                                .subtract(radians(Expressions.constant(festival_lng)))
+                                        .multiply(cos(radians(lodgment.lng)
+                                                .subtract(radians(Expressions.constant(festival_lng))))
                                                 .add(sin(radians(Expressions.constant(festival_lat)))
                                                         .multiply(sin(radians(lodgment.lat)))))))
                                 .multiply(Expressions.constant(6371))
