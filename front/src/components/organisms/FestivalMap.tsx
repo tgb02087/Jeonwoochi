@@ -22,20 +22,20 @@ interface PropTypes {
   shoppingData?: Shopping[] | undefined;
   cultureData?: Culture[] | undefined;
   leisureData?: Leisure[] | undefined;
-  landmarkData?: Landmark[] | undefined;
+  // landmarkData?: Landmark[] | undefined;
   restaurantRecommClickHandler: React.MouseEventHandler<HTMLButtonElement>;
   lodgeRecommClickHandler: React.MouseEventHandler<HTMLButtonElement>;
   shoppingRecommClickHandler: React.MouseEventHandler<HTMLButtonElement>;
   cultureRecommClickHandler: React.MouseEventHandler<HTMLButtonElement>;
   leisureRecommClickHandler: React.MouseEventHandler<HTMLButtonElement>;
-  landmarkRecommClickHandler: React.MouseEventHandler<HTMLButtonElement>;
+  // landmarkRecommClickHandler: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 // 맛집 추천 position 설정용 STMP
 const PositionButton = styled.button`
   ${tw`flex justify-between absolute bottom-5 right-5 z-10`}
   // 일단 그냥 고정값으로 넣음
-  width: 45rem;
+  width: 40rem;
 `;
 
 /**
@@ -53,21 +53,21 @@ const FestivalMap = ({
   shoppingRecommClickHandler,
   cultureRecommClickHandler,
   leisureRecommClickHandler,
-  landmarkRecommClickHandler,
+  // landmarkRecommClickHandler,
   restaurantData,
   lodgeData,
   shoppingData,
   cultureData,
   leisureData,
-  landmarkData,
-}: PropTypes) => {
+}: // landmarkData,
+PropTypes) => {
   const [isVisibleMarkerRestaurant, setIsVisibleMarkerRestaurant] =
     useState(false);
   const [isVisibleMarkerLodge, setIsVisibleMarkerLodge] = useState(false);
   const [isVisibleMarkerShopping, setIsVisibleMarkerShopping] = useState(false);
   const [isVisibleMarkerCulture, setIsVisibleMarkerCulture] = useState(false);
   const [isVisibleMarkerLeisure, setIsVisibleMarkerLeisure] = useState(false);
-  const [isVisibleMarkerLandmark, setIsVisibleMarkerLandmark] = useState(false);
+  // const [isVisibleMarkerLandmark, setIsVisibleMarkerLandmark] = useState(false);
 
   const combineRecommMarkerRestaurant = () => {
     //@ts-expect-error : 매개변수를 하나 달라는데... 뭘줘야 한다는 거니...
@@ -99,11 +99,11 @@ const FestivalMap = ({
     setIsVisibleMarkerLeisure(prev => !prev);
   };
 
-  const combineRecommMarkerLandmark = () => {
-    //@ts-expect-error : 매개변수를 하나 달라는데... 뭘줘야 한다는 거니...
-    landmarkRecommClickHandler();
-    setIsVisibleMarkerLandmark(prev => !prev);
-  };
+  // const combineRecommMarkerLandmark = () => {
+  //   //@ts-expect-error : 매개변수를 하나 달라는데... 뭘줘야 한다는 거니...
+  //   landmarkRecommClickHandler();
+  //   setIsVisibleMarkerLandmark(prev => !prev);
+  // };
   const BLACK = 'black';
   return (
     <>
@@ -158,7 +158,7 @@ const FestivalMap = ({
             color={isVisibleMarkerLeisure ? undefined : BLACK}
           />
         </Button>
-        <Button
+        {/* <Button
           color={isVisibleMarkerLandmark ? '#DB4455' : undefined}
           isText={true}
           clickHandler={combineRecommMarkerLandmark}
@@ -167,7 +167,7 @@ const FestivalMap = ({
             message={'관광명소 추천'}
             color={isVisibleMarkerLandmark ? undefined : BLACK}
           />
-        </Button>
+        </Button> */}
       </PositionButton>
       <KakaoMap
         lodgeData={lodgeData}
@@ -175,13 +175,13 @@ const FestivalMap = ({
         shoppingData={shoppingData}
         cultureData={cultureData}
         leisureData={leisureData}
-        landmarkData={landmarkData}
+        // landmarkData={landmarkData}
         isVisibleMarkerRestaurant={isVisibleMarkerRestaurant}
         isVisibleMarkerLodge={isVisibleMarkerLodge}
         isVisibleMarkerShopping={isVisibleMarkerShopping}
         isVisibleMarkerCulture={isVisibleMarkerCulture}
         isVisibleMarkerLeisure={isVisibleMarkerLeisure}
-        isVisibleMarkerLandmark={isVisibleMarkerLandmark}
+        // isVisibleMarkerLandmark={isVisibleMarkerLandmark}
         coord={coord}
       />
     </>

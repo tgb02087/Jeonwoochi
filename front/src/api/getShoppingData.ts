@@ -15,8 +15,8 @@ const getFoodData = async (lat: number, lng: number) => {
       method: 'GET',
       url: '/main-service/shopping',
       params: {
-        lat: lng,
-        lng: lat,
+        lat: lat,
+        lng: lng,
       },
       // withCredentials: true,
     });
