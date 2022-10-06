@@ -1,22 +1,18 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import Button from '../atoms/Button';
-import Input from '../atoms/Input';
-import Label from '../atoms/Label';
 import Sheet from '../atoms/Sheet';
 import Text from '../atoms/Text';
-import Textarea from '../atoms/Textarea';
 import TitleCancelHeader from './TitleCancelHeader';
-import { useDaumPostcodePopup } from 'react-daum-postcode';
-import Select from '../atoms/Select';
-import postFestivalRequest from '../../api/postFestivalRequest';
 import { useQuery } from '@tanstack/react-query';
 import { festivalRequestPage } from '../../recoil/atoms/festivalRequestPage';
 import { useRecoilState } from 'recoil';
 import { festivalRequestId } from '../../recoil/atoms/festivalRequestId';
 import getFestivalRequestList from '../../api/getFestivalRequestList';
 import { inputProps, labelProps } from './RequestModal';
+import submitRequest from '../../api/submitRequest';
+import Link from '../atoms/Link';
 
 interface PropTypes {
   setState: Dispatch<SetStateAction<boolean>>;
@@ -97,8 +93,8 @@ const RequestConfirmModal = ({ setState, setOpenedList }: PropTypes) => {
     ({ id }: { id: number }) => id === requestId,
   )[0];
 
-  const submitRequest = () => {
-    console.log('ss');
+  const submitRequestHandler = () => {
+    submitRequest(requestId, setState);
   };
 
   return (
@@ -119,9 +115,17 @@ const RequestConfirmModal = ({ setState, setOpenedList }: PropTypes) => {
                   <FlexLabel>
                     <Text message={labelProps[idx]} />
                   </FlexLabel>
-                  <FlexInput>
-                    <Text message={request[inputProps[idx][0]]} />
-                  </FlexInput>
+                  {idx === 5 ? (
+                    <FlexInput>
+                      <Link href={request[inputProps[idx][0]]} color="skyblue">
+                        클릭해서 보기
+                      </Link>
+                    </FlexInput>
+                  ) : (
+                    <FlexInput>
+                      <Text message={request[inputProps[idx][0]]} />
+                    </FlexInput>
+                  )}
                 </InputLine>
               );
             })}
@@ -172,7 +176,7 @@ const RequestConfirmModal = ({ setState, setOpenedList }: PropTypes) => {
             </InputLine> */}
           </SheetBody>
           <SubmitButton>
-            <Button isText clickHandler={submitRequest}>
+            <Button isText clickHandler={submitRequestHandler}>
               <Text message="승인" color="black" />
             </Button>
           </SubmitButton>

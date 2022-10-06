@@ -134,11 +134,11 @@ const FestivalDetail = ({
             <Text color="white" message="관련 기사" size={1.3} />
             {newsInfo ? (
               <>
-                <Link href={newsInfo[0].link} color="white">
+                <Link href={newsInfo[0].link} color="skyblue">
                   {'- ' + newsTitles[0].substring(0, 25)}
                 </Link>
                 <br />
-                <Link href={newsInfo[1].link} color="white">
+                <Link href={newsInfo[1].link} color="skyblue">
                   {'- ' + newsTitles[1].substring(0, 25)}
                 </Link>
               </>
