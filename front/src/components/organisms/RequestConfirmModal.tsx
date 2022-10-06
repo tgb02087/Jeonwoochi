@@ -12,6 +12,7 @@ import { festivalRequestId } from '../../recoil/atoms/festivalRequestId';
 import getFestivalRequestList from '../../api/getFestivalRequestList';
 import { inputProps, labelProps } from './RequestModal';
 import submitRequest from '../../api/submitRequest';
+import Link from '../atoms/Link';
 
 interface PropTypes {
   setState: Dispatch<SetStateAction<boolean>>;
@@ -114,9 +115,17 @@ const RequestConfirmModal = ({ setState, setOpenedList }: PropTypes) => {
                   <FlexLabel>
                     <Text message={labelProps[idx]} />
                   </FlexLabel>
-                  <FlexInput>
-                    <Text message={request[inputProps[idx][0]]} />
-                  </FlexInput>
+                  {idx === 5 ? (
+                    <FlexInput>
+                      <Link href={request[inputProps[idx][0]]} color="skyblue">
+                        클릭해서 보기
+                      </Link>
+                    </FlexInput>
+                  ) : (
+                    <FlexInput>
+                      <Text message={request[inputProps[idx][0]]} />
+                    </FlexInput>
+                  )}
                 </InputLine>
               );
             })}
