@@ -59,7 +59,7 @@ const MapAPI = () => {
   // const mapData = useQuery<MapData[], AxiosError>(['Maps'], getFestivalList);
 
   // 맛집 데이터 불러오기
-  const restaurantData = useGetFoodDataAfterClick();
+  const restaurantData = useGetFoodDataAfterClick(mapData.lat, mapData.lng);
   const clickFoodButtonHandler = () => restaurantData.refetch();
 
   // 숙박 데이터 불러오기
