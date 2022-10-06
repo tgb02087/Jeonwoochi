@@ -55,9 +55,9 @@ const LoginForm = () => {
   const kakaoLoginHandler = async () => {
     location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_KEY}&redirect_uri=${REDIRECT_URL}&response_type=code`;
   };
-  const googleLoginHandler = () => {
-    console.log('google');
-  };
+  // const googleLoginHandler = () => {
+  //   console.log('google');
+  // };
   const guestLoginHandler = () => navigate('/game');
 
   return (
@@ -77,7 +77,7 @@ const LoginForm = () => {
             </>
           </Button>
         </ButtonContainer>
-        <ButtonContainer>
+        {/* <ButtonContainer>
           <Button isText color="#ffffff" clickHandler={googleLoginHandler}>
             <>
               <IconImageContainer>
@@ -89,7 +89,7 @@ const LoginForm = () => {
               <Text message="구글로 로그인하기" color="black" />
             </>
           </Button>
-        </ButtonContainer>
+        </ButtonContainer> */}
         <ButtonContainer>
           <Button isText clickHandler={guestLoginHandler}>
             <GuestButtonContainer>

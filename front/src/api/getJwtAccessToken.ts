@@ -1,4 +1,5 @@
 import axios, { HeadersDefaults } from 'axios';
+import { NavigateFunction } from 'react-router-dom';
 
 /**
  * 기존 HeadersDefaults 타입에 Authorization 추가
@@ -14,7 +15,7 @@ interface HeaderWithAuthorization extends HeadersDefaults {
  * @returns JWT 액세스 토큰
  * @author Sckroll
  */
-const getJwtAccessToken = async (token: string) => {
+const getJwtAccessToken = async (token: string, navigate: NavigateFunction) => {
   // isUser - true: 가입되어 있는 유저 / false: 신규 유저
   const {
     data: { accessToken, isUser },
@@ -25,8 +26,8 @@ const getJwtAccessToken = async (token: string) => {
       token,
     },
   });
-  console.log(isUser);
-
+  // 신규 가입 유저
+  if (!isUser) navigate('/interest');
   // Axios 헤더에 액세스 토큰 추가
   (
     axios.defaults.headers as HeaderWithAuthorization
