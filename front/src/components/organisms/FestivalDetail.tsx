@@ -70,6 +70,7 @@ const FestivalDetail = ({
   const clickHandler = () => {
     bgmOff();
     navigate(-1);
+    // Location.href('/map');
   };
   const newsTitles = newsInfo?.map(({ title }: { title: string }) => {
     return title
