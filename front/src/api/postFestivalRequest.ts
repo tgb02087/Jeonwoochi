@@ -1,14 +1,21 @@
 import axios from 'axios';
+import { Dispatch, SetStateAction } from 'react';
 
-const postFestivalRequest = async (formData: any) => {
+const postFestivalRequest = async (
+  formData: any,
+  setState: Dispatch<SetStateAction<boolean>>,
+) => {
   try {
-    const { data } = await axios({
+    await axios({
       method: 'POST',
-      url: '/api/festival-service/festival-form',
+      url: '/festival-service/festival-form',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
       data: formData,
     });
-
-    return data;
+    setState(prev => !prev);
+    window.alert('성공적으로 축제 요청이 완료되었습니다!');
   } catch (e) {
     console.log(e);
   }

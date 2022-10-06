@@ -74,8 +74,6 @@ const RequestListModal = ({ setState, setOpenedDetail }: PropTypes) => {
     getFestivalRequestList(page, 5),
   );
 
-  console.log(data);
-
   const clickHandler = (id: number) => {
     setState(false);
     setOpenedDetail(true);

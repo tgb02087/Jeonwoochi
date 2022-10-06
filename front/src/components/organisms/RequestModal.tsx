@@ -155,7 +155,7 @@ const RequestModal = ({ setState }: PropTypes) => {
       }),
     );
 
-    postFestivalRequest(formData);
+    postFestivalRequest(formData, setState);
   };
   return (
     <StyledRequestModal>
