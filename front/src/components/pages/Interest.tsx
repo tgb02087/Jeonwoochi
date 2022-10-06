@@ -81,10 +81,7 @@ const Interest = () => {
         return;
       });
     // 내일 return 어떻게 오는지 보고
-    // if (submitInterest(clickedInterests)) {
-    //   window.alert('관심사가 선택되었습니다!');
-    //   navigate('/game');
-    // }
+    submitInterest(clickedInterests, navigate);
   };
   const skipHandler = () => {
     if (
