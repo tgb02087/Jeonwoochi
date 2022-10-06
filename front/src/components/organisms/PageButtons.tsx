@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import tw from 'twin.macro';
 import Button from '../atoms/Button';
 import Text from '../atoms/Text';
-import InterestCard from './InterestCard';
 
 interface PropTypes {
   totalPage: number;

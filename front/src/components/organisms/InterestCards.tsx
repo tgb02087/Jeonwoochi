@@ -1,18 +1,18 @@
 import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
-import InterestCard from './InterestCard';
+import InterestCard, { ClickStateTypes } from './InterestCard';
 
 interface AnswerPropTypes {
-  no: number;
-  content: string;
-  src: string;
+  answerId: number;
+  answer: string;
+  image: string;
 }
 interface PropTypes {
-  idx: number;
-  answers: Array<Array<AnswerPropTypes>>;
-  clickStates: Array<boolean>;
-  setClickStates: Dispatch<SetStateAction<Array<boolean>>>;
+  page: number;
+  answers: AnswerPropTypes[];
+  clickStates: Array<ClickStateTypes>;
+  setClickStates: Dispatch<SetStateAction<Array<ClickStateTypes>>>;
 }
 const StyledInterestCards = styled.div`
   ${tw`flex justify-between`}
@@ -26,24 +26,26 @@ const StyledInterestCards = styled.div`
  * @author: jojo
  */
 const InterestCards = ({
-  idx,
+  page,
   answers,
   clickStates,
   setClickStates,
 }: PropTypes) => {
+  // console.log(answers);
+
   return (
     <StyledInterestCards>
-      {answers[idx].map(
-        ({ no, content, src }: AnswerPropTypes, sIdx: number) => (
+      {answers.map(
+        ({ answerId, answer, image }: AnswerPropTypes, idx: number) => (
           <InterestCard
-            no={no}
-            content={content}
-            src={src}
+            no={answerId}
+            content={answer}
+            src={image}
+            page={page}
             idx={idx}
-            sIdx={sIdx}
             clickStates={clickStates}
             setClickStates={setClickStates}
-            key={no + content + src}
+            key={answerId + answer}
           />
         ),
       )}

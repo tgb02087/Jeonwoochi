@@ -1,26 +1,42 @@
 import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
+import { interestLen } from '../../utils/interestsLen';
 import Image from '../atoms/Image';
 import Text from '../atoms/Text';
 import Selected from './Selected';
 
+export interface ClickStateTypes {
+  isClicked: boolean;
+  id: number;
+}
 interface PropTypes {
   no: number;
   content: string;
   src: string;
+  page: number;
   idx: number;
-  sIdx: number;
-  clickStates: Array<boolean>;
-  setClickStates: Dispatch<SetStateAction<Array<boolean>>>;
+  clickStates: Array<ClickStateTypes>;
+  setClickStates: Dispatch<SetStateAction<Array<ClickStateTypes>>>;
 }
 const StyledInterestCard = styled.div`
   width: 15vw;
+  height: 15vw;
   border-radius: 1rem;
+  cursor: pointer;
   ${tw`relative  flex justify-center items-center`}
 `;
 const StyledText = styled.div`
   ${tw`absolute`}
+  z-index:1;
+`;
+
+const Shadow = styled.div`
+  ${tw`absolute`}
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 1rem;
 `;
 
 /**
@@ -33,18 +49,27 @@ const InterestCard = ({
   no,
   content,
   src,
+  page,
   idx,
-  sIdx,
   clickStates,
   setClickStates,
 }: PropTypes) => {
-  const currIdx = idx * clickStates.length + sIdx;
-  const isClicked: boolean = clickStates[currIdx];
+  const len = interestLen[page];
+  const currIdx = len + idx;
+
+  const isClicked: boolean = clickStates[currIdx].isClicked;
   const clickHandler = () => {
     setClickStates(arr =>
-      arr.map((curr, _idx) => {
-        if (_idx === currIdx) return !curr;
-        return curr;
+      arr.map(({ isClicked, id }: ClickStateTypes, _idx) => {
+        if (_idx === currIdx)
+          return {
+            isClicked: !isClicked,
+            id: no,
+          };
+        return {
+          isClicked,
+          id,
+        };
       }),
     );
   };
@@ -52,9 +77,10 @@ const InterestCard = ({
     <StyledInterestCard onClick={clickHandler}>
       {isClicked ? <Selected radius={1} /> : null}
       <StyledText>
-        <Text message={content} color="white" />
+        <Text message={content} color="white" size={1.5} />
       </StyledText>
-      <Image src={src} alt="content" radius={1} no={no} />
+      <Image src={src} alt={content} radius={1} no={no} />
+      <Shadow />
     </StyledInterestCard>
   );
 };
