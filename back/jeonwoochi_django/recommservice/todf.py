@@ -56,7 +56,7 @@ def local_reviews(x, y): # lat, lng
     return local_reviews
     
 def get_local_restaurant(x, y):
-    raw_query = f"select * from restaurant where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 20) limit 5000;"
+    raw_query = f"select * from restaurant where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 10) limit 100;"
     with connection.cursor() as cursor:
         cursor.execute(raw_query)
         row = cursor.fetchall()
