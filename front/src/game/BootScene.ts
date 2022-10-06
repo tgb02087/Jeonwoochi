@@ -65,7 +65,6 @@ class BootScene extends Scene {
     eventEmitter.on('festivals', (festivalList?: MapData[]) => {
       this.festivalList = festivalList;
       this.festivalListFetched = true;
-      console.log('부트씬 받았다');
     });
   }
 
@@ -87,10 +86,8 @@ class BootScene extends Scene {
     const seaLayer = map.createLayer('sea', seas, 0, 0);
     const landLayer = map.createLayer('land', lands, 0, 0);
     const etcLayer = map.createLayer('etc', etcs, 0, 0);
-    // bgm 설정
-    // 시끄러워서 주석처리합니다
-    // bgm 설정 초기화
 
+    // bgm 설정 초기화
     this.bgm = this.sound.add('bgm', {
       mute: false,
       volume: 0.09,
@@ -156,8 +153,8 @@ class BootScene extends Scene {
     this.player.update();
 
     // 사운드 상태 체크
-
     // console.log(eventEmitter.emit('soundCheck'));
+
     if (eventEmitter.emit('bgmOn')) {
       console.log('play');
       this.bgm.play();
@@ -166,8 +163,9 @@ class BootScene extends Scene {
       console.log('stop');
       this.bgm.stop();
     }
-    // 여기를 못옴
+
     // festivalListFetched 상태로 축제 리스트 업데이트 여부 확인
+    // console.log(this.festivalListFetched, this.festivalList?.length);
 
     if (this.festivalListFetched) {
       this.createFestivalObjects();
