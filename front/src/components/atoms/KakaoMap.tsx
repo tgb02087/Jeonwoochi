@@ -6,6 +6,7 @@ import { Culture } from '../../mocks/handlers/festival_recomm_culture';
 import { Map, MapMarker, useMap } from 'react-kakao-maps-sdk';
 import { Leisure } from '../../mocks/handlers/festival_recomm_leisure';
 import Sheet from './Sheet';
+import styled from 'styled-components';
 // import { Landmark } from '../../mocks/handlers/festival_recomm_landmark';
 
 // 마커 사이즈
@@ -23,33 +24,40 @@ import Sheet from './Sheet';
  *
  * @author jojo
  */
-const InfoWindow = (data: any): JSX.Element => {
+const PositionUp = styled.div`
+  font-family: DungGeunMo;
+  position: relative;
+  up: -20px;
+`;
+const InfoWindow = ({ data }: any): JSX.Element => {
   console.log(data);
   return (
-    <Sheet>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <div style={{ fontWeight: 'bold' }}>{data.name}</div>
-        <div style={{ fontWeight: 'bold' }}>{data.address}</div>
-        {data.tel && <div style={{ fontWeight: 'bold' }}>{data.tel}</div>}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-around',
-          }}
-        >
-          <a href={`https://map.kakao.com/?q=${data.name}`} target={'_blank'}>
-            카카오 지도로 보기
-          </a>
-          <a
-            href={`https://map.naver.com/v5/search/${data.name}`}
-            target={'_blank'}
+    <PositionUp>
+      <Sheet>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ fontWeight: 'bold' }}>{data.name}</div>
+          <div style={{ fontWeight: 'bold' }}>{data.address}</div>
+          {data.tel && <div style={{ fontWeight: 'bold' }}>{data.tel}</div>}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-around',
+            }}
           >
-            네이버 지도로 보기
-          </a>
+            <a href={`https://map.kakao.com/?q=${data.name}`} target={'_blank'}>
+              카카오 지도로 보기
+            </a>
+            <a
+              href={`https://map.naver.com/v5/search/${data.name}`}
+              target={'_blank'}
+            >
+              네이버 지도로 보기
+            </a>
+          </div>
         </div>
-      </div>
-    </Sheet>
+      </Sheet>
+    </PositionUp>
   );
 };
 
