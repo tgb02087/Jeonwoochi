@@ -50,7 +50,7 @@ public class AuthController {
             HttpServletResponse resp) {
         JwtTokenResponse jwtTokenResponse = as.saveToken(tokenInfoRequest);
         ResponseCookie cookie = ResponseCookie.from("refresh-token", jwtTokenResponse.getRefreshtoken())
-                .maxAge(60 * 60 * 24 * 15)
+                .maxAge(1000 * 60 * 60 * 24 * 15)
                 .httpOnly(true)
                 .secure(true)
                 .domain("")
@@ -72,7 +72,7 @@ public class AuthController {
         ReJwtTokenResponse reJwtTokenResponse = as.resave(cookie.getValue());
         if (reJwtTokenResponse.getIsRT()) {
             ResponseCookie newcookie = ResponseCookie.from("refresh-token", reJwtTokenResponse.getRefreshtoken())
-                    .maxAge(60 * 60 * 24 * 15)
+                    .maxAge(1000 * 60 * 60 * 24 * 15)
                     .httpOnly(true)
                     .secure(true)
                     .domain("")

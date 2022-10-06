@@ -41,7 +41,7 @@ public class KakaoController {
                 user.getAge(), user.getRole(), userInfo.getAT());
         JwtTokenResponse jwtTokenResponse = as.saveToken(tokenInfoRequest);
         ResponseCookie cookie = ResponseCookie.from("refresh-token", jwtTokenResponse.getRefreshtoken())
-                .maxAge(60 * 60 * 24 * 15)
+                .maxAge(1000 * 60 * 60 * 24 * 15)
                 .httpOnly(true)
                 .secure(true)
                 .domain("")

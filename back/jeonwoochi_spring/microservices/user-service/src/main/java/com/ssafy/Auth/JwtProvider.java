@@ -36,7 +36,7 @@ public class JwtProvider {
                 .setHeader(createHeader("ACCESS_TOKEN"))
                 .setClaims(createClaims(tokenInfoRequest))
                 //.setExpiration(createExpireDate(1000 * 60 * 1)) // 마지막 분
-                .setExpiration(createExpireDate(60 * 60 * 12 * 1)) // 12시간
+                .setExpiration(createExpireDate(1000 *60 * 60 * 12 * 1)) // 12시간
                 // .claim("id", tokenInfoRequest.getId())
                 .signWith(SignatureAlgorithm.HS256, createSigningKey(SECRET_KEY))
                 .compact();
@@ -49,7 +49,7 @@ public class JwtProvider {
                 .setHeader(createHeader("REFRESH_TOKEN"))
                 .setClaims(createClaims(tokenInfoRequest))
                 //.setExpiration(createExpireDate(1000 * 60 * 10))
-                .setExpiration(createExpireDate(60 * 60 * 24 * 15))
+                .setExpiration(createExpireDate(1000* 60 * 60 * 24 * 15))
                 .signWith(SignatureAlgorithm.HS256, createSigningKey(REFRESH_KEY))
                 .compact();
     }
