@@ -152,16 +152,20 @@ const Main = () => {
       ) : null}
       <RequestModalWrapper>
         {/* 나중에 관리자 유무 받아서 여기 false에 넣기 */}
-        {openedRequestFirstModal && false ? (
+        {openedRequestFirstModal && !user?.isAdmin ? (
           <RequestModal setState={setOpenedRequestFirstModal} />
         ) : null}
-        {openedRequestFirstModal && !openedRequestSecondModal && true ? (
+        {openedRequestFirstModal &&
+        !openedRequestSecondModal &&
+        user?.isAdmin ? (
           <RequestListModal
             setState={setOpenedRequestFirstModal}
             setOpenedDetail={setOpenedRequestSecondModal}
           />
         ) : null}
-        {!openedRequestFirstModal && openedRequestSecondModal && true ? (
+        {!openedRequestFirstModal &&
+        openedRequestSecondModal &&
+        user?.isAdmin ? (
           <RequestConfirmModal
             setState={setOpenedRequestSecondModal}
             setOpenedList={setOpenedRequestFirstModal}
