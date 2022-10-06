@@ -129,6 +129,7 @@ public class InterestController {
             @RequestParam("lng") Double festival_lng,
             @LoginUser User user
     ){
+        System.out.println(user.getId());
         return ResponseEntity.ok(aroundService.findShopping(festival_lat, festival_lng, user.getId()));
     }
 }

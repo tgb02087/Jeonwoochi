@@ -34,10 +34,14 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
         try {
             String authorizationHeader = webRequest.getHeader("Authorization");
             String jwt = authorizationHeader.replace("Bearer ", "");
-
+            System.out.println(jwt);
             Claims body = Jwts.parser().setSigningKey(SecretKey)
                     .parseClaimsJws(jwt).getBody();
-            User user = new User((Long)body.get("id"), (String)body.get("gender"),(Integer)body.get("age"));
+            User user = new User(
+                    Long.valueOf(String.valueOf(body.get("id"))),
+                    String.valueOf(body.get("gender")),
+                    Integer.valueOf(String.valueOf(body.get("age"))));
+            System.out.println("jwt getId : " + user.getId() );
             return user;
         } catch (ClassCastException e) {
             throw new NotMatchException(TOKEN_NOT_MATCH);
