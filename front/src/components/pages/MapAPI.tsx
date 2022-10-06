@@ -5,7 +5,7 @@ import { useGetLodgeDataAfterClick } from '../../hooks/useGetLodgeDataAfterClick
 import { useGetShoppingDataAfterClick } from '../../hooks/useGetShoppingDataAfterClick';
 import { useGetCultureDataAfterClick } from '../../hooks/useGetCultureDataAfterClick';
 import { useGetLeisureDataAfterClick } from '../../hooks/useGetLeisureDataAfterClick';
-import { useGetLandmarkDataAfterClick } from '../../hooks/useGetLandmarkDataAfterClick';
+// import { useGetLandmarkDataAfterClick } from '../../hooks/useGetLandmarkDataAfterClick';
 
 import { MapData } from '../../mocks/handlers/festival_list';
 import { AxiosError } from 'axios';
@@ -61,29 +61,30 @@ const MapAPI = () => {
   // 축제 좌표 불러오기
   // const mapData = useQuery<MapData[], AxiosError>(['Maps'], getFestivalList);
 
+  const { lat, lng } = mapData;
   // 맛집 데이터 불러오기
-  const restaurantData = useGetFoodDataAfterClick(mapData.lat, mapData.lng);
+  const restaurantData = useGetFoodDataAfterClick(lat, lng);
   const clickFoodButtonHandler = () => restaurantData.refetch();
 
   // 숙박 데이터 불러오기
-  const lodgingData = useGetLodgeDataAfterClick();
+  const lodgingData = useGetLodgeDataAfterClick(lat, lng);
   const clickLodgeButtonhandler = () => lodgingData.refetch();
 
   // 쇼핑 데이터 불러오기
-  const shoppingData = useGetShoppingDataAfterClick();
+  const shoppingData = useGetShoppingDataAfterClick(lat, lng);
   const clickShopingButtonHandler = () => shoppingData.refetch();
 
   // 문화 데이터 불러오기
-  const cultureData = useGetCultureDataAfterClick();
+  const cultureData = useGetCultureDataAfterClick(lat, lng);
   const clickCultureButtonHandler = () => cultureData.refetch();
 
   // 레저 데이터 불러오기
-  const leisureData = useGetLeisureDataAfterClick();
+  const leisureData = useGetLeisureDataAfterClick(lat, lng);
   const clickLeisureButtonHandler = () => leisureData.refetch();
 
   // 관광명소 데이터 불러오기
-  const landmarkData = useGetLandmarkDataAfterClick();
-  const clickLandmarkButtonHandler = () => landmarkData.refetch();
+  // const landmarkData = useGetLandmarkDataAfterClick();
+  // const clickLandmarkButtonHandler = () => landmarkData.refetch();
 
   // 로그인 여부 체크 후 받은 사용자 객체를 Recoil에 저장하는 Setter
   const setUserData = useSetRecoilState(userInfo);
@@ -150,13 +151,13 @@ const MapAPI = () => {
             shoppingData={shoppingData.data}
             cultureData={cultureData.data}
             leisureData={leisureData.data}
-            landmarkData={landmarkData.data}
+            // landmarkData={landmarkData.data}
             restaurantRecommClickHandler={clickFoodButtonHandler}
             lodgeRecommClickHandler={clickLodgeButtonhandler}
             shoppingRecommClickHandler={clickShopingButtonHandler}
             cultureRecommClickHandler={clickCultureButtonHandler}
             leisureRecommClickHandler={clickLeisureButtonHandler}
-            landmarkRecommClickHandler={clickLandmarkButtonHandler}
+            // landmarkRecommClickHandler={clickLandmarkButtonHandler}
             coord={{ lat: mapData.lng, lng: mapData.lat }}
           />
         </>
