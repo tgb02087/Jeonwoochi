@@ -28,7 +28,7 @@ const GameView = ({ festivalList }: PropTypes) => {
 
   useEffect(() => {
     eventEmitter.emit('festivals', festivalList);
-  }, [game, festivalList]);
+  }, [festivalList]);
 
   return (
     <GameViewContainer>
