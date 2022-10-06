@@ -1,11 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import getFestivalItem from '../../api/getFestivalItem';
 import getFestivalList from '../../api/getFestivalList';
 import getSelectedFestivals from '../../api/getSelectedFestivals';
+import checkLoginState from '../../api/checkLoginState';
 import { MapData } from '../../mocks/handlers/festival_list';
+import { userInfo } from '../../recoil/atoms/userInfo';
 import eventEmitter from '../../utils/eventEmitter';
 import FestivalModal from '../organisms/FestivalModal';
 import FestivalSideBar from '../organisms/FestivalSideBar';
@@ -56,6 +59,9 @@ const Main = () => {
   // sound 음소거 유무 확인용 state
   const [isSound, setIsSound] = useState(true);
 
+  // 로그인 여부 체크 후 받은 사용자 객체를 Recoil에 저장하는 Setter
+  const setUserData = useSetRecoilState(userInfo);
+
   // 현재 진행 중인 축제 중 3개 가져오기
   const { data: selected3 } = useQuery(
     ['selectedFestivals'],
@@ -71,6 +77,9 @@ const Main = () => {
     setIsSound(prev => !prev);
   };
 
+  useEffect(() => {
+    checkLoginState(setUserData);
+  }, []);
   useEffect(() => {
     isSound
       ? eventEmitter.once('bgmOn', () => isSound)
