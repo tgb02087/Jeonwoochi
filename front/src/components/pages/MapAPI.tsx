@@ -23,7 +23,10 @@ import getFestivalItem from '../../api/getFestivalItem';
 import getWeather from '../../api/getWeather';
 import getFestivalNews from '../../api/getFestivalNews';
 import getFestivalList from '../../api/getFestivalList';
+import checkLoginState from '../../api/checkLoginState';
 import { useEffect } from 'react';
+import { userInfo } from '../../recoil/atoms/userInfo';
+import { useSetRecoilState } from 'recoil';
 
 const MapAPIContainer = styled.div`
   ${tw`flex flex-row`}
@@ -82,8 +85,12 @@ const MapAPI = () => {
   const landmarkData = useGetLandmarkDataAfterClick();
   const clickLandmarkButtonHandler = () => landmarkData.refetch();
 
+  // 로그인 여부 체크 후 받은 사용자 객체를 Recoil에 저장하는 Setter
+  const setUserData = useSetRecoilState(userInfo);
+
   useEffect(() => {
     bgmStart();
+    checkLoginState(setUserData);
   }, []);
 
   useEffect(() => {

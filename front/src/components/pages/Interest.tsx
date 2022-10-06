@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import { useQuery } from '@tanstack/react-query';
 import getInterestOptions from '../../api/getInterestOptions';
+import checkLoginState from '../../api/checkLoginState';
 import InterestCards from '../organisms/InterestCards';
 import PageButtons from '../organisms/PageButtons';
 import Button from '../atoms/Button';
@@ -11,6 +12,8 @@ import CharacterQuestion from '../organisms/CharacterQuestion';
 import { useNavigate } from 'react-router-dom';
 import { ClickStateTypes } from '../organisms/InterestCard';
 import submitInterest from '../../api/submitInterest';
+import { useSetRecoilState } from 'recoil';
+import { userInfo } from '../../recoil/atoms/userInfo';
 
 const WholePage = styled.div`
   ${tw`flex justify-center`}
@@ -68,6 +71,13 @@ const Interest = () => {
   //   setLen(data.length * data[0].answerResponses.length);
   //   console.log(len);
   // }, [data]);
+
+  // 로그인 여부 체크 후 받은 사용자 객체를 Recoil에 저장하는 Setter
+  const setUserData = useSetRecoilState(userInfo);
+
+  useEffect(() => {
+    checkLoginState(setUserData);
+  }, []);
 
   const submitHandler = () => {
     const clickedInterests = clickStates
