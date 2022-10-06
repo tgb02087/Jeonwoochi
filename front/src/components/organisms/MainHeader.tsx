@@ -6,12 +6,15 @@ import SoundOn from '../../icons/SoundOn';
 import SoundOff from '../../icons/SoundOff';
 import Button from '../atoms/Button';
 import Text from '../atoms/Text';
+import { UserInfo } from '../../recoil/atoms/userInfo';
+import { NavigateFunction } from 'react-router-dom';
 
 interface PropTypes {
-  isAdmin: boolean;
+  userInfo: UserInfo | undefined;
   isSound: boolean;
   setState: Dispatch<SetStateAction<boolean>>;
   soundBtnClickHandler: React.MouseEventHandler<HTMLButtonElement>;
+  navigate: NavigateFunction;
 }
 const StyledMainHeader = styled.div`
   ${tw`flex justify-between`}
@@ -30,22 +33,20 @@ const RightButton = styled.div``;
  * @author: jojo
  */
 const MainHeader = ({
-  isAdmin,
+  userInfo,
   isSound,
   setState,
   soundBtnClickHandler,
+  navigate,
 }: PropTypes) => {
-  const clickHandler = (isAdmin: boolean) => {
-    // 로그인 안한 guest면 로그인이 필요한 서비스라고 alert
-    // alert("!!");
-
+  const clickHandler = () => {
+    if (!userInfo) {
+      if (window.confirm('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?'))
+        navigate('/login');
+      return;
+    }
+    // admin이면 관리자 모달 열고, user면 축제 요청 모달 열기
     setState(prev => !prev);
-    // admin이면 관리자 모달 열고
-    // if (isAdmin) {
-    // }
-    // user면 축제 요청 모달 열기
-    // else {
-    // }
   };
 
   return (
@@ -60,12 +61,12 @@ const MainHeader = ({
         </Button>
       </LeftButtons>
       <RightButton>
-        {isAdmin ? (
-          <Button clickHandler={() => clickHandler(isAdmin)} isText={true}>
+        {userInfo?.isAdmin ? (
+          <Button clickHandler={() => clickHandler()} isText={true}>
             <Text message={'축제 요청 확인'} color="black" />
           </Button>
         ) : (
-          <Button clickHandler={() => clickHandler(isAdmin)} isText={true}>
+          <Button clickHandler={() => clickHandler()} isText={true}>
             <Text message={'축제 요청'} color="black" />
           </Button>
         )}

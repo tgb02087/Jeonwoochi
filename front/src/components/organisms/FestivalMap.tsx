@@ -11,6 +11,8 @@ import { Shopping } from '../../mocks/handlers/festival_recomm_shopping';
 import { Culture } from '../../mocks/handlers/festival_recomm_culture';
 import { Leisure } from '../../mocks/handlers/festival_recomm_leisure';
 import { Landmark } from '../../mocks/handlers/festival_recomm_landmark';
+import { UserInfo } from '../../recoil/atoms/userInfo';
+import { NavigateFunction } from 'react-router-dom';
 
 interface PropTypes {
   coord: {
@@ -29,6 +31,8 @@ interface PropTypes {
   cultureRecommClickHandler: React.MouseEventHandler<HTMLButtonElement>;
   leisureRecommClickHandler: React.MouseEventHandler<HTMLButtonElement>;
   // landmarkRecommClickHandler: React.MouseEventHandler<HTMLButtonElement>;
+  navigate: NavigateFunction;
+  user: UserInfo | undefined;
 }
 
 // 맛집 추천 position 설정용 STMP
@@ -59,6 +63,8 @@ const FestivalMap = ({
   shoppingData,
   cultureData,
   leisureData,
+  navigate,
+  user,
 }: // landmarkData,
 PropTypes) => {
   const [isVisibleMarkerRestaurant, setIsVisibleMarkerRestaurant] =
@@ -69,34 +75,40 @@ PropTypes) => {
   const [isVisibleMarkerLeisure, setIsVisibleMarkerLeisure] = useState(false);
   // const [isVisibleMarkerLandmark, setIsVisibleMarkerLandmark] = useState(false);
 
+  const checkUserInfo = (dataClickhandler: any, setIsVisible: any) => {
+    if (!user) {
+      if (window.confirm('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?'))
+        navigate('/login');
+    } else {
+      dataClickhandler();
+      // @ts-expect-error : 매개변수를 하나 달라는데... 뭘줘야 한다는 거니...
+      setIsVisible(prev => !prev);
+    }
+  };
+
   const combineRecommMarkerRestaurant = () => {
-    //@ts-expect-error : 매개변수를 하나 달라는데... 뭘줘야 한다는 거니...
-    restaurantRecommClickHandler();
-    setIsVisibleMarkerRestaurant(prev => !prev);
+    checkUserInfo(restaurantRecommClickHandler, setIsVisibleMarkerRestaurant);
+    // setIsVisibleMarkerRestaurant(prev => !prev);
   };
 
   const combineRecommMarkerLodge = () => {
-    //@ts-expect-error : 매개변수를 하나 달라는데... 뭘줘야 한다는 거니...
-    lodgeRecommClickHandler();
-    setIsVisibleMarkerLodge(prev => !prev);
+    checkUserInfo(lodgeRecommClickHandler, setIsVisibleMarkerLodge);
+    // setIsVisibleMarkerLodge(prev => !prev);
   };
 
   const combineRecommMarkerShopping = () => {
-    //@ts-expect-error : 매개변수를 하나 달라는데... 뭘줘야 한다는 거니...
-    shoppingRecommClickHandler();
-    setIsVisibleMarkerShopping(prev => !prev);
+    checkUserInfo(shoppingRecommClickHandler, setIsVisibleMarkerShopping);
+    // setIsVisibleMarkerShopping(prev => !prev);
   };
 
   const combineRecommMarkerCulture = () => {
-    //@ts-expect-error : 매개변수를 하나 달라는데... 뭘줘야 한다는 거니...
-    cultureRecommClickHandler();
-    setIsVisibleMarkerCulture(prev => !prev);
+    checkUserInfo(cultureRecommClickHandler, setIsVisibleMarkerCulture);
+    // setIsVisibleMarkerCulture(prev => !prev);
   };
 
   const combineRecommMarkerLeisure = () => {
-    //@ts-expect-error : 매개변수를 하나 달라는데... 뭘줘야 한다는 거니...
-    leisureRecommClickHandler();
-    setIsVisibleMarkerLeisure(prev => !prev);
+    checkUserInfo(leisureRecommClickHandler, setIsVisibleMarkerLeisure);
+    // setIsVisibleMarkerLeisure(prev => !prev);
   };
 
   // const combineRecommMarkerLandmark = () => {
