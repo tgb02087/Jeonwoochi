@@ -17,15 +17,16 @@ import numpy as np
 import jwt
 
 # Create your views here.
-@api_view(['GET', 'POST'])
 # @permission_classes((IsAuthenticated, ))
 # @authentication_classes((JSONWebTokenAuthentication,))
-def get_snbr(request, user_id):
-    # token = request.META.get('HTTP_AUTHORIZATION').lstrip('Bearer ')
-    # user_id = jwt.decode(token, 'secretKey', algorithms=['HS256'])['user_id']
+@api_view(['POST'])
+def get_snbr(request):
+    token = request.META.get('HTTP_AUTHORIZATION').split(" ")[1]
+    user_id = jwt.decode(token, 'secretKey', algorithms=['HS256'])['user_id']
     if request.method == 'POST':
         data=json.loads(request.body)
         x = float(data.get('lat' , None))
         y = float(data.get('lng' , None))
-        
+    
     return JsonResponse(user_based_cf(user_id, x, y), status=status.HTTP_200_OK, safe=False)
+
