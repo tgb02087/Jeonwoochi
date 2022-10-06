@@ -80,6 +80,10 @@ const Main = () => {
   };
 
   const [user] = useRecoilState(userInfo);
+  // console.log(user);
+
+  if (user && localStorage.getItem('isAlreadyJoined') === 'false')
+    navigate('/interest');
 
   useEffect(() => {
     checkLoginState(setUserData);

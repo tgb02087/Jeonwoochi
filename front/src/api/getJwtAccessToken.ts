@@ -1,5 +1,4 @@
 import axios, { HeadersDefaults } from 'axios';
-import { NavigateFunction } from 'react-router-dom';
 
 /**
  * 기존 HeadersDefaults 타입에 Authorization 추가
@@ -15,10 +14,10 @@ interface HeaderWithAuthorization extends HeadersDefaults {
  * @returns JWT 액세스 토큰
  * @author Sckroll
  */
-const getJwtAccessToken = async (token: string, navigate: NavigateFunction) => {
-  // isUser - true: 가입되어 있는 유저 / false: 신규 유저
+const getJwtAccessToken = async (token: string) => {
+  // isAlreadyJoined - true: 가입되어 있는 유저 / false: 신규 유저
   const {
-    data: { accessToken, isUser },
+    data: { isAlreadyJoined, accessToken },
   } = await axios({
     method: 'get',
     url: '/user-service/login/kakao',
@@ -26,14 +25,13 @@ const getJwtAccessToken = async (token: string, navigate: NavigateFunction) => {
       token,
     },
   });
-  // 신규 가입 유저
-  if (!isUser) navigate('/interest');
+  console.log(isAlreadyJoined);
+  localStorage.setItem('isAlreadyJoined', isAlreadyJoined);
+
   // Axios 헤더에 액세스 토큰 추가
   (
     axios.defaults.headers as HeaderWithAuthorization
   ).Authorization = `Bearer ${accessToken}`;
-
-  return accessToken;
 };
 
 export default getJwtAccessToken;

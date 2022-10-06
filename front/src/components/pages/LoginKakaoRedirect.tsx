@@ -27,7 +27,7 @@ const LoginKakaoRedirect = () => {
     ['accessToken'],
     async () => {
       const kakaoAccessToken = await getKakaoAccessToken(code);
-      await getJwtAccessToken(kakaoAccessToken, navigate);
+      await getJwtAccessToken(kakaoAccessToken);
       const data = await checkAuth();
 
       // 관리자 여부와 같은 사용자 정보 객체를 리코일에 저장
