@@ -69,8 +69,8 @@ const FestivalDetail = ({
 }: PropTypes) => {
   const clickHandler = () => {
     bgmOff();
-    navigate(-1);
-    // Location.href('/map');
+    // navigate(-1);
+    location.href = '/game';
   };
   const newsTitles = newsInfo?.map(({ title }: { title: string }) => {
     return title
