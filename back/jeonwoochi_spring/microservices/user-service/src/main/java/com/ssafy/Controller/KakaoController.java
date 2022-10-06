@@ -49,7 +49,7 @@ public class KakaoController {
                 .sameSite("None")
                 .build();
         response.setHeader("set-Cookie", cookie.toString());
-        return new ResponseEntity<>(AccessTokenResponse.create(jwtTokenResponse.getAccesstoken()), HttpStatus.OK);
+        return new ResponseEntity<>(AccessTokenResponse.create(jwtTokenResponse.getAccesstoken(),ks.userInChk(userInfo)), HttpStatus.OK);
     }
 
     // 유저정보 조회

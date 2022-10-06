@@ -143,6 +143,7 @@ public class KakaoService {
         System.out.println("검새사이즈 : " + list.size());
         // List<User> list = userrepo.findById(userReponse.getId());
         User user = null;
+        //새로운 유저
         if (list.size() == 0) {
             String kakaoid = userReponse.getId();
             String googleid = null;
@@ -159,6 +160,14 @@ public class KakaoService {
         System.out.println(user.getId());
         // 토큰 재발급
         return user;
+    }
+
+    public Boolean userInChk(UserReponse userReponse){
+        List<User> list = findById(userReponse.getId());
+        //새로운 유저
+        if (list.size() == 0) return true;
+        //가입유저
+        return false;
     }
 
     public void usersave(User user) {

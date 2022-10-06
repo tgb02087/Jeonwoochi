@@ -14,10 +14,13 @@ public class AccessTokenResponse {
 
     private String accessToken;
 
-    public static AccessTokenResponse create(String AT){
+    private Boolean isUser;
+
+    public static AccessTokenResponse create(String AT, Boolean isuser){
         AccessTokenResponse accessTokenResponse = new AccessTokenResponse();
         accessTokenResponse.accessToken=AT;
         accessTokenResponse.grantType="Bearer";
+        accessTokenResponse.isUser=isuser;
         return accessTokenResponse;
     }
 }

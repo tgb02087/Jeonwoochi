@@ -1,11 +1,9 @@
 package com.ssafy.Controller;
 
 import com.ssafy.Dto.Request.TokenInfoRequest;
-import com.ssafy.Dto.Response.AccessTokenResponse;
-import com.ssafy.Dto.Response.CheckUserResponse;
-import com.ssafy.Dto.Response.JwtTokenResponse;
-import com.ssafy.Dto.Response.ReJwtTokenResponse;
+import com.ssafy.Dto.Response.*;
 import com.ssafy.Service.AuthService;
+import com.ssafy.Service.KakaoService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpHeaders;
@@ -29,6 +27,8 @@ public class AuthController {
 
     private final AuthService as;
 
+    private final KakaoService ks;
+
     @RequestMapping("/test3")
     public ResponseEntity<?> test3(Model model) {
         System.out.println(model.getAttribute("token"));
@@ -46,7 +46,7 @@ public class AuthController {
 
     // AT, RT 생성, 쿠키 전송
     @PostMapping("/createjwt")
-    public ResponseEntity<AccessTokenResponse> createjwt(@RequestBody TokenInfoRequest tokenInfoRequest,
+    public ResponseEntity<?> createjwt(@RequestBody TokenInfoRequest tokenInfoRequest,
             HttpServletResponse resp) {
         JwtTokenResponse jwtTokenResponse = as.saveToken(tokenInfoRequest);
         ResponseCookie cookie = ResponseCookie.from("refresh-token", jwtTokenResponse.getRefreshtoken())
@@ -58,7 +58,7 @@ public class AuthController {
                 .sameSite("None")
                 .build();
         resp.setHeader("set-Cookie", cookie.toString());
-        return new ResponseEntity<>(AccessTokenResponse.create(jwtTokenResponse.getAccesstoken()), HttpStatus.OK);
+        return new ResponseEntity<>(CreateTokenResponse.create(jwtTokenResponse.getAccesstoken()), HttpStatus.OK);
     }
 
     // AT, RT 재생성
@@ -81,7 +81,7 @@ public class AuthController {
                     .build();
             response.setHeader("set-Cookie", newcookie.toString());
         }
-        return new ResponseEntity<>(AccessTokenResponse.create(reJwtTokenResponse.getAccesstoken()), HttpStatus.OK);
+        return new ResponseEntity<>(CreateTokenResponse.create(reJwtTokenResponse.getAccesstoken()), HttpStatus.OK);
     }
 
     // 로그인 세션체킹 & 유저 아이디 반환
