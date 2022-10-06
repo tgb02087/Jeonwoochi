@@ -1,4 +1,5 @@
-from .todf import review, recomm_stores, local_reviews
+from webbrowser import get
+from .todf import get_local_restaurant, review, recomm_stores, local_reviews
 
 import numpy as np
 import pandas as pd 
@@ -17,8 +18,10 @@ from rest_framework.exceptions import ParseError
 
 def user_based_cf(user_id, x, y):
     # 기본값 x, y = 37.4097995, 127.128697
+    return get_local_restaurant(x, y).to_dict('records')
     r = local_reviews(x, y)
     df_rating = r
+    print('==============================\n', r, '리뷰 개수:', r.index)
     
     if len(df_rating) == 0:
         raise ParseError(detail='리뷰 쓰실래요? ㅎㅅㅎ')
