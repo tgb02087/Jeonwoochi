@@ -1,9 +1,10 @@
+from http.client import HTTPResponse
 import json
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from django.http import HttpResponse
 from django.core import serializers
 from .algorithm import user_based_cf
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
