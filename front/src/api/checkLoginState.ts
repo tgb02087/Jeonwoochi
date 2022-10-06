@@ -9,7 +9,7 @@ import { UserInfo } from '../recoil/atoms/userInfo';
  * @param setUserData `checkAuth()`로 받은 사용자 데이터를 저장하는 데 사용할 Recoil Setter
  * @author Sckroll
  */
-const useCheckAuth = async (
+const checkLoginState = async (
   setUserData: SetterOrUpdater<UserInfo | undefined>,
 ) => {
   try {
@@ -24,4 +24,4 @@ const useCheckAuth = async (
   }
 };
 
-export default useCheckAuth;
+export default checkLoginState;
