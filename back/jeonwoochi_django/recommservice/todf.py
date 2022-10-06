@@ -56,19 +56,20 @@ def local_reviews(x, y): # lat, lng
     return local_reviews
     
 def get_local_restaurant(x, y):
-    raw_query = f"select * from restaurant where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 10) limit 100;"
+    raw_query = f"select * from restaurant where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 10) limit 30;"
     with connection.cursor() as cursor:
         cursor.execute(raw_query)
         row = cursor.fetchall()
     
     local_restaurant = pd.DataFrame.from_records(row)
     # 컬럼명 변경
-    local_restaurant.columns = ["review_id",  # 리뷰 고유번호
-    "created_at",  # 리뷰 등록 시간
-    'age',
-    "content",  # 리뷰 내용
-    'gender', # 유저_성별
-    "restaurant_id",  # 음식점 고유번호
-    "score",  # 평점
-    "user_id"]
+    local_restaurant.columns = ["restaurant_id",  # 음식점 고유번호
+    "name",  # 음식점 이름
+    "branch",  # 음식점 지점 여부
+    "tel",  # 음식점 번호
+    "address",  # 음식점 주소
+    "lat",  # 음식점 위도
+    "lng",  # 음식점 경도
+    "category",  # 음식점 카테고리
+    ]
     return local_restaurant
