@@ -57,7 +57,9 @@ public class FestivalServiceImpl implements FestivalService {
             double lat = bodyJson.getDocuments().get(0).getX();
             double lng = bodyJson.getDocuments().get(0).getY();
             Festival festival = Festival.create(festivalForm, lat, lng);
+            
             festivalRepo.save(festival);
+            festivalFormRepo.delete(festivalForm);
         }catch (Exception e){
 
         }
