@@ -1,20 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-
 import { useGetFoodDataAfterClick } from '../../hooks/useGetFoodDataAfterClick';
 import { useGetLodgeDataAfterClick } from '../../hooks/useGetLodgeDataAfterClick';
 import { useGetShoppingDataAfterClick } from '../../hooks/useGetShoppingDataAfterClick';
 import { useGetCultureDataAfterClick } from '../../hooks/useGetCultureDataAfterClick';
 import { useGetLeisureDataAfterClick } from '../../hooks/useGetLeisureDataAfterClick';
 // import { useGetLandmarkDataAfterClick } from '../../hooks/useGetLandmarkDataAfterClick';
-
-import { MapData } from '../../mocks/handlers/festival_list';
-import { AxiosError } from 'axios';
-
 import { bgmOff, bgmStart } from '../../utils/mapBgm';
 import { history } from '../../utils/History';
-
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import FestivalMap from '../organisms/FestivalMap';
@@ -22,11 +15,10 @@ import FestivalDetail from '../organisms/FestivalDetail';
 import getFestivalItem from '../../api/getFestivalItem';
 import getWeather from '../../api/getWeather';
 import getFestivalNews from '../../api/getFestivalNews';
-import getFestivalList from '../../api/getFestivalList';
 import checkLoginState from '../../api/checkLoginState';
 import { useEffect } from 'react';
 import { userInfo } from '../../recoil/atoms/userInfo';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 const MapAPIContainer = styled.div`
   ${tw`flex flex-row`}
@@ -49,6 +41,7 @@ const StyledMapAPI = styled.div`
  * 추후 축제 상세페이지와 함께 다양한 이벤트(메인기술) 적용 예정
  * @author bell
  */
+
 const MapAPI = () => {
   const navigate = useNavigate();
   // const { id } = useParams<{ id?: string | undefined }>();
@@ -56,6 +49,7 @@ const MapAPI = () => {
   // const id = location.state.info.id;
   const mapData: any = location.state;
   // console.log(mapData);
+  const [user] = useRecoilState(userInfo);
 
   // const MAPIDX = id && parseInt(id);
   // 축제 좌표 불러오기
@@ -159,6 +153,8 @@ const MapAPI = () => {
             leisureRecommClickHandler={clickLeisureButtonHandler}
             // landmarkRecommClickHandler={clickLandmarkButtonHandler}
             coord={{ lat: mapData.lng, lng: mapData.lat }}
+            navigate={navigate}
+            user={user}
           />
         </>
         {/* ) : (
