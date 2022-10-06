@@ -162,7 +162,7 @@ public class KakaoService {
             User user = userRepo.findByKakaoId(userResponse.getId())
                     .orElseThrow(()-> new NotFoundException(USER_NOT_FOUND));
             userLoginResponse = new UserLoginResponse(user.getId(),
-                    user.getKakao_id(),user.getGoogle_id(),user.getName(),user.getGender(),user.getAge(),
+                    user.getKakaoId(),user.getGoogleId(),user.getName(),user.getGender(),user.getAge(),
                     user.getRole(),user.getStateType(),false,true);
         }
         // 토큰 재발급

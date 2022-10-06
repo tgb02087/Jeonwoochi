@@ -20,9 +20,8 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    private String kakao_id;
-
-    private String google_id;
+    private String kakaoId;
+    private String googleId;
 
     private String name;
 
@@ -37,30 +36,30 @@ public class User {
     @Enumerated(EnumType.STRING)
     private StateType stateType;
 
-    private Boolean is_dummy;
+    private Boolean isDummy;
 
     public static User create(UserRequest request){
        User user = new User();
-       user.kakao_id = request.getKakao_id();
-       user.google_id = request.getGoogle_id();
+       user.kakaoId = request.getKakao_id();
+       user.googleId = request.getGoogle_id();
        user.name = request.getName();
        user.gender = request.getGender();
        user.age = request.getAge();
        user.role = request.getRole();
        user.stateType = request.getStateType();
-       user.is_dummy = request.getIs_dummy();
+       user.isDummy = request.getIs_dummy();
        return user;
     }
 
     public void update(User request){
-        this.kakao_id = request.getKakao_id();
-        this.google_id = request.getGoogle_id();
+        this.kakaoId = request.getKakaoId();
+        this.googleId = request.getGoogleId();
         this.name = request.getName();
         this.gender = request.getGender();
         this.age = request.getAge();
         this.role = request.getRole();
         this.stateType = request.getStateType();
-        this.is_dummy = request.getIs_dummy();
+        this.isDummy = request.getIsDummy();
     }
 
     public void disable(StateType type){
