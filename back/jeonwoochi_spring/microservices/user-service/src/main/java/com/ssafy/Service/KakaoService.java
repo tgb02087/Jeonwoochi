@@ -6,6 +6,7 @@ import com.ssafy.Domain.Entity.Type.StateType;
 import com.ssafy.Domain.Entity.User;
 import com.ssafy.Domain.Repository.UserRepo;
 import com.ssafy.Dto.Request.UserRequest;
+import com.ssafy.Dto.Response.UserLoginResponse;
 import com.ssafy.Dto.Response.UserReponse;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -138,12 +139,13 @@ public class KakaoService {
     }
 
     // 회원가입 유저인지 확인
-    public User userchk(UserReponse userReponse) {
+    public UserLoginResponse userchk(UserReponse userReponse) {
         List<User> list = findById(userReponse.getId());
         System.out.println("검새사이즈 : " + list.size());
         // List<User> list = userrepo.findById(userReponse.getId());
         User user = null;
         //새로운 유저
+        UserLoginResponse userLoginResponse = null;
         if (list.size() == 0) {
             String kakaoid = userReponse.getId();
             String googleid = null;
@@ -155,19 +157,17 @@ public class KakaoService {
             UserRequest userRequest = new UserRequest(kakaoid, googleid, name, gender, age, role, stateType, false);
             user = User.create(userRequest);
             usersave(user);
-        } else
+            userLoginResponse = new UserLoginResponse(user.getId(),
+                    kakaoid,googleid, name, gender, age, role, stateType, false,true);
+        } else {
             user = list.get(0);
+            userLoginResponse = new UserLoginResponse(user.getId(),
+                    user.getKakao_id(),user.getGoogle_id(),user.getName(),user.getGender(),user.getAge(),
+                    user.getRole(),user.getStateType(),false,false);
+        }
         System.out.println(user.getId());
         // 토큰 재발급
-        return user;
-    }
-
-    public Boolean userInChk(UserReponse userReponse){
-        List<User> list = findById(userReponse.getId());
-        //새로운 유저
-        if (list.size() == 0) return true;
-        //가입유저
-        return false;
+        return userLoginResponse;
     }
 
     public void usersave(User user) {

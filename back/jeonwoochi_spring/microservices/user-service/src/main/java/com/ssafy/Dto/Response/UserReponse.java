@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserReponse {
 
+    //kakaoId
     private String id;
 
     private String name;

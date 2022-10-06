@@ -27,4 +27,5 @@ public class UserRequest {
     private StateType stateType;
 
     private Boolean is_dummy;
+
 }

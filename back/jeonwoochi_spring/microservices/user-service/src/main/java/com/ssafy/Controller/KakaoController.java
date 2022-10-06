@@ -2,8 +2,10 @@ package com.ssafy.Controller;
 
 import com.ssafy.Domain.Entity.User;
 import com.ssafy.Dto.Request.TokenInfoRequest;
+import com.ssafy.Dto.Request.UserRequest;
 import com.ssafy.Dto.Response.AccessTokenResponse;
 import com.ssafy.Dto.Response.JwtTokenResponse;
+import com.ssafy.Dto.Response.UserLoginResponse;
 import com.ssafy.Dto.Response.UserReponse;
 import com.ssafy.Service.AuthService;
 import com.ssafy.Service.KakaoService;
@@ -35,10 +37,10 @@ public class KakaoController {
     public ResponseEntity<?> kakaoLogin(@RequestParam(value = "token") String token, HttpServletResponse response)
             throws IOException {
         UserReponse userInfo = ks.getUserInfo(token);
-        User user = ks.userchk(userInfo);
+        UserLoginResponse userLoginResponse = ks.userchk(userInfo);
         TokenInfoRequest tokenInfoRequest = new TokenInfoRequest(
-                user.getId(), user.getGender(),
-                user.getAge(), user.getRole(), userInfo.getAT());
+                userLoginResponse.getId(), userLoginResponse.getGender(),
+                userLoginResponse.getAge(), userLoginResponse.getRole(), userInfo.getAT());
         JwtTokenResponse jwtTokenResponse = as.saveToken(tokenInfoRequest);
         ResponseCookie cookie = ResponseCookie.from("refresh-token", jwtTokenResponse.getRefreshtoken())
                 .maxAge(1000 * 60 * 60 * 24 * 15)
@@ -49,7 +51,7 @@ public class KakaoController {
                 .sameSite("None")
                 .build();
         response.setHeader("set-Cookie", cookie.toString());
-        return new ResponseEntity<>(AccessTokenResponse.create(jwtTokenResponse.getAccesstoken(),ks.userInChk(userInfo)), HttpStatus.OK);
+        return new ResponseEntity<>(AccessTokenResponse.create(jwtTokenResponse.getAccesstoken(),userLoginResponse.getIsUser()), HttpStatus.OK);
     }
 
     // 유저정보 조회
