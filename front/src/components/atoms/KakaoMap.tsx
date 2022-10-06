@@ -5,6 +5,7 @@ import { Shopping } from '../../mocks/handlers/festival_recomm_shopping';
 import { Culture } from '../../mocks/handlers/festival_recomm_culture';
 import { Map, MapMarker, useMap } from 'react-kakao-maps-sdk';
 import { Leisure } from '../../mocks/handlers/festival_recomm_leisure';
+import Sheet from './Sheet';
 // import { Landmark } from '../../mocks/handlers/festival_recomm_landmark';
 
 // 마커 사이즈
@@ -14,9 +15,6 @@ import { Leisure } from '../../mocks/handlers/festival_recomm_leisure';
  * 인포윈도우 컴포넌트 prop 타입 지정
  * @author bell
  */
-interface PropTypesInfoWindow {
-  title: string;
-}
 
 /**
  * @descrition
@@ -25,25 +23,35 @@ interface PropTypesInfoWindow {
  *
  * @author jojo
  */
-const InfoWindow = ({ title }: PropTypesInfoWindow): JSX.Element => (
-  <div style={{ display: 'flex', flexDirection: 'column' }}>
-    <div style={{ fontWeight: 'bold' }}>{title}</div>
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-around',
-      }}
-    >
-      <a href={`https://map.kakao.com/?q=${title}`} target={'_blank'}>
-        카카오 지도로 보기
-      </a>
-      <a href={`https://map.naver.com/v5/search/${title}`} target={'_blank'}>
-        네이버 지도로 보기
-      </a>
-    </div>
-  </div>
-);
+const InfoWindow = (data: any): JSX.Element => {
+  console.log(data);
+  return (
+    <Sheet>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ fontWeight: 'bold' }}>{data.name}</div>
+        <div style={{ fontWeight: 'bold' }}>{data.address}</div>
+        {data.tel && <div style={{ fontWeight: 'bold' }}>{data.tel}</div>}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-around',
+          }}
+        >
+          <a href={`https://map.kakao.com/?q=${data.name}`} target={'_blank'}>
+            카카오 지도로 보기
+          </a>
+          <a
+            href={`https://map.naver.com/v5/search/${data.name}`}
+            target={'_blank'}
+          >
+            네이버 지도로 보기
+          </a>
+        </div>
+      </div>
+    </Sheet>
+  );
+};
 
 /**
  * @description
@@ -58,6 +66,7 @@ interface PropTypesEventMarkerContainer {
     lng: number;
   };
   markerSrc: string;
+  data: any;
 }
 
 /**
@@ -72,10 +81,12 @@ interface PropTypesEventMarkerContainer {
 const EventMarkerContainer = ({
   position,
   markerSrc,
+  data,
 }: PropTypesEventMarkerContainer): JSX.Element => {
   const map = useMap();
   const [isVisible, setIsVisible] = useState(false);
 
+  console.log(data);
   const focusInfoWindowHandler = () => {
     setIsVisible(prev => !prev);
     if (!isVisible) {
@@ -90,7 +101,7 @@ const EventMarkerContainer = ({
       onClick={focusInfoWindowHandler}
       image={{ src: markerSrc, size: { width: 50, height: 50 } }}
     >
-      {isVisible && <InfoWindow title={'천복 순대국밥 궁동점'} />}
+      {isVisible && <InfoWindow data={data} />}
     </MapMarker>
   );
 };
@@ -241,6 +252,7 @@ PropTypes) => {
             key={index}
             position={{ lat: position.lat, lng: position.lng }}
             markerSrc={restaurantSrc}
+            data={position}
           />
         ))}
       {isVisibleMarkerLodge &&
@@ -248,8 +260,9 @@ PropTypes) => {
         lodgeData.map((position, index) => (
           <EventMarkerContainer
             key={index}
-            position={{ lat: position.lat, lng: position.lng }}
+            position={{ lat: position.lng, lng: position.lat }}
             markerSrc={lodgeSrc}
+            data={position}
           />
         ))}
       {isVisibleMarkerShopping &&
@@ -259,6 +272,7 @@ PropTypes) => {
             key={index}
             position={{ lat: position.lng, lng: position.lat }}
             markerSrc={shoppingSrc}
+            data={position}
           />
         ))}
       {isVisibleMarkerCulture &&
@@ -266,8 +280,9 @@ PropTypes) => {
         cultureData.map((position, index) => (
           <EventMarkerContainer
             key={index}
-            position={{ lat: position.lat, lng: position.lng }}
+            position={{ lat: position.lng, lng: position.lat }}
             markerSrc={cultureSrc}
+            data={position}
           />
         ))}
       {isVisibleMarkerLeisure &&
@@ -275,8 +290,9 @@ PropTypes) => {
         leisureData.map((position, index) => (
           <EventMarkerContainer
             key={index}
-            position={{ lat: position.lat, lng: position.lng }}
+            position={{ lat: position.lng, lng: position.lat }}
             markerSrc={leisureSrc}
+            data={position}
           />
         ))}
       {/* {isVisibleMarkerLandmark &&
