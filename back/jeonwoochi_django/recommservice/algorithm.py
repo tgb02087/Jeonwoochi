@@ -18,13 +18,13 @@ from rest_framework.exceptions import ParseError
 
 def user_based_cf(user_id, x, y):
     # 기본값 x, y = 37.4097995, 127.128697
-    return get_local_restaurant(x, y).to_dict('records')
     r = local_reviews(x, y)
     df_rating = r
-    print('==============================\n', r, '리뷰 개수:', r.index)
     
     if len(df_rating) == 0:
-        raise ParseError(detail='리뷰 쓰실래요? ㅎㅅㅎ')
+        raise ParseError(detail='리뷰를 작성하세요')
+    elif not any(df_rating['user_id'].apply(lambda x : x == user_id)):
+        return get_local_restaurant(x, y).to_dict('records')
     
     ratings_matrix = df_rating.pivot(index='user_id', columns='restaurant_id', values='score')
 
@@ -47,6 +47,5 @@ def user_based_cf(user_id, x, y):
         recommendation = ratings_matrix.loc[u].sort_values(ascending=False).apply(lambda x:x > 3.0)
         recommendation = recommendation.index[recommendation == True].tolist()
         store_ids.extend(recommendation)
-    # print(store_ids)
+    
     return recomm_stores(store_ids).to_dict('records')
-
