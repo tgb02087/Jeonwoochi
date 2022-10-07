@@ -593,3 +593,10 @@
     + `reports`
   + `recomm` django 연결
     + `restaurant`
+  
+## 221007
++ 종현
+  + `infoWindow` data_binding
+  + 타일 맵 로딩시간 단축 
+    + 타일 맵 최적화
+  + 시연 준비
