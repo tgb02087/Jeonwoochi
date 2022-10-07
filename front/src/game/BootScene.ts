@@ -115,12 +115,12 @@ class BootScene extends Scene {
       spawnX = prevX || 0;
       spawnY = prevY || 0;
     } else {
-      const spawnPoint = map.findObject(
-        'Objects',
-        obj => obj.name === 'Spawn Point',
-      );
-      spawnX = spawnPoint.x || 0;
-      spawnY = spawnPoint.y || 0;
+      // const spawnPoint = map.findObject(
+      //   'Objects',
+      //   obj => obj.name === 'Spawn Point',
+      // );
+      spawnX = 0;
+      spawnY = 0;
     }
 
     // 플레이어 인스턴스
