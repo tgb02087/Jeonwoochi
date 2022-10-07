@@ -81,6 +81,7 @@ const Minimap = ({
               x={locationInMinimap.x}
               y={locationInMinimap.y}
               focused={focusedIdx === idx ? true : false}
+              key={locationInMinimap.x * locationInMinimap.y}
             />
           );
         })}
