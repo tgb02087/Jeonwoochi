@@ -22,11 +22,11 @@ const StyledFestivalInfos = styled.div`
  * @author jojo
  */
 const FestivalInfos = ({ info, size }: PropTypes) => {
-  const homepage = info.homepage.split('"')[1];
+  const homepage = info?.homepage.split('"')[1];
   return (
     <StyledFestivalInfos>
       <Text
-        message={info.startDate + ' ~ ' + info.endDate}
+        message={info?.startDate + ' ~ ' + info?.endDate}
         color={'white'}
         size={size}
       />
@@ -34,7 +34,7 @@ const FestivalInfos = ({ info, size }: PropTypes) => {
         {homepage}
       </Link>
       <Text
-        message={info.description.replaceAll('<br>', '. ')}
+        message={info?.description.replaceAll('<br>', '. ')}
         color={'white'}
         size={size}
       />
