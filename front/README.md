@@ -554,7 +554,7 @@
     + `sea` 레이어 생성
     + 반영되는 것 확인
   + 1차 맵 디자인 적용
-  + collider 에러
+  + `collider` 에러
     + 기존의 타일셋을 불러오기 단, 보이지 않도록 처리
     + 일부 섬들 미완성
   + 내일 적용해보기로
@@ -583,7 +583,8 @@
     + 뒤로가기 이벤트 감지용 `History` 라이브러리 설치
     + 뒤로가기 클릭시 동일하게 `bgmOff()` 함수가 실행되도록 설정
   + 리팩토링
-    + bgm Event 기능, `festivalDetail.tsx` -> `mapAPI.tsx`
+    + bgm Event 기능, `festivalDetail.tsx` -> `mapAPI.tsx`로 이동
+
 
 ## 221006
 + 종현
@@ -591,12 +592,16 @@
     + `culture`
     + `shopping`
     + `reports`
+    + `lodge`
+    + 단 `shopping` 외 모든 추천 서비스 연결 안됨
   + `recomm` django 연결
     + `restaurant`
   
 ## 221007
 + 종현
-  + `infoWindow` data_binding
-  + 타일 맵 로딩시간 단축 
-    + 타일 맵 최적화
+  + `infoWindow` 데이터 바인딩
+  + 타일 맵 최적화 작업 
+    + 기존 타일 맵 개수를 4개에서 2개로 줄임
+    + 기존 로딩시간 6초에서 2초까지 줄임
   + 시연 준비
+  + 시연
