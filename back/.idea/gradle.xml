@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/jeonwoochi_spring" />
+        <option name="gradleJvm" value="jbr-11" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/jeonwoochi_spring" />
+            <option value="$PROJECT_DIR$/jeonwoochi_spring/common" />
+            <option value="$PROJECT_DIR$/jeonwoochi_spring/microservices" />
+            <option value="$PROJECT_DIR$/jeonwoochi_spring/microservices/festival-service" />
+            <option value="$PROJECT_DIR$/jeonwoochi_spring/microservices/main-service" />
+            <option value="$PROJECT_DIR$/jeonwoochi_spring/microservices/user-service" />
+            <option value="$PROJECT_DIR$/jeonwoochi_spring/spring-cloud" />
+            <option value="$PROJECT_DIR$/jeonwoochi_spring/spring-cloud/config-service" />
+            <option value="$PROJECT_DIR$/jeonwoochi_spring/spring-cloud/discovery-service" />
+            <option value="$PROJECT_DIR$/jeonwoochi_spring/spring-cloud/gateway-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

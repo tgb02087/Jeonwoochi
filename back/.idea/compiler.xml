@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar" />
+        </processorPath>
+        <module name="jeonwoochi_spring.spring-cloud.test" />
+        <module name="jeonwoochi_spring.common.test" />
+        <module name="jeonwoochi_spring.spring-cloud.discovery-service.test" />
+        <module name="jeonwoochi_spring.microservices.user-service.test" />
+        <module name="jeonwoochi_spring.spring-cloud.gateway-service.test" />
+        <module name="jeonwoochi_spring.spring-cloud.config-service.test" />
+        <module name="jeonwoochi_spring.microservices.festival-service.test" />
+        <module name="jeonwoochi_spring.microservices.test" />
+        <module name="jeonwoochi_spring.microservices.main-service.test" />
+      </profile>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/2.7.3/51a5ea1af70ef8065cec9f1a216009ad116a7b0f/spring-boot-configuration-processor-2.7.3.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar" />
+        </processorPath>
+        <module name="jeonwoochi_spring.spring-cloud.config-service.main" />
+        <module name="jeonwoochi_spring.spring-cloud.main" />
+        <module name="jeonwoochi_spring.microservices.main" />
+        <module name="jeonwoochi_spring.microservices.user-service.main" />
+        <module name="jeonwoochi_spring.spring-cloud.gateway-service.main" />
+        <module name="jeonwoochi_spring.common.main" />
+        <module name="jeonwoochi_spring.spring-cloud.discovery-service.main" />
+        <module name="jeonwoochi_spring.microservices.festival-service.main" />
+        <module name="jeonwoochi_spring.microservices.main-service.main" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="config-service" target="1.8" />
+      <module name="config-service.main" target="1.8" />
+      <module name="config-service.test" target="1.8" />
+      <module name="discovery-service" target="1.8" />
+      <module name="discovery-service.main" target="1.8" />
+      <module name="discovery-service.test" target="1.8" />
+      <module name="gateway-service" target="1.8" />
+      <module name="gateway-service.main" target="1.8" />
+      <module name="gateway-service.test" target="1.8" />
+      <module name="jeonwoochi_spring.auth-service" target="1.8" />
+      <module name="jeonwoochi_spring.auth-service.main" target="1.8" />
+      <module name="jeonwoochi_spring.auth-service.test" target="1.8" />
+      <module name="jeonwoochi_spring.core" target="1.8" />
+      <module name="jeonwoochi_spring.core.main" target="1.8" />
+      <module name="jeonwoochi_spring.core.test" target="1.8" />
+      <module name="jeonwoochi_spring.microservice" target="1.8" />
+      <module name="jeonwoochi_spring.microservice.festival-service" target="1.8" />
+      <module name="jeonwoochi_spring.microservice.festival-service.main" target="1.8" />
+      <module name="jeonwoochi_spring.microservice.festival-service.test" target="1.8" />
+      <module name="jeonwoochi_spring.microservice.main" target="1.8" />
+      <module name="jeonwoochi_spring.microservice.test" target="1.8" />
+      <module name="jeonwoochi_spring.microservice.user-service" target="1.8" />
+      <module name="jeonwoochi_spring.microservice.user-service.main" target="1.8" />
+      <module name="jeonwoochi_spring.microservice.user-service.test" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.auth-service" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.auth-service.main" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.auth-service.querydsl" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.auth-service.test" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.game-service" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.game-service.main" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.game-service.querydsl" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.game-service.test" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.interest-service" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.interest-service.main" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.interest-service.querydsl" target="1.8" />
+      <module name="jeonwoochi_spring.microservices.interest-service.test" target="1.8" />
+      <module name="microservices" target="1.8" />
+      <module name="microservices.main" target="1.8" />
+      <module name="microservices.test" target="1.8" />
+      <module name="spring-cloud" target="1.8" />
+      <module name="spring-cloud.main" target="1.8" />
+      <module name="spring-cloud.test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="microservices" options="-parameters" />
+    </option>
+  </component>
+</project>
