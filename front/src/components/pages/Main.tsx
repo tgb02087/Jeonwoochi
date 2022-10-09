@@ -49,7 +49,6 @@ const Main = () => {
   const navigate = useNavigate();
 
   const { data: listData } = useQuery(['festivalList'], getFestivalList);
-  // console.log(listData);
 
   const [openedSideBar, setOpenedSideBar] = useState(false);
   const [openedFestivalModal, setOpenedFestivalModal] = useState(false);
@@ -142,6 +141,7 @@ const Main = () => {
             y={location.y}
             festivalList={listData}
             focusedIdx={focusedIdx}
+            selectedFestivals={selected3}
           />
         </MainBody>
         <MainFooter setOpenedHelpModal={setOpenedHelpModal} />

@@ -246,5 +246,49 @@ public class FestivalServiceImpl implements FestivalService {
         }
         return newlist;
     }
+<<<<<<< HEAD
+=======
+    // sort 이중 리스트
+    public List<List<FestivalResponse>> sortList(){
+        //전체 리스트 조회
+        List<FestivalResponse> list = findFestivalListAll();
+        // lat 기준 sort
+        Collections.sort(list, new Comparator<FestivalResponse>() {
+            @Override
+            public int compare(FestivalResponse f1, FestivalResponse f2) {
+                return Double.compare(f1.getLat(), f2.getLat());
+            }
+        });
+        int idx = 0;
+        int re_idx = 0;
+        List<List<FestivalResponse>> listresponse = new ArrayList<>();
+        for(int i = list.size()-1; i>=0; i--){
+            double lng = list.get(i).getLng();
+            double lat = list.get(i).getLat();
+            listresponse.add(new ArrayList<>());
+            listresponse.get(idx).add(list.get(i));
+            for (int j = i-1; j>=0; j--) {
+                if(Math.abs(list.get(j).getLat()-lat)<=0.35){
+                    if(j==0) re_idx=j;
+                }
+                else {
+                    re_idx = j;
+                    break;
+                }
+            }
+            for(int j = list.size()-1; j>re_idx; j--) {
+                if(Math.abs(list.get(j).getLng()-lng)<=0.35){
+                    listresponse.get(idx).add(list.get(j));
+                    list.remove(j);
+                    i--;
+                }
+            }
+            idx++;
+            list.remove(i);
+            //System.out.println(idx);
+        }
+        return listresponse;
+    }
+>>>>>>> back
 
 }

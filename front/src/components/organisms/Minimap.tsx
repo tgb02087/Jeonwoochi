@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import tw from 'twin.macro';
 import BootScene from '../../game/BootScene';
+import { MapData } from '../../mocks/handlers/festival_list';
 import { convertXYGameToMinimap } from '../../utils/convertXYGameToMinimap';
 import Image from '../atoms/Image';
 
@@ -14,6 +15,7 @@ interface StyledObjectTypes {
 interface PropTypes extends StyledObjectTypes {
   festivalList: any;
   focusedIdx: number;
+  selectedFestivals: MapData[] | undefined;
 }
 const StyledMinimap = styled.div`
   ${tw`absolute`}
@@ -58,11 +60,13 @@ const StyledObject = styled.div<StyledObjectTypes>`
 const Minimap = ({
   x,
   y,
-
   festivalList,
   focusedIdx,
-}: PropTypes) => {
+  selectedFestivals,
+}: // 얘를 받아와서 어떻게 뿌려주지~~~?
+PropTypes) => {
   const playerLocation = convertXYGameToMinimap(x, y);
+
   return (
     <StyledMinimap>
       <Image src="/images/map/minimap.png" alt="minimap" />
@@ -70,17 +74,18 @@ const Minimap = ({
         <StyledObject x={playerLocation.x} y={playerLocation.y} isPlayer />
       )}
       {festivalList &&
-        festivalList.map((festival: any, idx: number) => {
+        festivalList.map((festival: MapData, idx: number) => {
           const locationInGame = BootScene.convertLatLngToXY(festival);
           const locationInMinimap = convertXYGameToMinimap(
             locationInGame.x,
             locationInGame.y,
           );
+
           return (
             <StyledObject
               x={locationInMinimap.x}
               y={locationInMinimap.y}
-              focused={focusedIdx === idx ? true : false}
+              focused={festival.id === focusedIdx}
               key={locationInMinimap.x * locationInMinimap.y}
             />
           );

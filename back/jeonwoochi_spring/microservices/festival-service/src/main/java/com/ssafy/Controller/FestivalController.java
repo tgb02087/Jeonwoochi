@@ -141,4 +141,12 @@ public class FestivalController {
         return ResponseEntity.ok(festivalService.findFestivalCustom());
     }
 
+<<<<<<< HEAD
+=======
+    // 축제 2중 리스트
+    @GetMapping("festival/sort/list")
+    public ResponseEntity<?> findFestivalSort(){
+        return ResponseEntity.ok(festivalService.sortList());
+    }
+>>>>>>> back
 }
