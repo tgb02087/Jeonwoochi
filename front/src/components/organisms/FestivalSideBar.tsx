@@ -101,9 +101,9 @@ const FestivalSideBar = ({
     });
     setOpenedSideBar(prev => !prev);
   };
-  const toggleFocusHandler = (idx: number) => {
+  const toggleFocusHandler = (festivalIdx: number, sideBarIdx: number) => {
     // 클릭되어 있는 info를 클릭하면 focus를 -1로 리셋. isClicked는 전부 false 배열로 변경
-    if (isClicked[idx]) {
+    if (isClicked[sideBarIdx]) {
       setFocusedIdx(-1);
       setIsClicked(prev => {
         return prev.map(_ => {
@@ -113,10 +113,10 @@ const FestivalSideBar = ({
     }
     // 클릭되어 있지 않은 info를 클릭하면 focus를 해당 idx로 바꾸고, isClicked도 해당 idx만 true 배열로 바꿈
     else {
-      setFocusedIdx(idx);
+      setFocusedIdx(festivalIdx);
       setIsClicked(prev => {
         return prev.map((_, i) => {
-          if (i === idx) return true;
+          if (i === sideBarIdx) return true;
           return false;
         });
       });
@@ -143,7 +143,7 @@ const FestivalSideBar = ({
                 <FestivalInfo
                   openedSideBar={openedSideBar}
                   isClicked={isClicked[idx]}
-                  onClick={() => toggleFocusHandler(idx)}
+                  onClick={() => toggleFocusHandler(festival.id, idx)}
                   key={festival.festivalName + idx}
                 >
                   <Shadow />

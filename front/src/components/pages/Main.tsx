@@ -142,6 +142,7 @@ const Main = () => {
             y={location.y}
             festivalList={listData}
             focusedIdx={focusedIdx}
+            selectedFestivals={selected3}
           />
         </MainBody>
         <MainFooter setOpenedHelpModal={setOpenedHelpModal} />
