@@ -6,7 +6,9 @@ import eventEmitter from '../utils/eventEmitter';
 import { MapData } from './../mocks/handlers/festival_list';
 import Bgm from './Bgm';
 import Effect from './Effect';
-// import { ADDRCONFIG } from 'dns';
+
+const SPAWN_POINT_X = 10960;
+const SPAWN_POINT_Y = 9254;
 
 interface FestivalObject {
   festival: MapData; // 타일맵 상의 축제 오브젝트
@@ -112,15 +114,15 @@ class BootScene extends Scene {
     let spawnX: number, spawnY: number;
     if (prevSpawnPoint) {
       const { x: prevX, y: prevY } = JSON.parse(prevSpawnPoint);
-      spawnX = prevX || 0;
-      spawnY = prevY || 0;
+      spawnX = prevX || SPAWN_POINT_X;
+      spawnY = prevY || SPAWN_POINT_Y;
     } else {
       const spawnPoint = map.findObject(
         'Objects',
         obj => obj.name === 'Spawn Point',
       );
-      spawnX = spawnPoint.x || 0;
-      spawnY = spawnPoint.y || 0;
+      spawnX = spawnPoint.x || SPAWN_POINT_X;
+      spawnY = spawnPoint.y || SPAWN_POINT_Y;
     }
 
     // 플레이어 인스턴스
