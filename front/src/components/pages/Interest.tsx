@@ -99,7 +99,8 @@ const Interest = () => {
         '지금 스킵하면 추천을 받기 힘들어집니다. 스킵하시겠습니까?',
       )
     )
-      navigate('/game');
+      localStorage.setItem('isAlreadyJoined', 'true');
+    navigate('/game');
   };
 
   return (
