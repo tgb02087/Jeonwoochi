@@ -49,7 +49,6 @@ const Main = () => {
   const navigate = useNavigate();
 
   const { data: listData } = useQuery(['festivalList'], getFestivalList);
-  // console.log(listData);
 
   const [openedSideBar, setOpenedSideBar] = useState(false);
   const [openedFestivalModal, setOpenedFestivalModal] = useState(false);
