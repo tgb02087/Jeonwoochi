@@ -31,7 +31,6 @@ const PositionUp = styled.div`
   up: -20px;
 `;
 const InfoWindow = ({ data }: any): JSX.Element => {
-  console.log(data);
   return (
     <PositionUp>
       <Sheet>

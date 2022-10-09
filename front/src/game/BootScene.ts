@@ -6,7 +6,9 @@ import eventEmitter from '../utils/eventEmitter';
 import { MapData } from './../mocks/handlers/festival_list';
 import Bgm from './Bgm';
 import Effect from './Effect';
-// import { ADDRCONFIG } from 'dns';
+
+const SPAWN_POINT_X = 10960;
+const SPAWN_POINT_Y = 9254;
 
 interface FestivalObject {
   festival: MapData; // 타일맵 상의 축제 오브젝트
@@ -24,7 +26,7 @@ class BootScene extends Scene {
   private player!: Player;
   private minimap!: Phaser.Cameras.Scene2D.Camera;
   private festivalList!: MapData[] | undefined;
-  private festivalListFetched = false;
+  // private festivalListFetched = false;
   private collidedFestivalObject!: FestivalObject | undefined;
   private popupText!: Phaser.GameObjects.Group | undefined;
   private popupOpened = false;
@@ -62,9 +64,10 @@ class BootScene extends Scene {
     this.load.image('nameTag', '/images/map/name-tag.png');
 
     // 리액트 컴포넌트로부터 축제 리스트를 받고 저장
-    eventEmitter.on('festivals', (festivalList?: MapData[]) => {
+    eventEmitter.on('festivals', (festivalList: MapData[]) => {
+      console.log(festivalList);
       this.festivalList = festivalList;
-      this.festivalListFetched = true;
+      // this.festivalListFetched = true;
     });
   }
 
@@ -112,15 +115,15 @@ class BootScene extends Scene {
     let spawnX: number, spawnY: number;
     if (prevSpawnPoint) {
       const { x: prevX, y: prevY } = JSON.parse(prevSpawnPoint);
-      spawnX = prevX || 0;
-      spawnY = prevY || 0;
+      spawnX = prevX || SPAWN_POINT_X;
+      spawnY = prevY || SPAWN_POINT_Y;
     } else {
       const spawnPoint = map.findObject(
         'Objects',
         obj => obj.name === 'Spawn Point',
       );
-      spawnX = spawnPoint.x || 0;
-      spawnY = spawnPoint.y || 0;
+      spawnX = spawnPoint.x || SPAWN_POINT_X;
+      spawnY = spawnPoint.y || SPAWN_POINT_Y;
     }
 
     // 플레이어 인스턴스
@@ -160,6 +163,8 @@ class BootScene extends Scene {
     );
 
     eventEmitter.emit('intervalId', intervalId);
+    this.createFestivalObjects();
+    console.log('부름');
   }
 
   update(time: number) {
@@ -180,10 +185,9 @@ class BootScene extends Scene {
     // festivalListFetched 상태로 축제 리스트 업데이트 여부 확인
     // console.log(this.festivalListFetched, this.festivalList?.length);
 
-    if (this.festivalListFetched) {
-      this.createFestivalObjects();
-      this.festivalListFetched = false;
-    }
+    // if (this.festivalListFetched) {
+    //   this.festivalListFetched = false;
+    // }
 
     // 축제 오브젝트와 충돌했을 때 축제 이름 아래에 텍스트 띄우기
     if (this.collidedFestivalObject && this.popupOpened) {
@@ -233,9 +237,10 @@ class BootScene extends Scene {
    * @author Sckroll
    */
   createFestivalObjects() {
+    // console.log(this.festivalList);
     this.festivalList?.forEach(festival => {
       const { x, y } = BootScene.convertLatLngToXY(festival);
-      // console.log(festival.festivalName, x, y);
+      console.log(festival.festivalName, x, y);
 
       // 오브젝트 생성
       const { me } = new Resource(this, x, y, 'festival', 'festival3');
