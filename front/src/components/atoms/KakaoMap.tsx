@@ -7,6 +7,7 @@ import { Map, MapMarker, useMap } from 'react-kakao-maps-sdk';
 import { Leisure } from '../../mocks/handlers/festival_recomm_leisure';
 import Sheet from './Sheet';
 import styled from 'styled-components';
+import Rating from '../organisms/Rating';
 // import { Landmark } from '../../mocks/handlers/festival_recomm_landmark';
 
 // 마커 사이즈
@@ -45,6 +46,7 @@ const InfoWindow = ({ data }: any): JSX.Element => {
               justifyContent: 'space-around',
             }}
           >
+            <Rating />
             <a href={`https://map.kakao.com/?q=${data.name}`} target={'_blank'}>
               카카오 지도로 보기
             </a>
