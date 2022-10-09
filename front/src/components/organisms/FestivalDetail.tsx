@@ -133,7 +133,7 @@ const FestivalDetail = ({
           </WeatherInfo>
           <NewsInfo>
             <Text color="white" message="관련 기사" size={1.3} />
-            {newsInfo ? (
+            {newsInfo && newsInfo.length > 0 ? (
               <>
                 <Link href={newsInfo[0].link} color="skyblue">
                   {'- ' + newsTitles[0].substring(0, 25)}
@@ -144,7 +144,7 @@ const FestivalDetail = ({
                 </Link>
               </>
             ) : (
-              <Text color="white" message="로딩 중입니다..." />
+              <Text color="white" message="관련 기사가 존재하지 않습니다." />
             )}
           </NewsInfo>
         </InnerSheet>
