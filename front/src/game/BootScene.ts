@@ -7,8 +7,8 @@ import { MapData } from './../mocks/handlers/festival_list';
 import Bgm from './Bgm';
 import Effect from './Effect';
 
-const SPAWN_POINT_X = 10960;
-const SPAWN_POINT_Y = 9254;
+const SPAWN_POINT_X = 10386;
+const SPAWN_POINT_Y = 9669;
 
 interface FestivalObject {
   festival: MapData; // 타일맵 상의 축제 오브젝트
@@ -162,6 +162,12 @@ class BootScene extends Scene {
     );
 
     eventEmitter.emit('intervalId', intervalId);
+
+    console.log('서울', this.convertLatLngToXY2(127.0396597, 37.5013068));
+    console.log('대전', this.convertLatLngToXY2(127.2983403, 36.3549777));
+    console.log('구미', this.convertLatLngToXY2(128.415011, 36.109328));
+    console.log('광주', this.convertLatLngToXY2(126.8071876, 35.2040949));
+    console.log('부울경', this.convertLatLngToXY2(128.8556681, 35.0953265));
   }
 
   update(time: number) {
@@ -312,6 +318,56 @@ class BootScene extends Scene {
     const y = ((lngStartPoint - lng) / tilePerLng) * 32 + 16;
 
     return { x, y };
+  }
+
+  convertLatLngToXY2(lat: number, lng: number) {
+    // 남한 국토 극동, 극서의 경도와 극북, 극남의 위도
+    // 출처: http://aispiration.com/spatial/geo-info.html
+    const extremePoints = {
+      east: 131.87222222,
+      west: 125.06666667,
+      north: 38.45,
+      south: 33.1,
+    };
+
+    // 국토 타일맵과 전체 타일맵 간 동서남북 여백
+    const padding = {
+      east: 102,
+      west: 138,
+      north: 72,
+      south: 40,
+    };
+
+    // 국토 타일맵 가로 & 세로 길이
+    const latLength = 800 - padding.east - padding.west;
+    const lngLength = 700 - padding.north - padding.south;
+    // const latLength = 800;
+    // const lngLength = 700;
+
+    // 1칸 당 좌우 거리 = (극동 - 극서) / 국토 타일맵 가로 길이
+    // 1칸 당 상하 거리 = (극북 - 극남) / 국토 타일맵 세로 길이
+    const tilePerLat = (extremePoints.east - extremePoints.west) / latLength;
+    const tilePerLng = (extremePoints.north - extremePoints.south) / lngLength;
+
+    /**
+     * 동서남북 여분의 간격을 감안하면
+     * 맵 전체 중 가장 왼쪽의 경도 = 극서 - (1칸 당 좌우 거리 * 서쪽 여백)
+     * 맵 전체 중 가장 오른쪽의 경도 = 극동 + (1칸 당 좌우 거리 * 동쪽 여백)
+     * 맵 전체 중 가장 위쪽의 위도 = 극북 + (1칸 당 상하 거리 * 북쪽 여백)
+     * 맵 전체 중 가장 아래쪽의 위도 = 극남 - (1칸 당 상하 거리 * 남쪽 여백)
+     */
+    const latStartPoint = extremePoints.west - tilePerLat * padding.west;
+    const lngStartPoint = extremePoints.north + tilePerLng * padding.north;
+
+    // console.log(tilePerLat, tilePerLng, latStartPoint, lngStartPoint);
+
+    // 타일맵의 가장 왼쪽의 경도와 가장 위쪽의 위도를 기준으로
+    // 파라미터로 받은 축제의 경도 & 위도를 타일맵 x & y 좌표로 변환
+    // 주의: x와 y는 칸의 개수가 아님!
+    const xTile = (lat - latStartPoint) / tilePerLat;
+    const yTile = (lngStartPoint - lng) / tilePerLng;
+
+    return { xTile, yTile };
   }
 
   /**
