@@ -15,8 +15,8 @@ const getLeisureData = async (lat: number, lng: number) => {
       method: 'GET',
       url: '/main-service/leports',
       params: {
-        lat: lng,
-        lng: lat,
+        lat,
+        lng,
       },
       // withCredentials: true,
     });
