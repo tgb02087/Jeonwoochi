@@ -221,7 +221,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
           y: this.me.y,
           speed: 300,
           blendMode: 'SCREEN',
-          alpha: 0.7,
+          alpha: 0.5,
           scale: {
             min: 0.1,
             max: 0.5,
@@ -242,7 +242,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
           y: this.me.y,
           speed: 300,
           blendMode: 'SCREEN',
-          alpha: 0.7,
+          alpha: 0.6,
           scale: {
             min: 0.1,
             max: 0.5,
