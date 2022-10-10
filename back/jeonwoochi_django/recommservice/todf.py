@@ -3,6 +3,7 @@ import numpy as np
 from .models import Review, Restaurant
 from django.db import connection
 import time
+import random
 from rest_framework.exceptions import ParseError
 
 s = Restaurant.objects.values()
@@ -19,14 +20,15 @@ def review(region):
     return reviews
 
 def recomm_stores(store):
+    random.shuffle(store)
     store = store[0:25]
     recomm_stores = s[s['restaurant_id'].apply(lambda x : x in store)]
     recomm_stores.drop_duplicates(['restaurant_id'])
     return recomm_stores
 
-def local_reviews(x, y): # lat, lng    
+def local_reviews(x, y): # lat, lng
     try: 
-        raw_query = f"select * from review where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 15) limit 5000;"
+        raw_query = f"select * from review where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 10);"
     except:
         try:
             raw_query = f"select * from review where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 50) limit 5000;"
@@ -53,7 +55,7 @@ def local_reviews(x, y): # lat, lng
     return local_reviews
     
 def get_local_restaurant(x, y):
-    raw_query = f"select distinct * from restaurant where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 5 order by distance) limit 20;"
+    raw_query = f"select distinct * from restaurant where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 5) order by rand() limit 20;"
     with connection.cursor() as cursor:
         cursor.execute(raw_query)
         row = cursor.fetchall()
@@ -71,27 +73,3 @@ def get_local_restaurant(x, y):
     ]
     
     return local_restaurant
-
-# def get_local_restaurant(x, y):
-#     raw_query = f"select distinct * from restaurant where restaurant_id in (SELECT restaurant_id FROM (SELECT ( 6371 * acos( cos( radians( {x} ) ) * cos( radians( lat) ) * cos( radians( lng ) - radians({y}) ) + sin( radians({x}) ) * sin( radians(lat) ) ) ) AS distance, restaurant_id FROM restaurant) DATA WHERE DATA.distance < 5) limit 5000;"
-#     with connection.cursor() as cursor:
-#         cursor.execute(raw_query)
-#         row = cursor.fetchall()
-    
-#     local_restaurant = pd.DataFrame.from_records(row)
-#     # 컬럼명 변경
-#     local_restaurant.columns = ["restaurant_id",  # 음식점 고유번호
-#     "name",  # 음식점 이름
-#     "branch",  # 음식점 지점 여부
-#     "tel",  # 음식점 번호
-#     "address",  # 음식점 주소
-#     "lat",  # 음식점 위도
-#     "lng",  # 음식점 경도
-#     "category",  # 음식점 카테고리
-#     ]
-    
-#     local_restaurant.drop_duplicates(['name'], inplace=True)
-    
-#     local_restaurant.to_csv("local_res.csv")
-    
-#     return local_restaurant

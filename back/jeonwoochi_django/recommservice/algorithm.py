@@ -1,6 +1,4 @@
-from webbrowser import get
 from .todf import get_local_restaurant, review, recomm_stores, local_reviews
-
 import numpy as np
 import pandas as pd 
 
@@ -20,12 +18,14 @@ def user_based_cf(user_id, x, y):
     # 기본값 x, y = 37.4097995, 127.128697
     r = local_reviews(x, y)
     df_rating = r
-    
+
     if len(df_rating) == 0:
-        raise ParseError(detail='리뷰를 작성하세요')
+        raise ParseError(detail='축제 근처에 추천할 수 있는 맛집이 없어요!')
     elif not any(df_rating['user_id'].apply(lambda x : x == user_id)):
+        print("디폴트 추천 : 평점 더 필요")
         return get_local_restaurant(x, y).to_dict('records')
     
+    # 리뷰 중복으로 쓸 경우 제거해주는 부분을 추가해야할까??
     ratings_matrix = df_rating.pivot(index='user_id', columns='restaurant_id', values='score')
 
     # user 평가 경향성 고려
@@ -47,5 +47,8 @@ def user_based_cf(user_id, x, y):
         recommendation = ratings_matrix.loc[u].sort_values(ascending=False).apply(lambda x:x > 3.0)
         recommendation = recommendation.index[recommendation == True].tolist()
         store_ids.extend(recommendation)
+        print(recommendation)
+        if len(store_ids) >= 25:
+            break
     
     return recomm_stores(store_ids).to_dict('records')
