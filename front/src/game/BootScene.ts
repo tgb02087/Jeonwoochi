@@ -1,4 +1,4 @@
-import { Input, Scene } from 'phaser';
+import { GameObjects, Input, Scene } from 'phaser';
 import map from './country-map2.json';
 import Player from './Player';
 import Resource from './Resources';
@@ -15,7 +15,23 @@ interface FestivalObject {
   x: number; // 축제 오브젝트의 타일맵 x 좌표
   y: number; // 축제 오브젝트의 타일맵 y 좌표
   height: number; // 축제 오브젝트 스프라이트의 높이
+  msg: string; // 축제 오브젝트 이름 아래에 띄울 메시지
 }
+
+interface MsgEvent {
+  tileX: number; // 메시지 이벤트가 발생할 타일맵상의 열 번호
+  tileY: number; // 메시지 이벤트가 발생할 타일맵상의 행 번호
+  msg: string; // 메시지 이벤트 발생 시 띄울 메시지
+}
+
+// 메시지 이벤트 객체 리스트
+const msgEventObjects: MsgEvent[] = [
+  { tileX: 300, tileY: 176, msg: '여기는 SSAFY 서울 캠퍼스!' },
+  { tileX: 322, tileY: 302, msg: '여기는 SSAFY 대전 캠퍼스!' },
+  { tileX: 414, tileY: 329, msg: '여기는 SSAFY 구미 캠퍼스!' },
+  { tileX: 281, tileY: 429, msg: '여기는 SSAFY 광주 캠퍼스!' },
+  { tileX: 450, tileY: 441, msg: '여기는 SSAFY 부울경 캠퍼스!' },
+];
 
 /**
  * 게임 씬(Scene) 관리 클래스
@@ -33,6 +49,7 @@ class BootScene extends Scene {
   private popupEnabledTime = 0;
   private enterKey!: Input.Keyboard.Key;
   private bgm!: any;
+  private msgEventObj!: MsgEvent | undefined;
 
   preload() {
     // 타일맵 불러오기
@@ -62,6 +79,9 @@ class BootScene extends Scene {
 
     // 축제 오브젝트 이름표 배경 불러오기
     this.load.image('nameTag', '/images/map/name-tag.png');
+
+    // 메시지 이벤트 오브젝트 이미지 불러오기
+    this.load.image('msg-event-object', '/images/map/msg-event-object.png');
 
     // 리액트 컴포넌트로부터 축제 리스트를 받고 저장
     eventEmitter.on('festivals', (festivalList?: MapData[]) => {
@@ -161,13 +181,10 @@ class BootScene extends Scene {
       1000,
     );
 
-    eventEmitter.emit('intervalId', intervalId);
+    // 메시지 이벤트 생성
+    this.createEventObjects(msgEventObjects);
 
-    console.log('서울', this.convertLatLngToXY2(127.0396597, 37.5013068));
-    console.log('대전', this.convertLatLngToXY2(127.2983403, 36.3549777));
-    console.log('구미', this.convertLatLngToXY2(128.415011, 36.109328));
-    console.log('광주', this.convertLatLngToXY2(126.8071876, 35.2040949));
-    console.log('부울경', this.convertLatLngToXY2(128.8556681, 35.0953265));
+    eventEmitter.emit('intervalId', intervalId);
   }
 
   update(time: number) {
@@ -194,13 +211,16 @@ class BootScene extends Scene {
     }
 
     // 축제 오브젝트와 충돌했을 때 축제 이름 아래에 텍스트 띄우기
-    if (this.collidedFestivalObject && this.popupOpened) {
-      this.showPopupMessage(
-        this.collidedFestivalObject,
-        'Enter 키를 눌러서 축제 보기',
-      );
-      this.popupEnabledTime = time;
-      this.popupOpened = false;
+    if (this.popupOpened) {
+      if (this.collidedFestivalObject) {
+        this.showPopupMessage(this.collidedFestivalObject);
+        this.popupEnabledTime = time;
+        this.popupOpened = false;
+      } else if (this.msgEventObj) {
+        this.showPopupMessage(this.msgEventObj);
+        this.popupEnabledTime = time;
+        this.popupOpened = false;
+      }
     }
 
     // 축제 이름 아래에 텍스트가 떠있을 경우
@@ -222,6 +242,7 @@ class BootScene extends Scene {
         this.popupText?.destroy(true, true);
         this.popupText = undefined;
         this.collidedFestivalObject = undefined;
+        this.msgEventObj = undefined;
       }
     }
 
@@ -247,17 +268,47 @@ class BootScene extends Scene {
 
       // 오브젝트 생성
       const { me } = new Resource(this, x, y, 'festival', 'festival3');
-      const festivalObject = { festival, x, y, height: me.height };
+      const festivalObject = {
+        festival,
+        x,
+        y,
+        height: me.height,
+        msg: 'Enter 키를 눌러서 축제 보기',
+      };
 
       // 충돌 적용
       this.physics.add.collider(this.player, me, () => {
-        console.log('축제 오브젝트와 접촉했다');
         this.collidedFestivalObject = festivalObject;
         this.popupOpened = true;
       });
 
       // 축제명 표시
       this.createFestivalNameTag(festivalObject);
+    });
+  }
+
+  /**
+   * 지정된 메시지 이벤트를 초기화하는 메소드
+   *
+   * @param msgEvents 메시지 이벤트를 모아놓은 객체 리스트
+   * @author Sckroll
+   */
+  createEventObjects(msgEvents: MsgEvent[]) {
+    msgEvents.forEach(msgEventObj => {
+      const x = msgEventObj.tileX * 32 + 16;
+      const y = msgEventObj.tileY * 32 + 16;
+
+      // 오브젝트 생성
+      const me = new GameObjects.Sprite(this, x, y, 'msg-event-object');
+      console.log(me);
+
+      // 충돌 적용
+      this.physics.add.collider(this.player, me, () => {
+        console.log('asdf');
+
+        this.msgEventObj = msgEventObj;
+        this.popupOpened = true;
+      });
     });
   }
 
@@ -320,56 +371,6 @@ class BootScene extends Scene {
     return { x, y };
   }
 
-  convertLatLngToXY2(lat: number, lng: number) {
-    // 남한 국토 극동, 극서의 경도와 극북, 극남의 위도
-    // 출처: http://aispiration.com/spatial/geo-info.html
-    const extremePoints = {
-      east: 131.87222222,
-      west: 125.06666667,
-      north: 38.45,
-      south: 33.1,
-    };
-
-    // 국토 타일맵과 전체 타일맵 간 동서남북 여백
-    const padding = {
-      east: 102,
-      west: 138,
-      north: 72,
-      south: 40,
-    };
-
-    // 국토 타일맵 가로 & 세로 길이
-    const latLength = 800 - padding.east - padding.west;
-    const lngLength = 700 - padding.north - padding.south;
-    // const latLength = 800;
-    // const lngLength = 700;
-
-    // 1칸 당 좌우 거리 = (극동 - 극서) / 국토 타일맵 가로 길이
-    // 1칸 당 상하 거리 = (극북 - 극남) / 국토 타일맵 세로 길이
-    const tilePerLat = (extremePoints.east - extremePoints.west) / latLength;
-    const tilePerLng = (extremePoints.north - extremePoints.south) / lngLength;
-
-    /**
-     * 동서남북 여분의 간격을 감안하면
-     * 맵 전체 중 가장 왼쪽의 경도 = 극서 - (1칸 당 좌우 거리 * 서쪽 여백)
-     * 맵 전체 중 가장 오른쪽의 경도 = 극동 + (1칸 당 좌우 거리 * 동쪽 여백)
-     * 맵 전체 중 가장 위쪽의 위도 = 극북 + (1칸 당 상하 거리 * 북쪽 여백)
-     * 맵 전체 중 가장 아래쪽의 위도 = 극남 - (1칸 당 상하 거리 * 남쪽 여백)
-     */
-    const latStartPoint = extremePoints.west - tilePerLat * padding.west;
-    const lngStartPoint = extremePoints.north + tilePerLng * padding.north;
-
-    // console.log(tilePerLat, tilePerLng, latStartPoint, lngStartPoint);
-
-    // 타일맵의 가장 왼쪽의 경도와 가장 위쪽의 위도를 기준으로
-    // 파라미터로 받은 축제의 경도 & 위도를 타일맵 x & y 좌표로 변환
-    // 주의: x와 y는 칸의 개수가 아님!
-    const xTile = (lat - latStartPoint) / tilePerLat;
-    const yTile = (lngStartPoint - lng) / tilePerLng;
-
-    return { xTile, yTile };
-  }
-
   /**
    * 축제 이름을 오브젝트 상단에 띄우는 메소드
    *
@@ -402,19 +403,28 @@ class BootScene extends Scene {
   }
 
   /**
-   * 축제 이름 아래에 메시지를 띄우는 메소드
+   * 팝업 메시지를 띄우는 메소드
    *
-   * @param festivalObject 타일맵 상의 축제 오브젝트에 대한 정보가 담긴 객체
-   * @param msg 표시할 메시지
+   * @param msgObj 메시지 관련 객체 (축제 오브젝트에 대한 정보가 담긴 객체 혹은 메시지 이벤트 객체만 가능)
    * @author Sckroll
    */
-  showPopupMessage(festivalObject: FestivalObject, msg: string) {
+  showPopupMessage(msgObj: FestivalObject | MsgEvent) {
     this.popupText?.destroy(true, true);
 
-    const { x, y, height } = festivalObject;
+    let x, y, height;
+
+    if ('festival' in msgObj) {
+      x = msgObj.x;
+      y = msgObj.y;
+      height = msgObj.height;
+    } else {
+      x = msgObj.tileX * 32 + 16;
+      y = msgObj.tileY * 32 + 16;
+      height = 32;
+    }
 
     this.popupText = this.add.group();
-    const text = this.add.text(0, 0, msg, {
+    const text = this.add.text(0, 0, msgObj.msg, {
       fontFamily: 'DungGeunMo',
       backgroundColor: '#00000066',
       padding: { x: 4, y: 4 },
