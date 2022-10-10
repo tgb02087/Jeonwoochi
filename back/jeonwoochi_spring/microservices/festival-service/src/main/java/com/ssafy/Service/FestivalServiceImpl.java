@@ -266,7 +266,7 @@ public class FestivalServiceImpl implements FestivalService {
             listresponse.add(new ArrayList<>());
             listresponse.get(idx).add(list.get(i));
             for (int j = i-1; j>=0; j--) {
-                if(Math.abs(list.get(j).getLat()-lat)<=0.35){
+                if(Math.abs(list.get(j).getLat()-lat)<=0.10){
                     if(j==0) re_idx=j;
                 }
                 else {
@@ -274,8 +274,8 @@ public class FestivalServiceImpl implements FestivalService {
                     break;
                 }
             }
-            for(int j = list.size()-1; j>re_idx; j--) {
-                if(Math.abs(list.get(j).getLng()-lng)<=0.35){
+            for(int j = list.size()-2; j>re_idx; j--) {
+                if(Math.abs(list.get(j).getLng()-lng)<=0.10){
                     listresponse.get(idx).add(list.get(j));
                     list.remove(j);
                     i--;
@@ -283,7 +283,6 @@ public class FestivalServiceImpl implements FestivalService {
             }
             idx++;
             list.remove(i);
-            //System.out.println(idx);
         }
         return listresponse;
     }
