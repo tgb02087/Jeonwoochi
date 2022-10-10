@@ -80,9 +80,6 @@ class BootScene extends Scene {
     // 축제 오브젝트 이름표 배경 불러오기
     this.load.image('nameTag', '/images/map/name-tag.png');
 
-    // 메시지 이벤트 오브젝트 이미지 불러오기
-    this.load.image('msg-event-object', '/images/map/msg-event-object.png');
-
     // 리액트 컴포넌트로부터 축제 리스트를 받고 저장
     eventEmitter.on('festivals', (festivalList?: MapData[]) => {
       this.festivalList = festivalList;
@@ -210,33 +207,33 @@ class BootScene extends Scene {
       this.festivalListFetched = false;
     }
 
-    // 축제 오브젝트와 충돌했을 때 축제 이름 아래에 텍스트 띄우기
+    // 축제 혹은 메시지 이벤트 오브젝트와 충돌했을 때 팝업 텍스트 띄우기
     if (this.popupOpened) {
       if (this.collidedFestivalObject) {
         this.showPopupMessage(this.collidedFestivalObject);
-        this.popupEnabledTime = time;
-        this.popupOpened = false;
       } else if (this.msgEventObj) {
         this.showPopupMessage(this.msgEventObj);
-        this.popupEnabledTime = time;
-        this.popupOpened = false;
       }
+      this.popupEnabledTime = time;
+      this.popupOpened = false;
     }
 
-    // 축제 이름 아래에 텍스트가 떠있을 경우
+    // 팝업 텍스트가 떠있을 경우
     if (this.popupEnabledTime > 0) {
-      // Enter 키를 입력하면 축제 페이지로 이동하는 이벤트를 송신
-      if (this.enterKey.isDown) {
-        // event 사운드 추가
-        Effect.effectSound(this, 'event', 300, 0.2);
-        eventEmitter.emit('visit', this.collidedFestivalObject?.festival);
+      if (this.collidedFestivalObject) {
+        // Enter 키를 입력하면 축제 페이지로 이동하는 이벤트를 송신
+        if (this.enterKey.isDown) {
+          // event 사운드 추가
+          Effect.effectSound(this, 'event', 300, 0.2);
+          eventEmitter.emit('visit', this.collidedFestivalObject?.festival);
 
-        // 동시에 현재 좌표를 로컬 스토리지에 저장
-        const spawnLocation = { x: this.player.me.x, y: this.player.me.y };
-        localStorage.setItem('spawnLocation', JSON.stringify(spawnLocation));
+          // 동시에 현재 좌표를 로컬 스토리지에 저장
+          const spawnLocation = { x: this.player.me.x, y: this.player.me.y };
+          localStorage.setItem('spawnLocation', JSON.stringify(spawnLocation));
+        }
       }
 
-      // 3초가 지나면 축제 이름 아래의 텍스트 없애기
+      // 3초가 지나면 팝업 텍스트 없애기
       if (time - this.popupEnabledTime >= 3000) {
         this.popupEnabledTime = 0;
         this.popupText?.destroy(true, true);
@@ -264,7 +261,6 @@ class BootScene extends Scene {
   createFestivalObjects() {
     this.festivalList?.forEach(festival => {
       const { x, y } = BootScene.convertLatLngToXY(festival);
-      // console.log(festival.festivalName, x, y);
 
       // 오브젝트 생성
       const { me } = new Resource(this, x, y, 'festival', 'festival3');
@@ -279,6 +275,7 @@ class BootScene extends Scene {
       // 충돌 적용
       this.physics.add.collider(this.player, me, () => {
         this.collidedFestivalObject = festivalObject;
+        this.msgEventObj = undefined;
         this.popupOpened = true;
       });
 
@@ -296,17 +293,21 @@ class BootScene extends Scene {
   createEventObjects(msgEvents: MsgEvent[]) {
     msgEvents.forEach(msgEventObj => {
       const x = msgEventObj.tileX * 32 + 16;
-      const y = msgEventObj.tileY * 32 + 16;
+      const y = msgEventObj.tileY * 32 + 32;
 
       // 오브젝트 생성
-      const me = new GameObjects.Sprite(this, x, y, 'msg-event-object');
-      console.log(me);
+      const { me } = new Resource(
+        this,
+        x,
+        y,
+        'msg-event-object',
+        'msg-event-object',
+      );
 
       // 충돌 적용
       this.physics.add.collider(this.player, me, () => {
-        console.log('asdf');
-
         this.msgEventObj = msgEventObj;
+        this.collidedFestivalObject = undefined;
         this.popupOpened = true;
       });
     });
@@ -420,7 +421,7 @@ class BootScene extends Scene {
     } else {
       x = msgObj.tileX * 32 + 16;
       y = msgObj.tileY * 32 + 16;
-      height = 32;
+      height = 64;
     }
 
     this.popupText = this.add.group();
