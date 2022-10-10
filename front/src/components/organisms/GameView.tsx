@@ -6,7 +6,7 @@ import { MapData } from '../../mocks/handlers/festival_list';
 import eventEmitter from '../../utils/eventEmitter';
 
 interface PropTypes {
-  festivalList?: MapData[];
+  festivalList?: Array<MapData[]>;
 }
 
 const GameViewContainer = styled.section`

@@ -21,6 +21,7 @@ import RequestConfirmModal from '../organisms/RequestConfirmModal';
 import RequestListModal from '../organisms/RequestListModal';
 import RequestModal from '../organisms/RequestModal';
 import { useNavigate } from 'react-router-dom';
+import getFestivalDoubleList from '../../api/getFestivalDoubleList';
 
 const StyledMain = styled.div`
   height: 95vh;
@@ -49,6 +50,11 @@ const Main = () => {
   const navigate = useNavigate();
 
   const { data: listData } = useQuery(['festivalList'], getFestivalList);
+  // 축제 이중리스트 더미 데이터
+  const { data: doubleList } = useQuery(
+    ['festivalDoubleList'],
+    getFestivalDoubleList,
+  );
   // console.log(listData);
 
   const [openedSideBar, setOpenedSideBar] = useState(false);
@@ -179,7 +185,7 @@ const Main = () => {
         {openedHelpModal ? <HelpModal setState={setOpenedHelpModal} /> : null}
       </RequestModalWrapper>
 
-      <GameView festivalList={listData} />
+      <GameView festivalList={doubleList} />
     </StyledMain>
   );
 };

@@ -25,7 +25,7 @@ interface FestivalObject {
 class BootScene extends Scene {
   private player!: Player;
   private minimap!: Phaser.Cameras.Scene2D.Camera;
-  private festivalList!: MapData[] | undefined;
+  private festivalList!: Array<MapData[]> | undefined;
   private festivalListFetched = false;
   private collidedFestivalObject!: FestivalObject | undefined;
   private popupText!: Phaser.GameObjects.Group | undefined;
@@ -64,7 +64,7 @@ class BootScene extends Scene {
     this.load.image('nameTag', '/images/map/name-tag.png');
 
     // 리액트 컴포넌트로부터 축제 리스트를 받고 저장
-    eventEmitter.on('festivals', (festivalList?: MapData[]) => {
+    eventEmitter.on('festivals', (festivalList?: Array<MapData[]>) => {
       this.festivalList = festivalList;
       this.festivalListFetched = true;
     });
@@ -235,13 +235,18 @@ class BootScene extends Scene {
    * @author Sckroll
    */
   createFestivalObjects() {
-    this.festivalList?.forEach(festival => {
-      const { x, y } = BootScene.convertLatLngToXY(festival);
+    this.festivalList?.forEach(festivals => {
+      const { x, y } = BootScene.convertLatLngToXY(festivals[0]);
       // console.log(festival.festivalName, x, y);
 
       // 오브젝트 생성
       const { me } = new Resource(this, x, y, 'festival', 'festival3');
-      const festivalObject = { festival, x, y, height: me.height };
+      const festivalObject = {
+        festival: festivals[0],
+        x,
+        y,
+        height: me.height,
+      };
 
       // 충돌 적용
       this.physics.add.collider(this.player, me, () => {
@@ -251,7 +256,7 @@ class BootScene extends Scene {
       });
 
       // 축제명 표시
-      this.createFestivalNameTag(festivalObject);
+      this.createFestivalNameTag(festivalObject, festivals.length - 1);
     });
   }
 
@@ -320,12 +325,16 @@ class BootScene extends Scene {
    * @param festivalObject 타일맵 상의 축제 오브젝트에 대한 정보가 담긴 객체
    * @author Sckroll
    */
-  createFestivalNameTag(festivalObject: FestivalObject) {
+  createFestivalNameTag(festivalObject: FestivalObject, len: number) {
     const { festival, x, y, height } = festivalObject;
 
     const nameTag = this.add.group();
     const background = this.add.sprite(0, 0, 'nameTag');
-    const text = this.add.text(0, 0, festival.festivalName, {
+    const festivalName =
+      len > 0
+        ? festival.festivalName + ' 외 ' + len + '개'
+        : festival.festivalName;
+    const text = this.add.text(0, 0, festivalName, {
       fontFamily: 'DungGeunMo',
       fixedWidth: background.width,
       align: 'center',
