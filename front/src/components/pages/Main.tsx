@@ -146,7 +146,7 @@ const Main = () => {
           <Minimap
             x={location.x}
             y={location.y}
-            festivalList={listData}
+            festivalList={doubleList}
             focusedIdx={focusedIdx}
             selectedFestivals={selected3}
           />
