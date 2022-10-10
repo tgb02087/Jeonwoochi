@@ -1,4 +1,4 @@
-import { Input, Scene } from 'phaser';
+import { GameObjects, Input, Scene } from 'phaser';
 import map from './country-map2.json';
 import Player from './Player';
 import Resource from './Resources';
@@ -7,15 +7,31 @@ import { MapData } from './../mocks/handlers/festival_list';
 import Bgm from './Bgm';
 import Effect from './Effect';
 
-const SPAWN_POINT_X = 10960;
-const SPAWN_POINT_Y = 9254;
+const SPAWN_POINT_X = 10386;
+const SPAWN_POINT_Y = 9669;
 
 interface FestivalObject {
   festival: MapData; // 타일맵 상의 축제 오브젝트
   x: number; // 축제 오브젝트의 타일맵 x 좌표
   y: number; // 축제 오브젝트의 타일맵 y 좌표
   height: number; // 축제 오브젝트 스프라이트의 높이
+  msg: string; // 축제 오브젝트 이름 아래에 띄울 메시지
 }
+
+interface MsgEvent {
+  tileX: number; // 메시지 이벤트가 발생할 타일맵상의 열 번호
+  tileY: number; // 메시지 이벤트가 발생할 타일맵상의 행 번호
+  msg: string; // 메시지 이벤트 발생 시 띄울 메시지
+}
+
+// 메시지 이벤트 객체 리스트
+const msgEventObjects: MsgEvent[] = [
+  { tileX: 300, tileY: 176, msg: '여기는 SSAFY 서울 캠퍼스!' },
+  { tileX: 322, tileY: 302, msg: '여기는 SSAFY 대전 캠퍼스!' },
+  { tileX: 414, tileY: 329, msg: '여기는 SSAFY 구미 캠퍼스!' },
+  { tileX: 281, tileY: 429, msg: '여기는 SSAFY 광주 캠퍼스!' },
+  { tileX: 450, tileY: 441, msg: '여기는 SSAFY 부울경 캠퍼스!' },
+];
 
 /**
  * 게임 씬(Scene) 관리 클래스
@@ -33,6 +49,7 @@ class BootScene extends Scene {
   private popupEnabledTime = 0;
   private enterKey!: Input.Keyboard.Key;
   private bgm!: any;
+  private msgEventObj!: MsgEvent | undefined;
 
   preload() {
     // 타일맵 불러오기
@@ -162,6 +179,9 @@ class BootScene extends Scene {
       1000,
     );
 
+    // 메시지 이벤트 생성
+    this.createEventObjects(msgEventObjects);
+
     eventEmitter.emit('intervalId', intervalId);
     this.createFestivalObjects();
     console.log('부름');
@@ -189,35 +209,39 @@ class BootScene extends Scene {
     //   this.festivalListFetched = false;
     // }
 
-    // 축제 오브젝트와 충돌했을 때 축제 이름 아래에 텍스트 띄우기
-    if (this.collidedFestivalObject && this.popupOpened) {
-      this.showPopupMessage(
-        this.collidedFestivalObject,
-        'Enter 키를 눌러서 축제 보기',
-      );
+    // 축제 혹은 메시지 이벤트 오브젝트와 충돌했을 때 팝업 텍스트 띄우기
+    if (this.popupOpened) {
+      if (this.collidedFestivalObject) {
+        this.showPopupMessage(this.collidedFestivalObject);
+      } else if (this.msgEventObj) {
+        this.showPopupMessage(this.msgEventObj);
+      }
       this.popupEnabledTime = time;
       this.popupOpened = false;
     }
 
-    // 축제 이름 아래에 텍스트가 떠있을 경우
+    // 팝업 텍스트가 떠있을 경우
     if (this.popupEnabledTime > 0) {
-      // Enter 키를 입력하면 축제 페이지로 이동하는 이벤트를 송신
-      if (this.enterKey.isDown) {
-        // event 사운드 추가
-        Effect.effectSound(this, 'event', 300, 0.2);
-        eventEmitter.emit('visit', this.collidedFestivalObject?.festival);
+      if (this.collidedFestivalObject) {
+        // Enter 키를 입력하면 축제 페이지로 이동하는 이벤트를 송신
+        if (this.enterKey.isDown) {
+          // event 사운드 추가
+          Effect.effectSound(this, 'event', 300, 0.2);
+          eventEmitter.emit('visit', this.collidedFestivalObject?.festival);
 
-        // 동시에 현재 좌표를 로컬 스토리지에 저장
-        const spawnLocation = { x: this.player.me.x, y: this.player.me.y };
-        localStorage.setItem('spawnLocation', JSON.stringify(spawnLocation));
+          // 동시에 현재 좌표를 로컬 스토리지에 저장
+          const spawnLocation = { x: this.player.me.x, y: this.player.me.y };
+          localStorage.setItem('spawnLocation', JSON.stringify(spawnLocation));
+        }
       }
 
-      // 3초가 지나면 축제 이름 아래의 텍스트 없애기
+      // 3초가 지나면 팝업 텍스트 없애기
       if (time - this.popupEnabledTime >= 3000) {
         this.popupEnabledTime = 0;
         this.popupText?.destroy(true, true);
         this.popupText = undefined;
         this.collidedFestivalObject = undefined;
+        this.msgEventObj = undefined;
       }
     }
 
@@ -240,21 +264,55 @@ class BootScene extends Scene {
     // console.log(this.festivalList);
     this.festivalList?.forEach(festival => {
       const { x, y } = BootScene.convertLatLngToXY(festival);
-      console.log(festival.festivalName, x, y);
 
       // 오브젝트 생성
       const { me } = new Resource(this, x, y, 'festival', 'festival3');
-      const festivalObject = { festival, x, y, height: me.height };
+      const festivalObject = {
+        festival,
+        x,
+        y,
+        height: me.height,
+        msg: 'Enter 키를 눌러서 축제 보기',
+      };
 
       // 충돌 적용
       this.physics.add.collider(this.player, me, () => {
-        console.log('축제 오브젝트와 접촉했다');
         this.collidedFestivalObject = festivalObject;
+        this.msgEventObj = undefined;
         this.popupOpened = true;
       });
 
       // 축제명 표시
       this.createFestivalNameTag(festivalObject);
+    });
+  }
+
+  /**
+   * 지정된 메시지 이벤트를 초기화하는 메소드
+   *
+   * @param msgEvents 메시지 이벤트를 모아놓은 객체 리스트
+   * @author Sckroll
+   */
+  createEventObjects(msgEvents: MsgEvent[]) {
+    msgEvents.forEach(msgEventObj => {
+      const x = msgEventObj.tileX * 32 + 16;
+      const y = msgEventObj.tileY * 32 + 32;
+
+      // 오브젝트 생성
+      const { me } = new Resource(
+        this,
+        x,
+        y,
+        'msg-event-object',
+        'msg-event-object',
+      );
+
+      // 충돌 적용
+      this.physics.add.collider(this.player, me, () => {
+        this.msgEventObj = msgEventObj;
+        this.collidedFestivalObject = undefined;
+        this.popupOpened = true;
+      });
     });
   }
 
@@ -349,19 +407,28 @@ class BootScene extends Scene {
   }
 
   /**
-   * 축제 이름 아래에 메시지를 띄우는 메소드
+   * 팝업 메시지를 띄우는 메소드
    *
-   * @param festivalObject 타일맵 상의 축제 오브젝트에 대한 정보가 담긴 객체
-   * @param msg 표시할 메시지
+   * @param msgObj 메시지 관련 객체 (축제 오브젝트에 대한 정보가 담긴 객체 혹은 메시지 이벤트 객체만 가능)
    * @author Sckroll
    */
-  showPopupMessage(festivalObject: FestivalObject, msg: string) {
+  showPopupMessage(msgObj: FestivalObject | MsgEvent) {
     this.popupText?.destroy(true, true);
 
-    const { x, y, height } = festivalObject;
+    let x, y, height;
+
+    if ('festival' in msgObj) {
+      x = msgObj.x;
+      y = msgObj.y;
+      height = msgObj.height;
+    } else {
+      x = msgObj.tileX * 32 + 16;
+      y = msgObj.tileY * 32 + 16;
+      height = 64;
+    }
 
     this.popupText = this.add.group();
-    const text = this.add.text(0, 0, msg, {
+    const text = this.add.text(0, 0, msgObj.msg, {
       fontFamily: 'DungGeunMo',
       backgroundColor: '#00000066',
       padding: { x: 4, y: 4 },

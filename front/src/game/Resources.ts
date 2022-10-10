@@ -18,6 +18,11 @@ class Resource extends Phaser.Physics.Arcade.Sprite {
       '/images/map/festivals.png',
       '/images/map/festivals_atlas.json',
     );
+    scene.load.atlas(
+      'msg-event-object',
+      '/images/map/msg-event-object.png',
+      '/images/map/msg-event-atlas.json',
+    );
   }
 }
 
