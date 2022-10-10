@@ -24,14 +24,11 @@ import base64
 # @authentication_classes((JSONWebTokenAuthentication,))
 @api_view(['POST'])
 def get_snbr(request):
-    
     token = request.META.get('HTTP_AUTHORIZATION').split(" ")[1]
-    user_id = jwt.decode(token, base64.b64decode('secretKe'))['id']
-    if request.method == 'POST':
-
-        data=json.loads(request.body)
-        x = float(data.get('lat' , None))
-        y = float(data.get('lng' , None))
+    user_id = int(jwt.decode(token, base64.b64decode('secretKe'))['id'])
+    
+    data=json.loads(request.body)
+    x = float(data.get('lat' , None))
+    y = float(data.get('lng' , None))
     
     return JsonResponse(user_based_cf(user_id, x, y), status=status.HTTP_200_OK, safe=False)
-
