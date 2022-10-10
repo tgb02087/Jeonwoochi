@@ -28,6 +28,7 @@ class BootScene extends Scene {
   private festivalList!: Array<MapData[]> | undefined;
   private festivalListFetched = false;
   private collidedFestivalObject!: FestivalObject | undefined;
+  private collidedFestivalsIdx!: number | undefined;
   private popupText!: Phaser.GameObjects.Group | undefined;
   private popupOpened = false;
   private popupEnabledTime = 0;
@@ -203,7 +204,7 @@ class BootScene extends Scene {
       if (this.enterKey.isDown) {
         // event 사운드 추가
         Effect.effectSound(this, 'event', 300, 0.2);
-        eventEmitter.emit('visit', this.collidedFestivalObject?.festival);
+        eventEmitter.emit('visit', this.collidedFestivalsIdx);
 
         // 동시에 현재 좌표를 로컬 스토리지에 저장
         const spawnLocation = { x: this.player.me.x, y: this.player.me.y };
@@ -235,7 +236,7 @@ class BootScene extends Scene {
    * @author Sckroll
    */
   createFestivalObjects() {
-    this.festivalList?.forEach(festivals => {
+    this.festivalList?.forEach((festivals: MapData[], idx: number) => {
       const { x, y } = BootScene.convertLatLngToXY(festivals[0]);
       // console.log(festival.festivalName, x, y);
 
@@ -252,6 +253,7 @@ class BootScene extends Scene {
       this.physics.add.collider(this.player, me, () => {
         console.log('축제 오브젝트와 접촉했다');
         this.collidedFestivalObject = festivalObject;
+        this.collidedFestivalsIdx = idx;
         this.popupOpened = true;
       });
 

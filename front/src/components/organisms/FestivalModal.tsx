@@ -1,9 +1,8 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import { MapData } from '../../mocks/handlers/festival_list';
-import eventEmitter from '../../utils/eventEmitter';
 import Button from '../atoms/Button';
 import Image from '../atoms/Image';
 import Sheet from '../atoms/Sheet';
@@ -12,7 +11,7 @@ import FestivalInfos from './FestivalInfos';
 import TitleCancelHeader from './TitleCancelHeader';
 
 interface PropTypes {
-  info: MapData | null;
+  info: MapData | undefined;
   setState: Dispatch<SetStateAction<boolean>>;
   intervalId: number;
 }
