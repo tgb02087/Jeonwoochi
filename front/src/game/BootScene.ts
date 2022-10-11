@@ -40,9 +40,11 @@ const msgEventObjects: MsgEvent[] = [
  */
 class BootScene extends Scene {
   private player!: Player;
-  private festivalList!: MapData[] | undefined;
+  private minimap!: Phaser.Cameras.Scene2D.Camera;
+  private festivalList!: Array<MapData[]> | undefined;
   // private festivalListFetched = false;
   private collidedFestivalObject!: FestivalObject | undefined;
+  private collidedFestivalsIdx!: number | undefined;
   private popupText!: Phaser.GameObjects.Group | undefined;
   private popupOpened = false;
   private popupEnabledTime = 0;
@@ -85,8 +87,7 @@ class BootScene extends Scene {
     );
 
     // 리액트 컴포넌트로부터 축제 리스트를 받고 저장
-    eventEmitter.on('festivals', (festivalList: MapData[]) => {
-      console.log(festivalList);
+    eventEmitter.on('festivals', (festivalList?: Array<MapData[]>) => {
       this.festivalList = festivalList;
       // this.festivalListFetched = true;
     });
@@ -231,7 +232,7 @@ class BootScene extends Scene {
         if (this.enterKey.isDown) {
           // event 사운드 추가
           Effect.effectSound(this, 'event', 300, 0.2);
-          eventEmitter.emit('visit', this.collidedFestivalObject?.festival);
+          eventEmitter.emit('visit', this.collidedFestivalsIdx);
 
           // 동시에 현재 좌표를 로컬 스토리지에 저장
           const spawnLocation = { x: this.player.me.x, y: this.player.me.y };
@@ -265,14 +266,14 @@ class BootScene extends Scene {
    * @author Sckroll
    */
   createFestivalObjects() {
-    // console.log(this.festivalList);
-    this.festivalList?.forEach(festival => {
-      const { x, y } = BootScene.convertLatLngToXY(festival);
+    this.festivalList?.forEach((festivals: MapData[], idx: number) => {
+      const { x, y } = BootScene.convertLatLngToXY(festivals[0]);
+      // console.log(festival.festivalName, x, y);
 
       // 오브젝트 생성
       const { me } = new Resource(this, x, y, 'festival', 'festival3');
       const festivalObject = {
-        festival,
+        festival: festivals[0],
         x,
         y,
         height: me.height,
@@ -282,12 +283,13 @@ class BootScene extends Scene {
       // 충돌 적용
       this.physics.add.collider(this.player, me, () => {
         this.collidedFestivalObject = festivalObject;
+        this.collidedFestivalsIdx = idx;
         this.msgEventObj = undefined;
         this.popupOpened = true;
       });
 
       // 축제명 표시
-      this.createFestivalNameTag(festivalObject);
+      this.createFestivalNameTag(festivalObject, festivals.length - 1);
     });
   }
 
@@ -398,12 +400,18 @@ class BootScene extends Scene {
    * @param festivalObject 타일맵 상의 축제 오브젝트에 대한 정보가 담긴 객체
    * @author Sckroll
    */
-  createFestivalNameTag(festivalObject: FestivalObject) {
+  createFestivalNameTag(festivalObject: FestivalObject, len: number) {
     const { festival, x, y, height } = festivalObject;
 
     const nameTag = this.add.group();
     const background = this.add.sprite(0, 0, 'nameTag');
-    const text = this.add.text(0, 0, festival.festivalName, {
+    const tmpFestivalName =
+      festival.festivalName.length > 10
+        ? festival.festivalName.slice(0, 10) + '...'
+        : festival.festivalName;
+    const festivalName =
+      len > 0 ? tmpFestivalName + ' 외 ' + len + '개' : tmpFestivalName;
+    const text = this.add.text(0, 0, festivalName, {
       fontFamily: 'DungGeunMo',
       fixedWidth: background.width,
       align: 'center',

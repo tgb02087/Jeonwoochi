@@ -1,9 +1,8 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import { MapData } from '../../mocks/handlers/festival_list';
-import eventEmitter from '../../utils/eventEmitter';
 import Button from '../atoms/Button';
 import Image from '../atoms/Image';
 import Sheet from '../atoms/Sheet';
@@ -12,8 +11,9 @@ import FestivalInfos from './FestivalInfos';
 import TitleCancelHeader from './TitleCancelHeader';
 
 interface PropTypes {
-  info: MapData | null;
+  info: MapData | undefined;
   setState: Dispatch<SetStateAction<boolean>>;
+  setOpenedList: Dispatch<SetStateAction<boolean>>;
   intervalId: number;
 }
 const StyledFestivalModal = styled.div`
@@ -49,14 +49,16 @@ const RightBody = styled.div`
  *
  * @author jojo
  */
-const FestivalModal = ({ info, setState, intervalId }: PropTypes) => {
-  // console.log(info);
+const FestivalModal = ({
+  info,
+  setState,
+  setOpenedList,
+  intervalId,
+}: PropTypes) => {
   const navigate = useNavigate();
 
   const linkToMapApiPageHandler = (info: MapData | undefined) => {
     if (info?.id) {
-      // console.log(info);
-
       clearInterval(intervalId);
       navigate(`/map/${info.id}`, { state: info });
     } else {
@@ -71,6 +73,7 @@ const FestivalModal = ({ info, setState, intervalId }: PropTypes) => {
           <InnerSheet>
             <TitleCancelHeader
               setState={setState}
+              setOpenedList={setOpenedList}
               title={info.festivalName}
               color="white"
             />

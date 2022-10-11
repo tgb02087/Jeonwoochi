@@ -21,6 +21,8 @@ import RequestConfirmModal from '../organisms/RequestConfirmModal';
 import RequestListModal from '../organisms/RequestListModal';
 import RequestModal from '../organisms/RequestModal';
 import { useNavigate } from 'react-router-dom';
+import getFestivalDoubleList from '../../api/getFestivalDoubleList';
+import FestivalListModal from '../organisms/FestivalListModal';
 
 const StyledMain = styled.div`
   height: 95vh;
@@ -45,10 +47,17 @@ const Main = () => {
   // 축제 오브젝트에 접근하면 eventEmitter로 해당 오브젝트를 받아 festivalInfo에 저장
   // festivalInfo를 props로 넘겨 FestivalModal 렌더링
   // isLoading, isError는 당장 사용하지 않아서 우선 제거
-  const [festivalInfo, setFestivalInfo] = useState<MapData | null>(null);
+  const [festivalsIdx, setFestivalsIdx] = useState<number>(-1);
+  const [festivalIdx, setFestivalIdx] = useState<number>(0);
   const navigate = useNavigate();
 
   const { data: listData } = useQuery(['festivalList'], getFestivalList);
+  // 축제 이중리스트 더미 데이터
+  const { data: doubleList } = useQuery<Array<MapData[]> | undefined>(
+    ['festivalDoubleList'],
+    getFestivalDoubleList,
+  );
+  // console.log(doubleList);
 
   const [openedSideBar, setOpenedSideBar] = useState(false);
   const [openedFestivalModal, setOpenedFestivalModal] = useState(false);
@@ -56,6 +65,7 @@ const Main = () => {
   const [openedRequestSecondModal, setOpenedRequestSecondModal] =
     useState(false);
   const [openedHelpModal, setOpenedHelpModal] = useState(false);
+  const [openedFestivalListModal, setOpenedFestivalListModal] = useState(false);
 
   // sound 음소거 유무 확인용 state
   const [isSound, setIsSound] = useState(true);
@@ -69,9 +79,14 @@ const Main = () => {
     getSelectedFestivals,
   );
   // 축제 오브젝트에서 Enter 키를 눌렀을 때 축제 페이지가 뜨도록 이벤트 수신
-  eventEmitter.on('visit', (festival: MapData) => {
-    setFestivalInfo(festival);
-    setOpenedFestivalModal(true);
+  eventEmitter.on('visit', (idx: number) => {
+    // console.log(idx);
+
+    setFestivalsIdx(idx);
+    if (doubleList && doubleList[idx].length > 1)
+      setOpenedFestivalListModal(true);
+    else if (doubleList && doubleList[idx].length <= 1)
+      setOpenedFestivalModal(true);
   });
 
   const soundBtnClickHandler = () => {
@@ -139,7 +154,7 @@ const Main = () => {
           <Minimap
             x={location.x}
             y={location.y}
-            festivalList={listData}
+            festivalList={doubleList}
             focusedIdx={focusedIdx}
             selectedFestivals={selected3}
           />
@@ -150,8 +165,18 @@ const Main = () => {
       {openedFestivalModal ? (
         <FestivalModal
           setState={setOpenedFestivalModal}
-          info={festivalInfo}
+          setOpenedList={setOpenedFestivalListModal}
+          // info={listData[festivalsIdx][festivalIdx]}
+          info={doubleList?.[festivalsIdx][festivalIdx]}
           intervalId={intervalId}
+        />
+      ) : null}
+      {openedFestivalListModal ? (
+        <FestivalListModal
+          list={doubleList?.[festivalsIdx]}
+          setState={setOpenedFestivalListModal}
+          setOpenedFestivalModal={setOpenedFestivalModal}
+          setFestivalIdx={setFestivalIdx}
         />
       ) : null}
       <RequestModalWrapper>
@@ -178,7 +203,7 @@ const Main = () => {
         {openedHelpModal ? <HelpModal setState={setOpenedHelpModal} /> : null}
       </RequestModalWrapper>
 
-      <GameView festivalList={listData} />
+      <GameView festivalList={doubleList} />
     </StyledMain>
   );
 };
