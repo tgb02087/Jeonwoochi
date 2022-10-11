@@ -1,15 +1,9 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import styled, { css } from 'styled-components';
 import tw from 'twin.macro';
 import Sheet from '../atoms/Sheet';
 import Text from '../atoms/Text';
 import TitleCancelHeader from './TitleCancelHeader';
-import { useQuery } from '@tanstack/react-query';
-import getFestivalRequestList from '../../api/getFestivalRequestList';
-import PageButtons from './PageButtons';
-import { useRecoilState } from 'recoil';
-import { festivalRequestPage } from '../../recoil/atoms/festivalRequestPage';
-import { festivalRequestId } from '../../recoil/atoms/festivalRequestId';
 import { MapData } from '../../mocks/handlers/festival_list';
 
 interface PropTypes {
@@ -18,21 +12,17 @@ interface PropTypes {
   setOpenedFestivalModal: Dispatch<SetStateAction<boolean>>;
   setFestivalIdx: Dispatch<SetStateAction<number>>;
 }
-interface FestivalRequestTypes {
-  id: number;
-  festivalName: string;
-}
 const StyledFestivalListModal = styled.div`
   width: 100vw;
   height: 100vh;
   ${tw`flex justify-center items-center`}
-  z-index: 1;
 `;
 const InnerSheet = styled.div`
   ${tw`flex flex-col`}
   width: 40vw;
   height: 60vh;
   gap: 2rem;
+  z-index: 1;
 `;
 const SheetHeader = styled.div`
   height: 5vh;
@@ -45,9 +35,6 @@ const SheetBody = styled.div`
 const TableBody = styled.div`
   ${tw`flex flex-col items-center`}
   gap: 1.5rem;
-`;
-const TableFooter = styled.div`
-  ${tw`flex justify-center`}
 `;
 const TableRow = styled.div`
   ${tw`flex`}
@@ -68,7 +55,8 @@ const FestivalTitle = styled.div`
     `}
 `;
 /**
- * 축제 요청 리스트를 확인하는 모달. 관리자만 접근 가능.
+ * 거리가 비슷한 축제 리스트를 보여주는 모달
+ * 제목을 클릭하면 해당 축제 상세 모달로 넘어간다
  *
  * @author jojo
  */
@@ -78,19 +66,10 @@ const FestivalListModal = ({
   setOpenedFestivalModal,
   setFestivalIdx,
 }: PropTypes) => {
-  //   const [page, setPage] = useRecoilState(festivalRequestPage);
-  //   const [, setRequestId] = useRecoilState(festivalRequestId);
-
-  //   const { data } = useQuery(['festivalRequests', page], () =>
-  //     getFestivalRequestList(page, 5),
-  //   );
-
   const clickHandler = (idx: number) => {
     setState(false);
     setOpenedFestivalModal(true);
     setFestivalIdx(idx);
-    // setOpenedDetail(true);
-    // setRequestId(id);
   };
 
   return (
@@ -121,7 +100,7 @@ const FestivalListModal = ({
                       <FestivalNo>
                         <Text message={idx + 1 + ''} />
                       </FestivalNo>
-                      <FestivalTitle onClick={() => console.log('tqs')}>
+                      <FestivalTitle onClick={() => clickHandler(idx)}>
                         <Text message={festival.festivalName} />
                       </FestivalTitle>
                     </TableRow>
@@ -131,14 +110,6 @@ const FestivalListModal = ({
                 <Text message="로딩 중입니다..." />
               )}
             </TableBody>
-            {/* <TableFooter>
-              <PageButtons
-                totalPage={data?.totalPages}
-                page={page}
-                setPage={setPage}
-                pagingColor={'white'}
-              />
-            </TableFooter> */}
           </SheetBody>
         </InnerSheet>
       </Sheet>

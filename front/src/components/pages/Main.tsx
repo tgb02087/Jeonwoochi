@@ -80,7 +80,7 @@ const Main = () => {
   );
   // 축제 오브젝트에서 Enter 키를 눌렀을 때 축제 페이지가 뜨도록 이벤트 수신
   eventEmitter.on('visit', (idx: number) => {
-    console.log(idx);
+    // console.log(idx);
 
     setFestivalsIdx(idx);
     if (doubleList && doubleList[idx].length > 1)
@@ -165,6 +165,7 @@ const Main = () => {
       {openedFestivalModal ? (
         <FestivalModal
           setState={setOpenedFestivalModal}
+          setOpenedList={setOpenedFestivalListModal}
           // info={listData[festivalsIdx][festivalIdx]}
           info={doubleList?.[festivalsIdx][festivalIdx]}
           intervalId={intervalId}

@@ -332,10 +332,12 @@ class BootScene extends Scene {
 
     const nameTag = this.add.group();
     const background = this.add.sprite(0, 0, 'nameTag');
-    const festivalName =
-      len > 0
-        ? festival.festivalName + ' 외 ' + len + '개'
+    const tmpFestivalName =
+      festival.festivalName.length > 10
+        ? festival.festivalName.slice(0, 10) + '...'
         : festival.festivalName;
+    const festivalName =
+      len > 0 ? tmpFestivalName + ' 외 ' + len + '개' : tmpFestivalName;
     const text = this.add.text(0, 0, festivalName, {
       fontFamily: 'DungGeunMo',
       fixedWidth: background.width,
