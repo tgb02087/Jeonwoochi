@@ -53,7 +53,7 @@ const Main = () => {
 
   const { data: listData } = useQuery(['festivalList'], getFestivalList);
   // 축제 이중리스트 더미 데이터
-  const { data: doubleList } = useQuery<Array<MapData[]> | undefined>(
+  const { data: doubleList } = useQuery<Array<MapData[]>>(
     ['festivalDoubleList'],
     getFestivalDoubleList,
   );
@@ -165,9 +165,14 @@ const Main = () => {
       {openedFestivalModal ? (
         <FestivalModal
           setState={setOpenedFestivalModal}
-          setOpenedList={setOpenedFestivalListModal}
-          // info={listData[festivalsIdx][festivalIdx]}
-          info={doubleList?.[festivalsIdx][festivalIdx]}
+          setOpenedList={
+            // 현재 여는 축제 오브젝트가 2개 이상 리스트 중 하나이면 close할 때 listModal 띄우고
+            // 하나밖에 없는 오브젝트이면 바로 닫기
+            doubleList && doubleList[festivalsIdx].length > 1
+              ? setOpenedFestivalListModal
+              : undefined
+          }
+          info={doubleList && doubleList[festivalsIdx][festivalIdx]}
           intervalId={intervalId}
         />
       ) : null}
@@ -180,7 +185,6 @@ const Main = () => {
         />
       ) : null}
       <RequestModalWrapper>
-        {/* 나중에 관리자 유무 받아서 여기 false에 넣기 */}
         {openedRequestFirstModal && !user?.isAdmin ? (
           <RequestModal setState={setOpenedRequestFirstModal} />
         ) : null}

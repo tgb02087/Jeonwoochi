@@ -13,7 +13,7 @@ import TitleCancelHeader from './TitleCancelHeader';
 interface PropTypes {
   info: MapData | undefined;
   setState: Dispatch<SetStateAction<boolean>>;
-  setOpenedList: Dispatch<SetStateAction<boolean>>;
+  setOpenedList: Dispatch<SetStateAction<boolean>> | undefined;
   intervalId: number;
 }
 const StyledFestivalModal = styled.div`

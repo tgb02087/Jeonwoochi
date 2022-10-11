@@ -406,8 +406,8 @@ class BootScene extends Scene {
     const nameTag = this.add.group();
     const background = this.add.sprite(0, 0, 'nameTag');
     const tmpFestivalName =
-      festival.festivalName.length > 10
-        ? festival.festivalName.slice(0, 10) + '...'
+      festival.festivalName.length > 12
+        ? festival.festivalName.slice(0, 12) + '...'
         : festival.festivalName;
     const festivalName =
       len > 0 ? tmpFestivalName + ' 외 ' + len + '개' : tmpFestivalName;

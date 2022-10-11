@@ -79,6 +79,7 @@ const FestivalListModal = ({
           <SheetHeader>
             <TitleCancelHeader
               setState={setState}
+              setFestivalIdx={setFestivalIdx}
               title="축제 리스트"
               color="white"
             />

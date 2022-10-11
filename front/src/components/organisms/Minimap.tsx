@@ -89,7 +89,7 @@ PropTypes) => {
               x={locationInMinimap.x}
               y={locationInMinimap.y}
               focused={isFocused}
-              key={locationInMinimap.x * locationInMinimap.y}
+              key={locationInMinimap.x * locationInMinimap.y + idx}
             />
           );
         })}
