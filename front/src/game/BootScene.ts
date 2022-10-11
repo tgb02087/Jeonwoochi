@@ -1,4 +1,4 @@
-import { GameObjects, Input, Scene } from 'phaser';
+import { Input, Scene } from 'phaser';
 import map from './country-map2.json';
 import Player from './Player';
 import Resource from './Resources';
@@ -40,7 +40,6 @@ const msgEventObjects: MsgEvent[] = [
  */
 class BootScene extends Scene {
   private player!: Player;
-  private minimap!: Phaser.Cameras.Scene2D.Camera;
   private festivalList!: MapData[] | undefined;
   // private festivalListFetched = false;
   private collidedFestivalObject!: FestivalObject | undefined;
@@ -53,7 +52,6 @@ class BootScene extends Scene {
 
   preload() {
     // 타일맵 불러오기
-    // this.load.image('tiles', '/images/map/jeonwoochi-tileset.png');
     this.load.image('sea', '/images/map/Animated water tiles (full tile).png');
     this.load.image(
       'world',
@@ -79,6 +77,12 @@ class BootScene extends Scene {
 
     // 축제 오브젝트 이름표 배경 불러오기
     this.load.image('nameTag', '/images/map/name-tag.png');
+
+    // 파티클 이미지 불러오기
+    this.load.image(
+      'particle-msg',
+      'https://labs.phaser.io/assets/particles/blue.png',
+    );
 
     // 리액트 컴포넌트로부터 축제 리스트를 받고 저장
     eventEmitter.on('festivals', (festivalList: MapData[]) => {
@@ -312,6 +316,19 @@ class BootScene extends Scene {
         this.msgEventObj = msgEventObj;
         this.collidedFestivalObject = undefined;
         this.popupOpened = true;
+      });
+
+      // 메시지 이벤트를 강조하기 위해 파티클 이펙트 적용
+      this.add.particles('particle-msg').createEmitter({
+        x,
+        y,
+        speed: 200,
+        blendMode: 'SCREEN',
+        alpha: 0.4,
+        scale: {
+          min: 0.1,
+          max: 0.9,
+        },
       });
     });
   }
