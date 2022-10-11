@@ -16,10 +16,6 @@ const SheetWrapper = styled.section`
   ${tw`flex flex-col gap-2`}
 `;
 
-const TempTitle = styled.h1`
-  ${tw`text-xl`}
-`;
-
 /**
  * 버튼 마우스오버 시 애니메이션 효과로 인해 시트 전체가 움직이는
  * UI적 문제를 해결하기 위해 만든 버튼 컨테이너 컴포넌트
@@ -63,7 +59,6 @@ const LoginForm = () => {
   return (
     <Sheet transparent wide>
       <SheetWrapper>
-        <TempTitle>전우치 - 전국 우리 지역잔치</TempTitle>
         <ButtonContainer>
           <Button isText color="#fee500" clickHandler={kakaoLoginHandler}>
             <>
