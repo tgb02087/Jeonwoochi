@@ -24,8 +24,7 @@ const GameViewContainer = styled.section`
 const GameView = ({ festivalList }: PropTypes) => {
   // 게임 화면 초기화
   const parentEl = useRef<HTMLDivElement>(null);
-  const game = useGame(config, parentEl);
-
+  useGame(config, parentEl);
   useEffect(() => {
     eventEmitter.emit('festivals', festivalList);
   }, [festivalList]);
