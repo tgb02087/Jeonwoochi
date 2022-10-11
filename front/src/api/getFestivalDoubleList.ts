@@ -6,7 +6,6 @@ const getFestivalDoubleList = async () => {
     method: 'GET',
     url: '/festival-service/festival/sort/list',
   });
-  console.log(data);
 
   return data;
 };

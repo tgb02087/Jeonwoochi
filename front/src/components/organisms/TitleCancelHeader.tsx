@@ -8,6 +8,7 @@ interface PropTypes {
   color: string;
   setState?: Dispatch<SetStateAction<boolean>>;
   setOpenedList?: Dispatch<SetStateAction<boolean>>;
+  setFestivalIdx?: Dispatch<SetStateAction<number>>;
 }
 const StyledTitleCancelHeader = styled.div`
   width: 100%;
@@ -26,10 +27,12 @@ const TitleCancelHeader = ({
   color,
   setState,
   setOpenedList,
+  setFestivalIdx,
 }: PropTypes) => {
   const clickHandler = () => {
     setState && setState(prev => !prev);
     setOpenedList && setOpenedList(prev => !prev);
+    setFestivalIdx && setFestivalIdx(0);
   };
   return (
     <StyledTitleCancelHeader>
