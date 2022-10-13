@@ -31,6 +31,14 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.findReviewList(restaurantId));
     }
 
+    @GetMapping("/review/{restaurantId}/me")
+    public ResponseEntity<?> findReviewByMe(
+            @PathVariable Long restaurantId,
+            @LoginUser User user
+    ){
+        return ResponseEntity.ok(reviewService.findReview(restaurantId, user.getId()));
+    }
+
     @PutMapping("/review")
     public ResponseEntity<?> updateReview(
             @Valid @RequestBody ReviewUpdateRequest request

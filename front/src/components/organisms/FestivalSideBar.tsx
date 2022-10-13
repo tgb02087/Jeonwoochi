@@ -131,7 +131,7 @@ const FestivalSideBar = ({
           ) : (
             <OpenButton>
               <LeftV />
-              <Text message="현재 진행 중 축제 보기" color="black" />
+              <Text message="곧 끝나요!" color="black" />
             </OpenButton>
           )}
         </Button>
