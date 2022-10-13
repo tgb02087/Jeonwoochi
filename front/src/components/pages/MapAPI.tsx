@@ -59,7 +59,7 @@ const MapAPI = () => {
 
   const { lat, lng } = mapData;
   // 맛집 데이터 불러오기
-  const restaurantData = useGetFoodDataAfterClick(lat, lng, user!.id);
+  const restaurantData = useGetFoodDataAfterClick(lat, lng, user?.id ?? 0);
   const clickFoodButtonHandler = () => restaurantData.refetch();
 
   // 숙박 데이터 불러오기

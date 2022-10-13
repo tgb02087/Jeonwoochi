@@ -13,7 +13,7 @@ interface StyledObjectTypes {
   focused?: boolean;
 }
 interface PropTypes extends StyledObjectTypes {
-  festivalList: any;
+  festivalList: Array<MapData[]> | undefined;
   focusedIdx: number;
   selectedFestivals: MapData[] | undefined;
 }
@@ -74,19 +74,22 @@ PropTypes) => {
         <StyledObject x={playerLocation.x} y={playerLocation.y} isPlayer />
       )}
       {festivalList &&
-        festivalList.map((festival: MapData, idx: number) => {
-          const locationInGame = BootScene.convertLatLngToXY(festival);
+        festivalList.map((festivals: MapData[], idx: number) => {
+          const locationInGame = BootScene.convertLatLngToXY(festivals[0]);
           const locationInMinimap = convertXYGameToMinimap(
             locationInGame.x,
             locationInGame.y,
+          );
+          const isFocused = festivals.some(
+            festival => festival.id === focusedIdx,
           );
 
           return (
             <StyledObject
               x={locationInMinimap.x}
               y={locationInMinimap.y}
-              focused={festival.id === focusedIdx}
-              key={locationInMinimap.x * locationInMinimap.y}
+              focused={isFocused}
+              key={locationInMinimap.x * locationInMinimap.y + idx}
             />
           );
         })}
