@@ -15,11 +15,12 @@ const LoginBackgroundVideoContainer = styled.div`
 `;
 
 const LoginBackgroundVideo = styled.video`
+  ${tw`w-screen h-screen object-fill`}
   transform: scale(1.3);
 `;
 
 const JWCTitle = styled.img`
-  ${tw`absolute top-16`}
+  ${tw`absolute top-32`}
 `;
 
 const LoginFormContainer = styled.div`
