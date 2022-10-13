@@ -43,6 +43,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   /** @description 캐릭터 마나 창 */
   private mana!: Mana;
 
+  /** @description 스킬 파티클 이펙트 */
+  private hasteParticles!: Phaser.GameObjects.Particles.ParticleEmitterManager;
+  private levitationParticles!: Phaser.GameObjects.Particles.ParticleEmitterManager;
+
   constructor(
     scene: Phaser.Scene,
     x: number,
@@ -115,7 +119,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       repeat: -1,
     });
 
-    // 방향기 설정
+    // 방향키 설정
     this.inputKeys = this.scene.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.UP,
       down: Phaser.Input.Keyboard.KeyCodes.DOWN,
@@ -131,6 +135,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.input.keyboard.on('keydown-' + 'X', () =>
       this.skill.skilllevitation(this),
     );
+
+    // 파티클 이펙트 초기화
+    this.hasteParticles = this.scene.add.particles('skills');
+    this.levitationParticles = this.scene.add.particles('skills');
   }
 
   static preload(scene: Phaser.Scene): void {
@@ -143,6 +151,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       frameWidth: 32,
       frameHeight: 32,
     });
+    scene.load.atlas(
+      'skills',
+      'https://labs.phaser.io/assets/particles/flares.png',
+      'https://labs.phaser.io/assets/particles/flares.json',
+    );
   }
 
   update(): void {
@@ -192,22 +205,59 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
       this.skill.levitationIcon?.destroy();
       this.skill.hasteIcon?.destroy();
+
+      this.hasteParticles.emitters.removeAll();
+      this.levitationParticles.emitters.removeAll();
     }
 
     if (this.skill.isHaste) {
       this.skill.hasteIcon.x = this.me.x - 10;
       this.skill.hasteIcon.y = this.me.y - 45;
       this.mana.decrease();
+
+      this.hasteParticles
+        .createEmitter({
+          x: this.me.x,
+          y: this.me.y,
+          speed: 300,
+          blendMode: 'SCREEN',
+          alpha: 0.5,
+          scale: {
+            min: 0.1,
+            max: 0.5,
+          },
+          frame: ['red'],
+        })
+        .explode(5, this.me.x, this.me.y);
     }
 
     if (this.skill.isLevitation) {
       this.skill.levitationIcon.x = this.me.x + 10;
       this.skill.levitationIcon.y = this.me.y - 45;
       this.mana.decrease();
+
+      this.levitationParticles
+        .createEmitter({
+          x: this.me.x,
+          y: this.me.y,
+          speed: 300,
+          blendMode: 'SCREEN',
+          alpha: 0.6,
+          scale: {
+            min: 0.1,
+            max: 0.5,
+          },
+          lifespan: 500,
+          frame: ['blue'],
+        })
+        .explode(5, this.me.x, this.me.y);
     }
 
     if (!this.skill.isHaste && !this.skill.isLevitation) {
       this.mana.increase();
+
+      this.hasteParticles.emitters.removeAll();
+      this.levitationParticles.emitters.removeAll();
     }
 
     // console.log(this.mana);

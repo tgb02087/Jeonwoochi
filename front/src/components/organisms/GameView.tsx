@@ -6,7 +6,7 @@ import { MapData } from '../../mocks/handlers/festival_list';
 import eventEmitter from '../../utils/eventEmitter';
 
 interface PropTypes {
-  festivalList?: MapData[];
+  festivalList?: Array<MapData[]>;
 }
 
 const GameViewContainer = styled.section`
@@ -24,11 +24,12 @@ const GameViewContainer = styled.section`
 const GameView = ({ festivalList }: PropTypes) => {
   // 게임 화면 초기화
   const parentEl = useRef<HTMLDivElement>(null);
-  const game = useGame(config, parentEl);
+  useGame(config, parentEl);
 
-  useEffect(() => {
-    eventEmitter.emit('festivals', festivalList);
-  }, [festivalList]);
+  // useEffect 적용 시 festival object가 사라지는 이슈
+  // useEffect(() => {
+  eventEmitter.emit('festivals', festivalList);
+  // }, [festivalList]);
 
   return (
     <GameViewContainer>

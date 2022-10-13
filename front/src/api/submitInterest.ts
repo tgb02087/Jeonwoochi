@@ -9,8 +9,9 @@ const submitInterest = async (interests: any, navigate: any) => {
       url: '/main-service/interest',
       data: interests,
     });
+    localStorage.setItem('isAlreadyJoined', 'true');
     window.alert('관심사가 선택되었습니다!');
-    navigate('/game');
+    location.href = '/';
   } catch (e) {
     console.log(e);
   }

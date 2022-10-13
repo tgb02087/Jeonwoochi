@@ -39,6 +39,17 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
+    public ReviewResponse findReview(Long restaurantId, Long userId) {
+        if(!reviewRepo.findTopByRestaurantIdAndUserIdOrderByIdDesc(restaurantId, userId).isPresent()){
+            return null;
+        }
+        Review review =  reviewRepo.findTopByRestaurantIdAndUserIdOrderByIdDesc(restaurantId, userId)
+                .orElseThrow(()-> new NotFoundException(REVIEW_NOT_FOUND));
+
+        return ReviewResponse.response(review);
+    }
+
+    @Override
     @Transactional
     public ReviewResponse updateReview(ReviewUpdateRequest request) {
         Review review = reviewRepo.findById(request.getReview_id())

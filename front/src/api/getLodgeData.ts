@@ -17,8 +17,8 @@ const getLodgeData = async (lat: number, lng: number) => {
       method: 'GET',
       url: '/main-service/lodgment',
       params: {
-        lat: lng,
-        lng: lat,
+        lat,
+        lng,
       },
       // withCredentials: true,
     });

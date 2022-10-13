@@ -29,4 +29,9 @@ public interface FestivalService {
     //축제 전체 리스트 커스텀
     List<FestivalResponse> findFestivalCustom();
 
+<<<<<<< HEAD
+=======
+    List<List<FestivalResponse>> sortList();
+
+>>>>>>> back
 }

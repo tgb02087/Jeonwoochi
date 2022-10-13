@@ -12,10 +12,10 @@ const getCultureData = async (lat: number, lng: number) => {
     audio.play();
     const { data } = await axios({
       method: 'GET',
-      url: '/main-service/lodgment',
+      url: '/main-service/culture',
       params: {
-        lat: lng,
-        lng: lat,
+        lat,
+        lng,
       },
       // withCredentials: true,
     });
