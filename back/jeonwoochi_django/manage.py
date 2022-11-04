@@ -30,9 +30,9 @@ def eureka_init():
     # The flowing code will register your server to eureka server and also start to send heartbeat every 30 seconds
     eureka_client.init(
         # Eureka Server 所在的地址
-        eureka_server="http://j7b305.p.ssafy.io:8761/eureka",
+        eureka_server="",
         app_name="RECOMM-SERVICE",
-        instance_port= 8989,
+        instance_port= ,
 
     )
     

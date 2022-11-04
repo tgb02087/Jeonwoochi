@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$$iqkz%r@wb*f#12r(1%%l@@)-j4jqwd32cl=r#7$^6bu0^zo@'
+SECRET_KEY = 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -68,11 +68,6 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_ALLOW_ALL = True # <- 모든 호스트 허용
 
-# or 
-
-# CORS_ORIGIN_WHITELIST = (
-#     "j7b305.p.ssafy.io",
-# )
 
 ROOT_URLCONF = 'jeonwoochi.urls'
 
@@ -163,11 +158,11 @@ REST_FRAMEWORK = {
 }
 
 JWT_AUTH = {
-    'JWT_SECRET_KEY': 'secretKey',
-    'JWT_ALGORITHM': 'HS256',
-    'JWT_ALLOW_REFRESH': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=28),
-    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+    'JWT_SECRET_KEY': '',
+    'JWT_ALGORITHM': '',
+    'JWT_ALLOW_REFRESH': ,
+    'JWT_EXPIRATION_DELTA': ,
+    'JWT_REFRESH_EXPIRATION_DELTA': ,
+    'JWT_AUTH_HEADER_PREFIX': '',
     
 }

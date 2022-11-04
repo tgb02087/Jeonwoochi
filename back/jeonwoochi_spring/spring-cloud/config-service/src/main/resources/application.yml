@@ -7,7 +7,7 @@ spring:
   application:
     name: config-service
   rabbitmq:
-    host: j7b305.p.ssafy.io
+    host: 
     port: 5672
     username: guest
     password: guest
