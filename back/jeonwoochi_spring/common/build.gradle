@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 plugins {
     id 'java'
 }
@@ -17,24 +16,4 @@ dependencies {
 
 test {
     useJUnitPlatform()
-=======
-plugins {
-    id 'java'
-}
-
-group 'com.example'
-version '0.0.1-SNAPSHOT'
-
-repositories {
-    mavenCentral()
-}
-bootJar { enabled = false }
-jar { enabled = true }
-
-dependencies {
-}
-
-test {
-    useJUnitPlatform()
->>>>>>> back
 }
